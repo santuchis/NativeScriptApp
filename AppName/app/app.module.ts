@@ -3,10 +3,6 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
 
-import { ItemService } from "./item/item.service";
-import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
-
 @NgModule({
     bootstrap: [
         AppComponent
@@ -16,12 +12,10 @@ import { ItemDetailComponent } from "./item/item-detail.component";
         AppRoutingModule
     ],
     declarations: [
-        AppComponent,
-        ItemsComponent,
-        ItemDetailComponent
+        AppComponent
     ],
     providers: [
-        ItemService
+        
     ],
     schemas: [
         NO_ERRORS_SCHEMA
