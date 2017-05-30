@@ -1,5 +1,7 @@
 import application = require("application");
 import { Component, OnInit } from '@angular/core';
+import { TnsSideDrawer } from 'nativescript-sidedrawer'
+import { Color } from "color";
 
 @Component({
 	selector: 'app-home',
@@ -11,8 +13,10 @@ import { Component, OnInit } from '@angular/core';
 export class AppHomeComponent implements OnInit {
 
 	isAndroid:boolean = false;
+	i:number = 0;
 
-	constructor() { }
+	constructor() {
+	}
 
 	ngOnInit() {
 		if(application.ios) {
@@ -20,9 +24,43 @@ export class AppHomeComponent implements OnInit {
 		} else if (application.android) {
 			this.isAndroid = true;
 		}
+
+		TnsSideDrawer.build({
+			templates: [{
+				title: 'Home',
+				androidIcon: 'ic_menu_white',
+				iosIcon: 'ic_menu_white',
+			}, {
+				title: 'Judgment Day',
+				androidIcon: 'ic_menu_white',
+				iosIcon: 'ic_menu_white',
+			}, {
+				title: 'Bank Roll',
+				androidIcon: 'ic_menu_white',
+				iosIcon: 'ic_menu_white',
+			}, {
+				title: 'Fix Stuff',
+				androidIcon: 'ic_menu_white',
+				iosIcon: 'ic_menu_white',
+			}, {
+				title: 'This Is Me',
+				androidIcon: 'ic_menu_white',
+				iosIcon: 'ic_menu_white',
+			}],
+			textColor: new Color("white"),
+			headerBackgroundColor: new Color("red"),
+			backgroundColor: new Color("blue"),
+			title: 'This App Name',
+			subtitle: 'is just as awesome as this subtitle!',
+			listener: (index) => {
+				this.i = index
+			},
+			context: this,
+		});
 	}
 
-	showSideDrawer() {
+	toggleDrawer() {
     	console.log("Show SideDrawer tapped.");
+		TnsSideDrawer.toggle();
 	}
 }

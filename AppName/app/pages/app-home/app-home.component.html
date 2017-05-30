@@ -4,10 +4,10 @@
     </Placeholder>
 </ActionBar>
 <ng-template #iosActionBar>
-    <ActionItem icon="res://ic_menu_white" ios.position="left"></ActionItem>
+    <ActionItem icon="res://ic_menu_white" ios.position="left" (tap)="toggleDrawer()"></ActionItem>
 </ng-template>
 <ng-template #androidActionBar>
-    <NavigationButton icon="res://ic_menu_white"></NavigationButton>
+    <NavigationButton icon="res://ic_menu_white" (tap)="toggleDrawer()"></NavigationButton>
 </ng-template>
 <StackLayout>
     <Label class="app-home" text="Hello AppHomeComponent!"></Label>
