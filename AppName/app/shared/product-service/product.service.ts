@@ -7,7 +7,7 @@ import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
 
 @Injectable()
-export class ProductServiceComponent  {
+export class ProductService {
 
 	constructor() { }
 
