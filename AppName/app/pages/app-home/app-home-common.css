@@ -1,0 +1,10 @@
+ActionBar {
+    background-color:  #3C5AFD;
+    color: white;
+}
+StackLayout {
+    margin-left: 30;
+    margin-right: 30;
+    padding-bottom: 15;
+    background-color: white;
+}
