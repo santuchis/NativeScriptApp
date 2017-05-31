@@ -1,7 +1,8 @@
 import application = require("application");
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { TnsSideDrawer } from 'nativescript-sidedrawer'
 import { Color } from "color";
+import { SearchBar } from "ui/search-bar";
 
 @Component({
 	selector: 'app-home',
@@ -13,7 +14,9 @@ import { Color } from "color";
 export class AppHomeComponent implements OnInit {
 
 	isAndroid:boolean = false;
+	searchColor: string = '';
 	i:number = 0;
+	@ViewChild("searchBar") searchBar: ElementRef;
 
 	constructor() {
 	}
@@ -21,37 +24,34 @@ export class AppHomeComponent implements OnInit {
 	ngOnInit() {
 		if(application.ios) {
 			this.isAndroid = false;
+			this.searchColor = '#f4f4f4';
+			let searchInput = <SearchBar> this.searchBar.nativeElement;
+			console.log("---");
+			console.log(searchInput.ios);
 		} else if (application.android) {
 			this.isAndroid = true;
+			this.searchColor = 'white';
 		}
 
 		TnsSideDrawer.build({
 			templates: [{
-				title: 'Home',
-				androidIcon: 'ic_menu_white',
-				iosIcon: 'ic_menu_white',
+				title: 'Inicio',
+				androidIcon: 'ic_home_white',
+				iosIcon: 'ic_home_white',
 			}, {
-				title: 'Judgment Day',
-				androidIcon: 'ic_menu_white',
-				iosIcon: 'ic_menu_white',
+				title: 'Ingresar',
+				androidIcon: 'ic_perm_identity_white',
+				iosIcon: 'ic_perm_identity_white',
 			}, {
-				title: 'Bank Roll',
-				androidIcon: 'ic_menu_white',
-				iosIcon: 'ic_menu_white',
-			}, {
-				title: 'Fix Stuff',
-				androidIcon: 'ic_menu_white',
-				iosIcon: 'ic_menu_white',
-			}, {
-				title: 'This Is Me',
-				androidIcon: 'ic_menu_white',
-				iosIcon: 'ic_menu_white',
+				title: 'Registrarse',
+				androidIcon: 'ic_perm_identity_white',
+				iosIcon: 'ic_perm_identity_white',
 			}],
 			textColor: new Color("white"),
 			headerBackgroundColor: new Color("red"),
 			backgroundColor: new Color("blue"),
-			title: 'This App Name',
-			subtitle: 'is just as awesome as this subtitle!',
+			title: 'RateMe',
+			subtitle: 'What people think about products!',
 			listener: (index) => {
 				this.i = index
 			},

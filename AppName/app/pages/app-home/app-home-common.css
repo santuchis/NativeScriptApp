@@ -8,3 +8,8 @@ StackLayout {
     padding-bottom: 15;
     background-color: white;
 }
+.app-name-label {
+    font-size: 40px;
+    text-align: center;
+    padding-bottom: 30px;
+}
