@@ -1,20 +1,6 @@
-<ActionBar title="RateMe">
-    <Placeholder *ngIf="isAndroid; then androidActionBar else iosActionBar">
-    </Placeholder>
-</ActionBar>
-<ng-template #iosActionBar>
-    <ActionItem
-        icon="res://ic_menu_white"
-        ios.position="left"
-        (tap)="toggleDrawer()">
-    </ActionItem>
-</ng-template>
-<ng-template #androidActionBar>
-    <NavigationButton
-        icon="res://ic_menu_white"
-        (tap)="toggleDrawer()">
-    </NavigationButton>
-</ng-template>
+<nav-bar
+    [navBtn]="navBarButton" (navBtnTap)="toggleDrawer()"
+    [buttons]="buttons" (buttonTap)="navButtonTap($event)"></nav-bar>
 <StackLayout>
     <Label class="app-name-label" text="RateMe"></Label>
     <SearchBar #searchBar hint="Busca un producto" textFieldBackgroundColor="{{searchColor}}"></SearchBar>

@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 
 import { AppHomeComponent }         from "./pages/app-home/app-home.component";
 import { LoginComponent }           from "./pages/login/login.component";
+import { NavBarComponent }          from "./components/nav-bar/nav-bar.component";
 
 import { UserService }              from "./shared/user/user.service";
 
@@ -19,7 +20,8 @@ import { UserService }              from "./shared/user/user.service";
     declarations: [
         AppComponent,
         AppHomeComponent,
-        LoginComponent
+        LoginComponent,
+        NavBarComponent
     ],
     providers: [
         UserService

@@ -1,0 +1,47 @@
+<ActionBar title="RateMe">
+    <Placeholder *ngIf="isAndroid; then androidActionBar else iosActionBar">
+    </Placeholder>
+    <!--
+        icon="res://ic_menu_white"
+        ios.systemIcon="2"
+        android.systemIcon="ic_menu_edit"
+        si '*.systemIcon' y 'icon' tienen valores, muestra '*.systemIcon'
+        ################################
+        solo [icon]="button.icon" anda OK
+        ################################
+        [android.systemIcon]="button.androidIcon" anda OK
+        ################################
+        ios.systemIcon="2" anda OK
+    -->
+    
+</ActionBar>
+<ng-template #iosActionBar>
+    <ActionItem *ngIf="navBtn"
+        [icon]="navBtn.icon"
+        ios.position="left"
+        (tap)="onNavBtnTap()">
+    </ActionItem>
+    <ng-template ngFor let-i="index" let-button [ngForOf]="buttons">
+        <ActionItem *ngIf="button.icon != undefined"
+            [icon]="button.icon"
+            ios.position="right"
+            (tap)="onButtonTap(i)">
+        </ActionItem>
+        <ActionItem *ngIf="button.icon == undefined"
+            ios.systemIcon="2"
+            ios.position="right"
+            (tap)="onButtonTap(i)">
+        </ActionItem>
+    </ng-template>
+</ng-template>
+<ng-template #androidActionBar>
+    <NavigationButton *ngIf="navBtn"
+        [icon]="navBtn.icon"
+        (tap)="onNavBtnTap()">
+    </NavigationButton>
+    <ActionItem *ngFor="let button of buttons; let i=index"
+        [icon]="button.icon"
+        [android.systemIcon]="button.androidIcon"
+        (tap)="onButtonTap(i)">
+    </ActionItem>
+</ng-template>
