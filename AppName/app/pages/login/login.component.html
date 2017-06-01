@@ -1,3 +1,7 @@
+<nav-bar [barTitle]=""
+    [navBtn]="navBarButton" (navBtnTap)="toggleDrawer()"
+    [buttons]="buttons" (buttonTap)="navButtonTap($event)"></nav-bar>
+
 <StackLayout #container>
   <Image src="res://logo_login" stretch="none" horizontalAlignment="center"></Image>
 

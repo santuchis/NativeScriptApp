@@ -19,6 +19,12 @@ export class LoginComponent implements OnInit {
 	@ViewChild("container") container: ElementRef;
 	@ViewChild("email") email: ElementRef;
 	@ViewChild("password") password: ElementRef;
+
+	navBarButton = { icon: "res://ic_menu_white", text: "" };
+	buttons = [ 
+		{icon: "res://ic_perm_identity_white", iosIcon: "", androidIcon: "", text: ""},
+		{icon: "res://ic_home_white", iosIcon: "", androidIcon: "", text: ""},	
+	];
 	
 	constructor(private router: Router) {
 		this.user = new User();

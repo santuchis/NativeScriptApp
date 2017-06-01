@@ -13,6 +13,7 @@ export class NavBarComponent implements OnInit {
 
 	@Input() navBtn: { icon: string, text: string };
 	@Input() buttons: [{ icon: string, iosIcon:string, androidIcon:string, text: string }];
+	@Input() barTitle: string = "";
 	@Output() navBtnTap = new EventEmitter<any>();
 	@Output() buttonTap = new EventEmitter<number>();
 
@@ -39,6 +40,5 @@ export class NavBarComponent implements OnInit {
 
 	onButtonTap(index:number) {
 		this.buttonTap.emit(index);
-		this.buttons[index].icon = "res://ic_perm_identity_white";
 	}
 }

@@ -17,26 +17,9 @@ export class AppHomeComponent implements OnInit {
 	i:number = 0;
 	navBarButton = { icon: "res://ic_menu_white", text: "" };
 	buttons = [ 
-		{icon: "res://ic_perm_identity_white", iosIcon: "3", androidIcon: "ic_menu_save", text: ""},
-		{icon: undefined, iosIcon: "2", androidIcon: "ic_menu_edit", text: ""},
-		
+		{icon: "res://ic_perm_identity_white", iosIcon: "", androidIcon: "", text: ""},
+		{icon: "res://ic_home_white", iosIcon: "", androidIcon: "", text: ""},	
 	];
-	//{icon: "res://ic_home_white", iosIcon: "2", androidIcon: "ic_menu_edit", text: ""},
-	//{icon: "res://ic_perm_identity_white", iosIcon: "3", androidIcon: "ic_menu_save", text: ""}
-	/* IOS Icons
-	0	Done			12	Search
-	1	Cancel			13	Refresh
-	2	Edit			14	Stop
-	3	Save			15	Camera
-	4	Add				16	Trash
-	5	FlexibleSpace	17	Play
-	6	FixedSpace		18	Pause
-	7	Compose			19	Rewind
-	8	Reply			20	FastForward
-	9	Action			21	Undo
-	10	Organize		22	Redo
-	11	Bookmarks		23	PageCurl
-	*/
 
 	constructor(private router: Router) {
 	}
@@ -100,6 +83,5 @@ export class AppHomeComponent implements OnInit {
 
 	navButtonTap(index) {
 		console.log("tapped on indexx=" + index);
-		this.buttons.push({icon: "res://ic_perm_identity_white", iosIcon: "3", androidIcon: "ic_menu_save", text: ""});
 	}
 }
