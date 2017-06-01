@@ -1,6 +1,4 @@
-<nav-bar [barTitle]=""
-    [navBtn]="navBarButton" (navBtnTap)="toggleDrawer()"
-    [buttons]="buttons" (buttonTap)="navButtonTap($event)"></nav-bar>
+<nav-bar [barTitle]="" [navBtn]="navBarButton" [buttons]="buttons"></nav-bar>
 <StackLayout>
     <Label class="app-name-label" text="RateMe"></Label>
     <SearchBar #searchBar hint="Busca un producto" textFieldBackgroundColor="{{searchColor}}"></SearchBar>
