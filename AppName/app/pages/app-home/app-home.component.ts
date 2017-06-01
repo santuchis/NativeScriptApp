@@ -1,8 +1,8 @@
 import application = require("application");
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 import { TnsSideDrawer } from 'nativescript-sidedrawer'
 import { Color } from "color";
-import { SearchBar } from "ui/search-bar";
 
 @Component({
 	selector: 'app-home',
@@ -16,18 +16,14 @@ export class AppHomeComponent implements OnInit {
 	isAndroid:boolean = false;
 	searchColor: string = '';
 	i:number = 0;
-	@ViewChild("searchBar") searchBar: ElementRef;
 
-	constructor() {
+	constructor(private router: Router) {
 	}
 
 	ngOnInit() {
 		if(application.ios) {
 			this.isAndroid = false;
 			this.searchColor = '#f4f4f4';
-			let searchInput = <SearchBar> this.searchBar.nativeElement;
-			console.log("---");
-			console.log(searchInput.ios);
 		} else if (application.android) {
 			this.isAndroid = true;
 			this.searchColor = 'white';
@@ -53,10 +49,29 @@ export class AppHomeComponent implements OnInit {
 			title: 'RateMe',
 			subtitle: 'What people think about products!',
 			listener: (index) => {
-				this.i = index
+				this.i = index;
+				this.navigateTo(index);
 			},
 			context: this,
 		});
+	}
+
+	navigateTo(index:number) {
+		console.log("navTo v1: " + index);
+		switch(index) {
+			case 0:
+				console.log("go to home");
+				this.router.navigate(["/home"])
+				break;
+			case 1:
+				console.log("go to sign in");
+				this.router.navigate(["/login"])
+				break;
+			case 2:
+				console.log("go to sign up");
+				this.router.navigate(["/login"])
+				break;
+		}
 	}
 
 	toggleDrawer() {

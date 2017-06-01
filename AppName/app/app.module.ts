@@ -3,7 +3,10 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { AppRoutingModule } from "./app.routing";
 import { AppComponent } from "./app.component";
 
-import { AppHomeComponent } from "./pages/app-home/app-home.component";
+import { AppHomeComponent }         from "./pages/app-home/app-home.component";
+import { LoginComponent }           from "./pages/login/login.component";
+
+import { UserService }              from "./shared/user/user.service";
 
 @NgModule({
     bootstrap: [
@@ -15,10 +18,11 @@ import { AppHomeComponent } from "./pages/app-home/app-home.component";
     ],
     declarations: [
         AppComponent,
-        AppHomeComponent
+        AppHomeComponent,
+        LoginComponent
     ],
     providers: [
-        
+        UserService
     ],
     schemas: [
         NO_ERRORS_SCHEMA
