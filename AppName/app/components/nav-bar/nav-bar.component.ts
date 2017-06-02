@@ -73,6 +73,7 @@ export class NavBarComponent implements OnInit {
 	 */
 	onButtonTap(index:number) {
 		this.buttonTap.emit(index);
+		console.log("button tapped #" + index);
 	}
 
 	navigateTo(index:number) {

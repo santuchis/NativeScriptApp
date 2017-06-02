@@ -16,6 +16,8 @@ export class LoginComponent implements OnInit {
 
 	user: User;
 	isLoggingIn = true;
+	isResetPasswordView = false;
+
 	@ViewChild("container") container: ElementRef;
 	@ViewChild("email") email: ElementRef;
 	@ViewChild("password") password: ElementRef;
@@ -41,6 +43,10 @@ export class LoginComponent implements OnInit {
 			backgroundColor: this.isLoggingIn ? new Color("white") : new Color("#301217"),
 			duration: 200
 		});
+	}
+
+	toggleResetPasswordView() {
+		this.isResetPasswordView = !this.isResetPasswordView;
 	}
 
 	login() {

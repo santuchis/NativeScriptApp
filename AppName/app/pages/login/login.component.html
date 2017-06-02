@@ -2,7 +2,7 @@
     [navBtn]="navBarButton" (navBtnTap)="toggleDrawer()"
     [buttons]="buttons" (buttonTap)="navButtonTap($event)"></nav-bar>
 
-<StackLayout #container>
+<StackLayout #container *ngIf="!isResetPasswordView">
   <Image src="res://logo_login" stretch="none" horizontalAlignment="center"></Image>
 
   <TextField #email hint="Email Address" keyboardType="email" [(ngModel)]="user.email"
@@ -11,4 +11,13 @@
 
   <Button [text]="isLoggingIn ? 'Sign in' : 'Sign up'" class="submit-button" (tap)="submit()"></Button>
   <Button [text]="isLoggingIn ? 'Sign up' : 'Back to login'" (tap)="toggleDisplay()"></Button>
+  <Button [text]="'Reset Password'" (tap)="toggleResetPasswordView()"></Button>
+</StackLayout>
+<StackLayout *ngIf="isResetPasswordView">
+  <Image src="res://logo_login" stretch="none" horizontalAlignment="center"></Image>
+
+  <TextField #email hint="Reset Password" keyboardType="email" 
+    autocorrect="false" autocapitalizationType="none" ></TextField>
+
+  <Button [text]="'Reset Password'" class="submit-button"></Button>
 </StackLayout>
