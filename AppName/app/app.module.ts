@@ -1,11 +1,13 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
-import { AppRoutingModule } from "./app.routing";
-import { AppComponent } from "./app.component";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NativeScriptHttpModule } from "nativescript-angular/http";
+import { NativeScriptRouterModule } from "nativescript-angular/router";
 
-import { AppHomeComponent }         from "./pages/app-home/app-home.component";
-import { LoginComponent }           from "./pages/login/login.component";
-import { NavBarComponent }          from "./components/nav-bar/nav-bar.component";
+import { AppComponent } from "./app.component";
+import { routes, navigatableComponents } from "./app.routing";
+
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 
 import { UserService }              from "./shared/user/user.service";
 
@@ -15,13 +17,15 @@ import { UserService }              from "./shared/user/user.service";
     ],
     imports: [
         NativeScriptModule,
-        AppRoutingModule
+        NativeScriptFormsModule,
+        NativeScriptHttpModule,
+        NativeScriptRouterModule,
+        NativeScriptRouterModule.forRoot(routes)
     ],
     declarations: [
         AppComponent,
-        AppHomeComponent,
-        LoginComponent,
-        NavBarComponent
+        NavBarComponent,
+        ...navigatableComponents
     ],
     providers: [
         UserService

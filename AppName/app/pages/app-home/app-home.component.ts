@@ -11,7 +11,8 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 export class AppHomeComponent implements OnInit {
 
-	searchColor: string = '';
+	searchColor: string;
+	searchValue: string;
 
 	navBarButton = { icon: "res://ic_menu_white", text: "" };
 	buttons = [ 

@@ -1,5 +1,5 @@
-import { Router } from "@angular/router";
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { Color } from "color";
 import { View } from "ui/core/view";
 
@@ -15,8 +15,7 @@ import { User } from "../../shared/user/user";
 export class LoginComponent implements OnInit {
 
 	user: User;
-	isLoggingIn = true;
-	isResetPasswordView = false;
+	isLoggingIn:boolean = true;
 
 	@ViewChild("container") container: ElementRef;
 	@ViewChild("email") email: ElementRef;
@@ -28,13 +27,14 @@ export class LoginComponent implements OnInit {
 		{icon: "res://ic_home_white", iosIcon: "", androidIcon: "", text: ""},	
 	];
 	
-	constructor(private router: Router) {
+	constructor(private route: ActivatedRoute) {
 		this.user = new User();
 		this.user.email = "gui@lle.com";
 		this.user.password = "guille";
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+	}
 
 	toggleDisplay() {
 		this.isLoggingIn = !this.isLoggingIn;
@@ -43,10 +43,7 @@ export class LoginComponent implements OnInit {
 			backgroundColor: this.isLoggingIn ? new Color("white") : new Color("#301217"),
 			duration: 200
 		});
-	}
-
-	toggleResetPasswordView() {
-		this.isResetPasswordView = !this.isResetPasswordView;
+		console.dir(this.user);
 	}
 
 	login() {

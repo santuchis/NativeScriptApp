@@ -43,10 +43,6 @@ export class NavBarComponent implements OnInit {
 				title: 'Ingresar',
 				androidIcon: 'ic_perm_identity_white',
 				iosIcon: 'ic_perm_identity_white',
-			}, {
-				title: 'Registrarse',
-				androidIcon: 'ic_perm_identity_white',
-				iosIcon: 'ic_perm_identity_white',
 			}],
 			textColor: new Color("white"),
 			headerBackgroundColor: new Color("red"),
@@ -84,10 +80,6 @@ export class NavBarComponent implements OnInit {
 				break;
 			case 1:
 				console.log("go to sign in");
-				this.router.navigate(["/login"])
-				break;
-			case 2:
-				console.log("go to sign up");
 				this.router.navigate(["/login"])
 				break;
 		}
