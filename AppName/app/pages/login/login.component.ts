@@ -1,12 +1,14 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { Router } from "@angular/router";
 import { Color } from "color";
 import { View } from "ui/core/view";
 
 import { User } from "../../shared/user/user";
+import { UserService } from "../../shared/user/user.service";
 
 @Component({
 	selector: 'login',
+	providers: [UserService],
 	moduleId: module.id,
 	templateUrl: 'login.component.html',
 	styleUrls: ['login-common.css', 'login.css']
@@ -27,10 +29,8 @@ export class LoginComponent implements OnInit {
 		{icon: "res://ic_home_white", iosIcon: "", androidIcon: "", text: ""},	
 	];
 	
-	constructor(private route: ActivatedRoute) {
-		this.user = new User();
-		this.user.email = "gui@lle.com";
-		this.user.password = "guille";
+	constructor(private router: Router, private userService: UserService) {
+		this.user = new User("guille@ns.com", "qwerty");
 	}
 
 	ngOnInit() {
@@ -47,6 +47,14 @@ export class LoginComponent implements OnInit {
 	}
 
 	login() {
+		let res = this.userService.login(this.user);
+		if (res.success) {
+			this.router.navigate([""]);
+			console.log(res.msg);
+		} else {
+			alert(res.msg);
+			console.log(res.msg);
+		}
 		/*
 		this.userService.login(this.user)
 			.subscribe(
@@ -57,6 +65,14 @@ export class LoginComponent implements OnInit {
 	}
 	
 	signUp() {
+		let res = this.userService.register(this.user);
+		if(res.success) {
+			this.router.navigate([""]);
+			console.log(res.msg);
+		} else {
+			alert(res.msg);
+			console.log(res.msg);
+		}
 		/*
     	this.userService.register(this.user)
 			.subscribe(

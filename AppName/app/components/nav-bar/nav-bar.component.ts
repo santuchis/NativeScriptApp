@@ -1,8 +1,9 @@
 import application = require("application");
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
-import { TnsSideDrawer } from 'nativescript-sidedrawer'
+import { TnsSideDrawer, TnsSideDrawerItem } from 'nativescript-sidedrawer'
 import { Color } from "color";
 import { Router } from "@angular/router";
+import { Config } from "../../shared/config";
 
 @Component({
 	selector: 'nav-bar',
@@ -20,6 +21,8 @@ export class NavBarComponent implements OnInit {
 	@Output() navBtnTap = new EventEmitter<any>();
 	@Output() buttonTap = new EventEmitter<number>();
 
+	sideItems: Array<TnsSideDrawerItem> = [];
+
 	isAndroid:boolean = false;
 
 	constructor(private router: Router) {}
@@ -30,22 +33,39 @@ export class NavBarComponent implements OnInit {
 		} else if (application.android) {
 			this.isAndroid = true;
 		}
+		this.setDrawerItems();
 		this.buildDrawer();
 	}
 
-	buildDrawer() {
-		TnsSideDrawer.build({
-			templates: [{
-				title: 'Inicio',
+	setDrawerItems() {
+		if(Config.token === '') {
+			this.sideItems = [{
+				title: 'Inicio!',
 				androidIcon: 'ic_home_white',
 				iosIcon: 'ic_home_white',
 			}, {
 				title: 'Ingresar',
 				androidIcon: 'ic_perm_identity_white',
 				iosIcon: 'ic_perm_identity_white',
-			}],
+			}];
+		} else {
+			this.sideItems = [{
+				title: 'Inicio',
+				androidIcon: 'ic_home_white',
+				iosIcon: 'ic_home_white',
+			}, {
+				title: 'Favoritos',
+				androidIcon: 'ic_perm_identity_white',
+				iosIcon: 'ic_perm_identity_white',
+			}];
+		}
+	}
+
+	buildDrawer() {
+		TnsSideDrawer.build({
+			templates: this.sideItems,
 			textColor: new Color("white"),
-			headerBackgroundColor: new Color("red"),
+			headerBackgroundColor: new Color("gray"),
 			backgroundColor: new Color("blue"),
 			title: 'RateMe',
 			subtitle: 'What people think about products!',
@@ -87,6 +107,8 @@ export class NavBarComponent implements OnInit {
 	
 	toggleDrawer() {
     	console.log("Show SideDrawer tapped.");
-		TnsSideDrawer.toggle();
+		this.setDrawerItems();
+		this.buildDrawer();
+		TnsSideDrawer.toggle(true, 1);
 	}
 }

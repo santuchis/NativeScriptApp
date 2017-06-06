@@ -10,9 +10,23 @@ import { Config } from "../config";
 @Injectable()
 export class UserService {
 
-	constructor(private http: Http) {}
+	users: Array<User> = [];
 
-	register(user: User) {
+	constructor(private http: Http) {
+		this.users.push(new User('guille@ns.com','qwerty'));
+		this.users.push(new User('santi@ns.com','qwerty'));
+	}
+
+	register(usr: User) {
+		let tmp:Array<User> = this.users.filter(user => user.email === usr.email);
+		if(tmp.length !== 0) {
+			return {success: false, msg: 'El email ya se encuentra registrado'};
+		}
+		this.users.push(usr);
+		Config.token = "sad";
+		return {success: true, msg: 'Usuario registrado'};
+		
+		/*
 		let headers = new Headers();
     	headers.append("Content-Type", "application/json");
 
@@ -26,9 +40,17 @@ export class UserService {
       		{ headers: headers }
     	)
     	.catch(this.handleErrors);
+		*/
   	}
 
-  	login(user: User) {
+  	login(usr: User) {
+		let tmp:Array<User> = this.users.filter(user => user.email === usr.email);
+		if(tmp.length > 0 && tmp[0].password == usr.password) {
+			Config.token = "sad";
+			return {success: true, msg: 'Login correcto'};
+		}
+		return {success: false, msg: 'Usuario y contraseña incorrectos'};
+		/*
     	let headers = new Headers();
     	headers.append("Content-Type", "application/json");
 
@@ -46,6 +68,7 @@ export class UserService {
       		Config.token = data.Result.access_token;
     	})
     	.catch(this.handleErrors);
+		*/
   	}
 	
 	handleErrors(error: Response) {
