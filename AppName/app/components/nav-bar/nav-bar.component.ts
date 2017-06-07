@@ -40,7 +40,7 @@ export class NavBarComponent implements OnInit {
 	setDrawerItems() {
 		if(Config.token === '') {
 			this.sideItems = [{
-				title: 'Inicio!',
+				title: 'Inicio',
 				androidIcon: 'ic_home_white',
 				iosIcon: 'ic_home_white',
 			}, {
@@ -54,7 +54,15 @@ export class NavBarComponent implements OnInit {
 				androidIcon: 'ic_home_white',
 				iosIcon: 'ic_home_white',
 			}, {
+				title: 'Crear',
+				androidIcon: 'ic_add_white',
+				iosIcon: 'ic_add_white',
+			}, {
 				title: 'Favoritos',
+				androidIcon: 'ic_favorite_border_white',
+				iosIcon: 'ic_favorite_border_white',
+			}, {
+				title: 'Cuenta',
 				androidIcon: 'ic_perm_identity_white',
 				iosIcon: 'ic_perm_identity_white',
 			}];
@@ -93,15 +101,28 @@ export class NavBarComponent implements OnInit {
 	}
 
 	navigateTo(index:number) {
-		switch(index) {
-			case 0:
-				console.log("go to home");
-				this.router.navigate(["/home"])
-				break;
-			case 1:
-				console.log("go to sign in");
-				this.router.navigate(["/login"])
-				break;
+		if(Config.token === '') {
+			switch(index) {
+				case 0:
+					console.log("go to home");
+					this.router.navigate(["/home"])
+					break;
+				case 1:
+					console.log("go to sign in");
+					this.router.navigate(["/login"])
+					break;
+			}
+		} else {
+			switch(index) {
+				case 0:
+					console.log("go to home");
+					this.router.navigate(["/home"])
+					break;
+				case 1:
+					console.log("go to favs");
+					this.router.navigate(["/favs"])
+					break;
+			}
 		}
 	}
 	
