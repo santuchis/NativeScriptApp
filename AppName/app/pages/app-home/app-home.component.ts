@@ -14,10 +14,10 @@ export class AppHomeComponent implements OnInit {
 	searchColor: string;
 	searchValue: string;
 
-	navBarButton = { icon: "res://ic_menu_white", text: "" };
+	navBarButton = { icon: "res://ic_menu_white_24dp", text: "" };
 	buttons = [ 
-		{icon: "res://ic_perm_identity_white", iosIcon: "", androidIcon: "", text: ""},
-		{icon: "res://ic_home_white", iosIcon: "", androidIcon: "", text: ""},	
+		{icon: "res://ic_perm_identity_white_24dp", iosIcon: "", androidIcon: "", text: ""},
+		{icon: "res://ic_home_white_24dp", iosIcon: "", androidIcon: "", text: ""},	
 	];
 
 	constructor() {

@@ -41,30 +41,30 @@ export class NavBarComponent implements OnInit {
 		if(Config.token === '') {
 			this.sideItems = [{
 				title: 'Inicio',
-				androidIcon: 'ic_home_white',
-				iosIcon: 'ic_home_white',
+				androidIcon: 'ic_home_white_24dp',
+				iosIcon: 'ic_home_white_24dp',
 			}, {
 				title: 'Ingresar',
-				androidIcon: 'ic_perm_identity_white',
-				iosIcon: 'ic_perm_identity_white',
+				androidIcon: 'ic_perm_identity_white_24dp',
+				iosIcon: 'ic_perm_identity_white_24dp',
 			}];
 		} else {
 			this.sideItems = [{
 				title: 'Inicio',
-				androidIcon: 'ic_home_white',
-				iosIcon: 'ic_home_white',
+				androidIcon: 'ic_home_white_24dp',
+				iosIcon: 'ic_home_white_24dp',
 			}, {
 				title: 'Crear',
-				androidIcon: 'ic_add_white',
-				iosIcon: 'ic_add_white',
+				androidIcon: 'ic_add_white_24dp',
+				iosIcon: 'ic_add_white_24dp',
 			}, {
 				title: 'Favoritos',
-				androidIcon: 'ic_favorite_border_white',
-				iosIcon: 'ic_favorite_border_white',
+				androidIcon: 'ic_favorite_border_white_24dp',
+				iosIcon: 'ic_favorite_border_white_24dp',
 			}, {
 				title: 'Cuenta',
-				androidIcon: 'ic_perm_identity_white',
-				iosIcon: 'ic_perm_identity_white',
+				androidIcon: 'ic_perm_identity_white_24dp',
+				iosIcon: 'ic_perm_identity_white_24dp',
 			}];
 		}
 	}
