@@ -4,6 +4,7 @@ import { TnsSideDrawer, TnsSideDrawerItem } from 'nativescript-sidedrawer'
 import { Color } from "color";
 import { Router } from "@angular/router";
 import { Config } from "../../shared/config";
+import { ROUTE_MAP } from "../../utils/route-map";
 
 @Component({
 	selector: 'nav-bar',
@@ -12,6 +13,8 @@ import { Config } from "../../shared/config";
 	styleUrls: ['nav-bar.component.css'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
+
+
 
 export class NavBarComponent implements OnInit {
 
@@ -70,7 +73,7 @@ export class NavBarComponent implements OnInit {
 			title: 'RateMe',
 			subtitle: 'What people think about products!',
 			listener: (index) => {
-				this.navigateTo(index);
+				this.router.navigate(ROUTE_MAP.get(index));
 			},
 			context: this,
 		});
@@ -90,19 +93,6 @@ export class NavBarComponent implements OnInit {
 	onButtonTap(index:number) {
 		this.buttonTap.emit(index);
 		console.log("button tapped #" + index);
-	}
-
-	navigateTo(index:number) {
-		switch(index) {
-			case 0:
-				console.log("go to home");
-				this.router.navigate(["/home"])
-				break;
-			case 1:
-				console.log("go to sign in");
-				this.router.navigate(["/login"])
-				break;
-		}
 	}
 	
 	toggleDrawer() {
