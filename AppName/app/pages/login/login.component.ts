@@ -47,33 +47,14 @@ export class LoginComponent implements OnInit {
 	}
 
 	login() {
-		let res = this.userService.login(this.user);
-		if (res.success) {
-			this.router.navigate([""]);
-			console.log(res.msg);
-		} else {
-			alert(res.msg);
-			console.log(res.msg);
-		}
-		/*
 		this.userService.login(this.user)
 			.subscribe(
-				() => this.router.navigate(["/list"]),
-				(error) => alert("Unfortunately we could not find your account.")
+				() => this.router.navigate(["/home"]),
+				(error) => {alert("Unfortunately we could not find your account."); console.dir(error);}
 			);
-		*/
 	}
 	
 	signUp() {
-		let res = this.userService.register(this.user);
-		if(res.success) {
-			this.router.navigate([""]);
-			console.log(res.msg);
-		} else {
-			alert(res.msg);
-			console.log(res.msg);
-		}
-		/*
     	this.userService.register(this.user)
 			.subscribe(
 				() => {
@@ -82,7 +63,6 @@ export class LoginComponent implements OnInit {
 				},
 				() => alert("Unfortunately we were unable to create your account.")
 			);
-		*/
 	}
 
 	submit() {

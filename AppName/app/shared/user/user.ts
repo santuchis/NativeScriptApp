@@ -10,7 +10,10 @@ export class User {
     }
     
     isValidEmail() {
-        return true;
+        if(this.email.includes("@")) {
+            return true
+        }
+        return false;
         //return validator.validate(this.email);
     }
 }
