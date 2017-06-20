@@ -27,40 +27,28 @@ export class UserService {
 		
   	}
 
-  	login(usr: User) {
+  	login(user: User) {
     	let headers = new Headers();
     	headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0"); // my-trusted-client:secret
+		
 		let searchParams = new URLSearchParams();
-		searchParams.append('email', usr.email);
+		searchParams.append('username', user.email);
+		searchParams.append('password', user.password);
+		searchParams.append('grant_type', "password");
+		
 		let requestOptions = new RequestOptions({headers: headers, params: searchParams});
 
-		return this.http.get(Config.apiUrl + "users/search/findByEmail", requestOptions)
-    	.map(response => response.json()._embedded)
-    	.do(data => {
-			if(data.users[0] && data.users[0].password === usr.password) {
-				Config.token = "fakeToken";//data.Result.access_token;
-			} else {
-				console.log("login FAIL");
-			}
-    	})
-    	.catch(this.handleErrors);
-
-		/*
 		return this.http.post(
       		Config.apiUrl + "oauth/token",
-      		JSON.stringify({
-        		username: user.email,
-        		password: user.password,
-        		grant_type: "password"
-      		}),
-      		{ headers: headers }
+			{},
+      		requestOptions
     	)
     	.map(response => response.json())
     	.do(data => {
-      		Config.token = data.Result.access_token;
+      		Config.token = data.access_token;
     	})
     	.catch(this.handleErrors);
-		*/
   	}
 	
 	handleErrors(error: Response) {

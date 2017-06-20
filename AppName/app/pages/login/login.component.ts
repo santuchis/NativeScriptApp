@@ -50,7 +50,10 @@ export class LoginComponent implements OnInit {
 		this.userService.login(this.user)
 			.subscribe(
 				() => this.router.navigate(["/home"]),
-				(error) => {alert("Unfortunately we could not find your account."); console.dir(error);}
+				(error) => {
+					alert("Unfortunately we could not find your account.");
+					console.dir(error);
+				}
 			);
 	}
 	
