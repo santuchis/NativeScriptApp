@@ -1,3 +1,5 @@
+import * as  base64 from "base-64";
+import * as utf8 from "utf8";
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response, URLSearchParams, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Rx";
@@ -19,7 +21,8 @@ export class UserService {
       		Config.apiUrl + "users",
       		JSON.stringify({
 				email: usr.email,
-				password: usr.password
+				password: usr.password,
+				roles: usr.roles
       		}),
       		{ headers: headers }
     	)
@@ -30,7 +33,7 @@ export class UserService {
   	login(user: User) {
     	let headers = new Headers();
     	headers.append("Content-Type", "application/json");
-		headers.append("Authorization", "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0"); // my-trusted-client:secret
+		headers.append("Authorization", "Basic " + base64.encode(utf8.encode("my-trusted-client:secret")));
 		
 		let searchParams = new URLSearchParams();
 		searchParams.append('username', user.email);
