@@ -16,7 +16,7 @@ export class AppHomeComponent implements OnInit {
 
 	navBarButton = { icon: "res://ic_menu_white_24dp", text: "" };
 	buttons = [ 
-		{icon: "res://ic_perm_identity_white_24dp", iosIcon: "", androidIcon: "", text: ""},
+		{icon: "res://ic_perm_identity_white_24dp", iosIcon: "2", androidIcon: "ic_menu_edit", text: ""},
 		{icon: "res://ic_home_white_24dp", iosIcon: "", androidIcon: "", text: ""},	
 	];
 

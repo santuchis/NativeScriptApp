@@ -105,22 +105,27 @@ export class NavBarComponent implements OnInit {
 			switch(index) {
 				case 0:
 					console.log("go to home");
-					this.router.navigate(["/home"])
+					this.router.navigate(["/home"]);
 					break;
 				case 1:
 					console.log("go to sign in");
-					this.router.navigate(["/login"])
+					this.router.navigate(["/login"]);
 					break;
 			}
 		} else {
 			switch(index) {
 				case 0:
 					console.log("go to home");
-					this.router.navigate(["/home"])
+					this.router.navigate(["/home"]);
 					break;
 				case 1:
+					console.log("go to create");
+					break;
+				case 2:
 					console.log("go to favs");
-					this.router.navigate(["/favs"])
+					break;
+				case 3:
+					console.log("go to account");
 					break;
 			}
 		}

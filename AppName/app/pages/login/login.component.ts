@@ -23,10 +23,10 @@ export class LoginComponent implements OnInit {
 	@ViewChild("email") email: ElementRef;
 	@ViewChild("password") password: ElementRef;
 
-	navBarButton = { icon: "res://ic_menu_white", text: "" };
+	navBarButton = { icon: "res://ic_menu_white_24dp", text: "" };
 	buttons = [ 
-		{icon: "res://ic_perm_identity_white", iosIcon: "", androidIcon: "", text: ""},
-		{icon: "res://ic_home_white", iosIcon: "", androidIcon: "", text: ""},	
+		{icon: "res://ic_perm_identity_white_24dp", iosIcon: "", androidIcon: "", text: ""},
+		{icon: "res://ic_home_white_24dp", iosIcon: "", androidIcon: "", text: ""},	
 	];
 	
 	constructor(private router: Router, private userService: UserService) {

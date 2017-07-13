@@ -1,22 +1,35 @@
 <ActionBar [title]="barTitle">
-    <Placeholder *ngIf="isAndroid; then androidActionBar else iosActionBar">
-    </Placeholder>
-    <ActionItem *ngFor="let button of buttons; let i=index"
-        [icon]="button.icon"
-        ios.position="right"
-        (tap)="onButtonTap(i)">
-    </ActionItem>
-</ActionBar>
-<ng-template #iosActionBar>
-    <ActionItem *ngIf="navBtn"
+    <!-- Left icon: iOS -->
+    <ActionItem *ngIf="navBtn && !isAndroid"
         [icon]="navBtn.icon"
         ios.position="left"
         (tap)="onNavBtnTap()">
     </ActionItem>
-</ng-template>
-<ng-template #androidActionBar>
-    <NavigationButton *ngIf="navBtn"
+    <!-- Left icon: Android -->
+    <NavigationButton *ngIf="navBtn && isAndroid"
         [icon]="navBtn.icon"
         (tap)="onNavBtnTap()">
     </NavigationButton>
-</ng-template>
+    <ng-template ngFor let-i="index" let-button [ngForOf]="buttons">
+        <!-- Right icons: iOS -->
+        <ActionItem *ngIf="button.iosIcon.length > 0 && !isAndroid"
+            [ios.systemIcon]="button.iosIcon"
+            ios.position="right"
+            (tap)="onButtonTap(i)">
+        </ActionItem>
+        <ActionItem *ngIf="button.iosIcon.length == 0 && !isAndroid"
+            [icon]="button.icon"
+            ios.position="right"
+            (tap)="onButtonTap(i)">
+        </ActionItem>
+        <!-- Right icons: Android -->
+        <ActionItem *ngIf="button.androidIcon.length > 0 && isAndroid"
+            [android.systemIcon]="button.androidIcon"
+            (tap)="onButtonTap(i)">
+        </ActionItem>
+        <ActionItem *ngIf="button.androidIcon.length == 0 && isAndroid"
+            [icon]="button.icon"
+            (tap)="onButtonTap(i)">
+        </ActionItem>
+    </ng-template>
+</ActionBar>

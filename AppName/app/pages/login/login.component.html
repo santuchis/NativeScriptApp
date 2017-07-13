@@ -1,7 +1,4 @@
-<nav-bar
-  [barTitle]="isLoggingIn ? 'Sign in' : 'Sign up'"
-  [navBtn]="navBarButton">
-</nav-bar>
+<nav-bar [barTitle]="isLoggingIn ? 'Sign in' : 'Sign up'" [navBtn]="navBarButton" [buttons]="buttons"></nav-bar>
 
 <StackLayout #container>
   <Image src="res://logo_login" stretch="none" horizontalAlignment="center"></Image>
