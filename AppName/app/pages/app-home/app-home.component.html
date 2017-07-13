@@ -1,1 +1,5 @@
-<Label class="app-home" text="Hello AppHomeComponent!"></Label>
+<nav-bar [barTitle]="" [navBtn]="navBarButton" [buttons]="buttons"></nav-bar>
+<StackLayout>
+    <Label class="app-name-label" text="RateMe"></Label>
+    <SearchBar #searchBar hint="Busca un producto" textFieldBackgroundColor="{{searchColor}}" [(ngModel)]="searchValue"></SearchBar>
+</StackLayout>

@@ -1,0 +1,7 @@
+StackLayout {
+  height: 200;
+}
+SearchBar {
+  margin: 0px;
+  background-color: white;
+}
