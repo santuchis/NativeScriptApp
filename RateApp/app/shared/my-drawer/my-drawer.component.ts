@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ItemEventData } from "ui/list-view";
 
+import { Config } from "../config";
+
 /* ***********************************************************
 * Keep data that is displayed in your app drawer in the MyDrawer component class.
 * Add new data objects that you want to display in the drawer here in the form of properties.
@@ -32,38 +34,50 @@ export class MyDrawerComponent implements OnInit {
     * Add, remove or edit navigationItems to change what is displayed in the app drawer list.
     *************************************************************/
     ngOnInit(): void {
-        this._navigationItems = [
-            {
-                title: "Home",
-                name: "home",
-                route: "/home",
-                icon: "\uf015"
-            },
-            {
-                title: "Browse",
-                name: "browse",
-                route: "/browse",
-                icon: "\uf1ea"
-            },
-            {
-                title: "Search",
-                name: "search",
-                route: "/search",
-                icon: "\uf002"
-            },
-            {
-                title: "Featured",
-                name: "featured",
-                route: "/featured",
-                icon: "\uf005"
-            },
-            {
-                title: "Settings",
-                name: "settings",
-                route: "/settings",
-                icon: "\uf013"
-            }
-        ];
+        if(Config.token.length > 0) {
+            this._navigationItems = [
+                {
+                    title: "Inicio",
+                    name: "home",
+                    route: "/home",
+                    icon: "\uf015"
+                },
+                {
+                    title: "Crear",
+                    name: "create",
+                    route: "/create",
+                    icon: "\uf067"
+                },
+                {
+                    title: "Favoritos",
+                    name: "favorites",
+                    route: "/favorites",
+                    icon: "\uf08a"
+                },
+                {
+                    title: "Settings",
+                    name: "settings",
+                    route: "/settings",
+                    icon: "\uf013"
+                }
+            ];
+        } else {
+            this._navigationItems = [
+                {
+                    title: "Inicio",
+                    name: "home",
+                    route: "/home",
+                    icon: "\uf015"
+                },
+                {
+                    title: "Ingresar",
+                    name: "login",
+                    route: "/login",
+                    icon: "\uf2c0"
+                }
+            ];
+        }
+        
     }
 
     get navigationItems(): Array<any> {

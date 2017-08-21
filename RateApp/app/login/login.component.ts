@@ -9,13 +9,13 @@ import { User } from "../shared/user/user";
 import { UserService } from "../shared/user/user.service";
 
 @Component({
-    selector: "Browse",
+    selector: "Login",
     moduleId: module.id,
-    templateUrl: "./browse.component.html",
-    styleUrls: ["./browse-common.component.css", "./browse.component.css"],
+    templateUrl: "./login.component.html",
+    styleUrls: ["./login-common.component.css", "./login.component.css"],
     providers: [UserService],
 })
-export class BrowseComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("container") container: ElementRef;
