@@ -1,24 +1,35 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
+import { Router } from "@angular/router";
+import { Color } from "color";
+import { View } from "ui/core/view";
+
+import { User } from "../shared/user/user";
+import { UserService } from "../shared/user/user.service";
 
 @Component({
     selector: "Browse",
     moduleId: module.id,
-    templateUrl: "./browse.component.html"
+    templateUrl: "./browse.component.html",
+    styleUrls: ["./browse-common.component.css", "./browse.component.css"],
+    providers: [UserService],
 })
 export class BrowseComponent implements OnInit {
-    /* ***********************************************************
-    * Use the @ViewChild decorator to get a reference to the drawer component.
-    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-    *************************************************************/
+
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+    @ViewChild("container") container: ElementRef;
+	@ViewChild("email") email: ElementRef;
+	@ViewChild("password") password: ElementRef;
 
     private _sideDrawerTransition: DrawerTransitionBase;
+    private user: User;
+	private isLoggingIn:boolean = true;
 
-    /* ***********************************************************
-    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-    *************************************************************/
+    constructor(private router: Router, private userService: UserService) {
+        this.user = new User("guille@ns.com", "qwerty", [""]);
+    }
+
     ngOnInit(): void {
         this._sideDrawerTransition = new SlideInOnTopTransition();
     }
@@ -27,11 +38,50 @@ export class BrowseComponent implements OnInit {
         return this._sideDrawerTransition;
     }
 
-    /* ***********************************************************
-    * According to guidelines, if you have a drawer on your page, you should always
-    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-    *************************************************************/
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }
+
+    toggleDisplay() {
+		this.isLoggingIn = !this.isLoggingIn;
+		let container = <View>this.container.nativeElement;
+		container.animate({
+			backgroundColor: this.isLoggingIn ? new Color("white") : new Color("#301217"),
+			duration: 200
+		});
+	}
+
+	login() {
+		this.userService.login(this.user)
+			.subscribe(
+				() => this.router.navigate(["/home"]),
+				(error) => {
+					alert("Unfortunately we could not find your account.");
+					console.dir(error);
+				}
+			);
+	}
+	
+	signUp() {
+    	this.userService.register(this.user)
+			.subscribe(
+				() => {
+					alert("Your account was successfully created.");
+					this.toggleDisplay();
+				},
+				() => alert("Unfortunately we were unable to create your account.")
+			);
+	}
+
+	submit() {
+    	if (!this.user.isValidEmail()) {
+			alert("Enter a valid email address.");
+			return;
+		}
+		if (this.isLoggingIn) {
+			this.login();
+		} else {
+			this.signUp();
+		}
+  	}
 }

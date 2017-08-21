@@ -1,4 +1,5 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
+import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 
 import { SharedModule } from "../shared/shared.module";
@@ -7,6 +8,7 @@ import { BrowseComponent } from "./browse.component";
 
 @NgModule({
     imports: [
+        NativeScriptFormsModule,
         NativeScriptModule,
         BrowseRoutingModule,
         SharedModule

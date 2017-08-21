@@ -30,8 +30,14 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <!--
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
-    <GridLayout class="page page-content" tkMainContent>
-        <Label class="page-icon fa" text="&#xf1ea;"></Label>
-        <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-    </GridLayout>
+    <StackLayout #container class="page page-content" tkMainContent>
+        <Image src="res://logo_login" stretch="none" horizontalAlignment="center"></Image>
+        
+          <TextField #email hint="Email Address" keyboardType="email" [(ngModel)]="user.email"
+            autocorrect="false" autocapitalizationType="none" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
+          <TextField #password hint="Password" secure="true" [(ngModel)]="user.password" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
+        
+          <Button [text]="isLoggingIn ? 'Sign in' : 'Sign up'" class="submit-button" (tap)="submit()"></Button>
+          <Button [text]="isLoggingIn ? 'Sign up' : 'Back to login'" (tap)="toggleDisplay()"></Button>
+    </StackLayout>
 </RadSideDrawer>
