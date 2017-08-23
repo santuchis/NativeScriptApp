@@ -33,11 +33,14 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     <StackLayout #container class="page page-content" tkMainContent>
         <Image src="res://logo_login" stretch="none" horizontalAlignment="center"></Image>
         
-          <TextField #email hint="Email Address" keyboardType="email" [(ngModel)]="user.email"
-            autocorrect="false" autocapitalizationType="none" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
-          <TextField #password hint="Password" secure="true" [(ngModel)]="user.password" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
+          
+        <TextField *ngIf="!isLoggingIn" #name hint="Name" [(ngModel)]="user.name" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
+        <TextField *ngIf="!isLoggingIn" #username hint="User Name" [(ngModel)]="user.username" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
+        <TextField #email hint="Email Address" keyboardType="email" [(ngModel)]="user.email"
+                autocorrect="false" autocapitalizationType="none" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
+        <TextField #password hint="Password" secure="true" [(ngModel)]="user.password" [ngClass]="{'sign-up':!isLoggingIn}"></TextField>
         
-          <Button [text]="isLoggingIn ? 'Sign in' : 'Sign up'" class="submit-button" (tap)="submit()"></Button>
-          <Button [text]="isLoggingIn ? 'Sign up' : 'Back to login'" (tap)="toggleDisplay()"></Button>
+        <Button [text]="isLoggingIn ? 'Sign in' : 'Sign up'" class="submit-button" (tap)="submit()"></Button>
+        <Button [text]="isLoggingIn ? 'Sign up' : 'Back to login'" (tap)="toggleDisplay()"></Button>
     </StackLayout>
 </RadSideDrawer>

@@ -19,6 +19,8 @@ export class LoginComponent implements OnInit {
 
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     @ViewChild("container") container: ElementRef;
+	@ViewChild("name") name: ElementRef;
+	@ViewChild("username") username: ElementRef;
 	@ViewChild("email") email: ElementRef;
 	@ViewChild("password") password: ElementRef;
 
@@ -27,7 +29,7 @@ export class LoginComponent implements OnInit {
 	private isLoggingIn:boolean = true;
 
     constructor(private router: Router, private userService: UserService) {
-        this.user = new User("guille@ns.com", "qwerty", [""]);
+        this.user = new User("Gui Test", "guitest","guille@ns.com", "qwerty", [""]);
     }
 
     ngOnInit(): void {

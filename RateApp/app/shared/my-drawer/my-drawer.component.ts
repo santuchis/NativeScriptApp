@@ -3,6 +3,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { ItemEventData } from "ui/list-view";
 
 import { Config } from "../config";
+import { User } from "../user/user";
 
 /* ***********************************************************
 * Keep data that is displayed in your app drawer in the MyDrawer component class.
@@ -21,6 +22,7 @@ export class MyDrawerComponent implements OnInit {
     * You can check how it is used in the "isPageSelected" function below.
     *************************************************************/
     @Input() selectedPage: string;
+    private user : User;
 
     private _navigationItems: Array<any>;
 
@@ -34,6 +36,7 @@ export class MyDrawerComponent implements OnInit {
     * Add, remove or edit navigationItems to change what is displayed in the app drawer list.
     *************************************************************/
     ngOnInit(): void {
+        this.user = Config.user;
         if(Config.token.length > 0) {
             this._navigationItems = [
                 {
@@ -59,6 +62,12 @@ export class MyDrawerComponent implements OnInit {
                     name: "settings",
                     route: "/settings",
                     icon: "\uf013"
+                },
+                {
+                    title: "Salir",
+                    name: "logout",
+                    route: "/logout",
+                    icon: "\uf08b"
                 }
             ];
         } else {
@@ -73,7 +82,7 @@ export class MyDrawerComponent implements OnInit {
                     title: "Ingresar",
                     name: "login",
                     route: "/login",
-                    icon: "\uf2c0"
+                    icon: "\uf090"
                 }
             ];
         }

@@ -20,6 +20,8 @@ export class UserService {
     	return this.http.post(
       		Config.apiUrl + "users",
       		JSON.stringify({
+				name: usr.name,
+				username: usr.username,
 				email: usr.email,
 				password: usr.password,
 				roles: usr.roles
@@ -49,7 +51,8 @@ export class UserService {
     	)
     	.map(response => response.json())
     	.do(data => {
-      		Config.token = data.access_token;
+			  Config.token = data.access_token;
+			  Config.user = user;
     	})
     	.catch(this.handleErrors);
   	}
