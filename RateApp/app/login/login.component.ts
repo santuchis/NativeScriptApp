@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 	private isLoggingIn:boolean = true;
 
     constructor(private router: Router, private userService: UserService) {
-        this.user = new User("Gui Test", "guitest","guille@ns.com", "qwerty", [""]);
+		this.user = new User("Gui Test", "guitest","guille@ns.com", "qwerty", ["ROLE_CLIENT"]);
     }
 
     ngOnInit(): void {
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
 		this.isLoggingIn = !this.isLoggingIn;
 		let container = <View>this.container.nativeElement;
 		container.animate({
-			backgroundColor: this.isLoggingIn ? new Color("white") : new Color("#301217"),
+			backgroundColor: this.isLoggingIn ? new Color("white") : new Color("white"),
 			duration: 200
 		});
 	}
