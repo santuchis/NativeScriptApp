@@ -25,11 +25,11 @@ export class LoginComponent implements OnInit {
 	@ViewChild("password") password: ElementRef;
 
     private _sideDrawerTransition: DrawerTransitionBase;
-    private user: User;
+    private user: User = new User("", "","", "", [""]);
 	private isLoggingIn:boolean = true;
 
     constructor(private router: Router, private userService: UserService) {
-		this.user = new User("Gui Test", "guitest","guille@ns.com", "qwerty", ["ROLE_CLIENT"]);
+		//this.user = new User("", "","", "", [""]);
     }
 
     ngOnInit(): void {
