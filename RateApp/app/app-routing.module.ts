@@ -9,7 +9,8 @@ const routes: Routes = [
     { path: "create", loadChildren: "./create/create.module#CreateModule" },
     { path: "favorites", loadChildren: "./favorites/favorites.module#FavoritesModule" },
     { path: "settings", loadChildren: "./settings/settings.module#SettingsModule" },
-    { path: "logout", loadChildren: "./logout/logout.module#LogoutModule" }
+    { path: "logout", loadChildren: "./logout/logout.module#LogoutModule" },
+    { path: "search-page", loadChildren: "./search-page/search-page.module#SearchPageModule" }
 ];
 
 @NgModule({

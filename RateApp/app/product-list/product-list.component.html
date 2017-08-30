@@ -1,0 +1,10 @@
+<StackLayout tkMainContent>
+    <ListView [items]="products" (itemTap)="onItemTap($event)" class="list-group">
+        <ng-template let-product="item" let-i="index" let-odd="odd" let-even="even">
+            <GridLayout columns="auto, *, auto" rows="auto, *" class="list-group-item">
+                <Label col="0" row="index" [text]="product.name" ></Label>
+                <Label col="2" row="index" [text]="'remover'" ></Label>
+            </GridLayout>
+        </ng-template>
+    </ListView>
+</StackLayout>
