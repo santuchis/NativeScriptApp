@@ -40,7 +40,17 @@ export class SearchPageComponent implements OnInit {
         if(!this.userService.getUserStatus()){
             this.productListToChild = this.productService.getUserProducts();
         }
+
+        // workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+		setTimeout(()=> {
+			this.onDrawerRefresh();
+		}, 100);
     }
+
+    onDrawerRefresh(): void {
+		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+		this.drawerComponent.sideDrawer.closeDrawer();
+	}
 
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;
