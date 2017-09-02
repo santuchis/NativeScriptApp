@@ -1,25 +1,21 @@
-import { Component, OnInit,ChangeDetectionStrategy } from '@angular/core';
-import { Product } from '../shared/product/product';
+import { Component, OnInit,ChangeDetectionStrategy,Input } from '@angular/core';
+import { ProductService } from "../shared/services/product.service";
+import { Product } from "../shared/model/product";
 
 @Component({
 	selector: 'product-list',
 	moduleId: module.id,
     templateUrl: "./product-list.component.html",
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [ProductService],
 })
 export class ProductListComponent implements OnInit{
-    private products: Array<Product> = [
-        new Product("1", "iPhone 7", "Apple"),
-        new Product("2", "iPhone 7 Plus", "Apple"),
-        new Product("3", "Galaxy s8", "Samsung"),
-        new Product("4", "Galaxy s8 Edge", "Samsung"),
-        new Product("5", "Play Station 4", "Sony"),
-        new Product("6", "XBox One", "Microsoft")
-    ];
 
-    constructor() {}
+    public isRemoveIconVisible: boolean = false;
+    
+    @Input() productList : Product[];
+    
+    constructor(private productService: ProductService) {}
 
-	ngOnInit(): void {
-        
-    }
+	ngOnInit(): void {}
 }

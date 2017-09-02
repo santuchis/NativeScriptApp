@@ -3,7 +3,8 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { ItemEventData } from "ui/list-view";
 
 import { Config } from "../config";
-import { User } from "../user/user";
+import { User } from "../model/user";
+
 
 /* ***********************************************************
 * Keep data that is displayed in your app drawer in the MyDrawer component class.

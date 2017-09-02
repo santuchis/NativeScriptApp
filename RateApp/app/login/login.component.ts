@@ -5,8 +5,8 @@ import { Router } from "@angular/router";
 import { Color } from "color";
 import { View } from "ui/core/view";
 
-import { User } from "../shared/user/user";
-import { UserService } from "../shared/user/user.service";
+import { User } from "../shared/model/user";
+import { UserService } from "../shared/services/user.service";
 
 @Component({
     selector: "Login",
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
     private _sideDrawerTransition: DrawerTransitionBase;
     private user: User = new User("", "","", "", [""]);
-	private isLoggingIn:boolean = true;
+	isLoggingIn:boolean = true;
 
     constructor(private router: Router, private userService: UserService) {
 		//this.user = new User("", "","", "", [""]);

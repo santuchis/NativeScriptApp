@@ -2,17 +2,24 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { Router } from "@angular/router";
+import { Product } from "../shared/model/product";
+import { UserService } from "../shared/services/user.service"
+import { ProductService } from "../shared/services/product.service"
 
 @Component({
 	selector: 'search-page',
     moduleId: module.id,
-	templateUrl: 'search-page.component.html'
+    templateUrl: 'search-page.component.html',
+    providers: [UserService, ProductService]
 })
-
 export class SearchPageComponent implements OnInit {
 
-	constructor(private router: Router){};
+    public productListToChild : Product[] = [new Product("aaaa")];
 
+    input : string = "Iphone"
+
+	constructor(private router: Router,private userService: UserService, private productService: ProductService){};
+     
      /* ***********************************************************
     * Use the @ViewChild decorator to get a reference to the drawer component.
     * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
@@ -25,7 +32,12 @@ export class SearchPageComponent implements OnInit {
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
     *************************************************************/
     ngOnInit(): void {
+        
         this._sideDrawerTransition = new SlideInOnTopTransition();
+   
+        if(!this.userService.getUserStatus()){
+            this.productListToChild = this.productService.getUserProducts();
+        }
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {

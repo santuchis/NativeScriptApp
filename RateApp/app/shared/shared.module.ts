@@ -3,7 +3,7 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NativeScriptUISideDrawerModule } from "nativescript-telerik-ui/sidedrawer/angular";
 
 import { MyDrawerComponent } from "./my-drawer/my-drawer.component";
-import { UserService } from "./user/user.service";
+import { UserService } from "../shared/services/user.service";
 
 @NgModule({
     imports: [

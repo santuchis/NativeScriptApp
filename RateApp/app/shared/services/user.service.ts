@@ -6,11 +6,14 @@ import { Observable } from "rxjs/Rx";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
 
-import { User } from "./user";
+import { User } from "../model/user";
 import { Config } from "../config";
 
 @Injectable()
 export class UserService {
+
+	private isLogged : boolean = false;
+
 	constructor(private http: Http) {}
 
 	register(usr: User) {
@@ -53,6 +56,7 @@ export class UserService {
     	.do(data => {
 			  Config.token = data.access_token;
 			  Config.user = user;
+			  this.isLogged=true;
     	})
     	.catch(this.handleErrors);
   	}
@@ -60,6 +64,10 @@ export class UserService {
 	handleErrors(error: Response) {
     	console.log(JSON.stringify(error.json()));
     	return Observable.throw(error);
-  	}
+	  }
+	  
+	  getUserStatus() : boolean {
+		  return this.isLogged;
+	  }
 
 }

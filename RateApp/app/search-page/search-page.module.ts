@@ -4,7 +4,9 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { SharedModule } from "../shared/shared.module";
 import { SearchPageRoutingModule } from "./search-page-routing.module";
 import { SearchPageComponent } from "./search-page.component";
-import {ProductListComponent} from "../product-list/product-list.component";
+import { ProductListComponent} from "../product-list/product-list.component";
+
+
 
 @NgModule({
     imports: [
@@ -15,6 +17,7 @@ import {ProductListComponent} from "../product-list/product-list.component";
     declarations: [
         SearchPageComponent,
         ProductListComponent
+        
     ],
     schemas: [
         NO_ERRORS_SCHEMA
