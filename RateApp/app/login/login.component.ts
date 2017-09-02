@@ -35,12 +35,14 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
 		this._sideDrawerTransition = new SlideInOnTopTransition();
 		
+		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
 		setTimeout(()=> {
 			this.onDrawerRefresh();
 		}, 100);
 	}
 	
 	onDrawerRefresh(): void {
+		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
 		this.drawerComponent.sideDrawer.closeDrawer();
 	}
 
