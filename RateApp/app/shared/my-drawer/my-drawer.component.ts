@@ -37,7 +37,7 @@ export class MyDrawerComponent implements OnInit {
     *************************************************************/
     ngOnInit(): void {
         this.user = Config.user;
-        if(Config.token.length > 0) {
+        if(Config.token != undefined) {
             this._navigationItems = [
                 {
                     title: "Inicio",
