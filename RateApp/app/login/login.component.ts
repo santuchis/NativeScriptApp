@@ -33,8 +33,16 @@ export class LoginComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this._sideDrawerTransition = new SlideInOnTopTransition();
-    }
+		this._sideDrawerTransition = new SlideInOnTopTransition();
+		
+		setTimeout(()=> {
+			this.onDrawerRefresh();
+		}, 100);
+	}
+	
+	onDrawerRefresh(): void {
+		this.drawerComponent.sideDrawer.closeDrawer();
+	}
 
     get sideDrawerTransition(): DrawerTransitionBase {
         return this._sideDrawerTransition;

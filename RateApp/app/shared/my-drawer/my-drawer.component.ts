@@ -104,7 +104,7 @@ export class MyDrawerComponent implements OnInit {
 
         this.routerExtensions.navigate([navigationItemRoute], {
             transition: {
-                name: "slide"
+                name: "fade"
             }
         });
     }
