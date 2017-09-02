@@ -1,8 +1,62 @@
 {
-  "android": {
-    "v8Flags": "--expose_gc"
+  "nativescript": {
+    "id": "org.nativescript.DrawerNavigation"
   },
   "main": "main.js",
   "name": "tns-template-drawer-navigation-ng",
-  "version": "3.1.4"
+  "displayName": "Navigation Drawer",
+  "templateType": "App template",
+  "version": "3.1.5",
+  "description": "Side navigation template",
+  "author": "Telerik <support@telerik.com>",
+  "license": "Apache-2.0",
+  "keywords": [
+    "telerik",
+    "mobile",
+    "angular",
+    "nativescript",
+    "{N}",
+    "tns",
+    "appbuilder",
+    "template",
+    "drawer",
+    "navigation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NativeScript/template-drawer-navigation-ng"
+  },
+  "homepage": "https://github.com/NativeScript/template-drawer-navigation-ng",
+  "android": {
+    "v8Flags": "--expose_gc"
+  },
+  "dependencies": {
+    "@angular/animations": "4.2.5",
+    "@angular/common": "4.2.5",
+    "@angular/compiler": "4.2.5",
+    "@angular/core": "4.2.5",
+    "@angular/forms": "4.2.5",
+    "@angular/http": "4.2.5",
+    "@angular/platform-browser": "4.2.5",
+    "@angular/router": "4.2.5",
+    "nativescript-angular": "4.2.0",
+    "nativescript-theme-core": "1.0.4",
+    "nativescript-telerik-ui": "3.0.4",
+    "reflect-metadata": "0.1.10",
+    "rxjs": "5.4.3",
+    "tns-core-modules": "3.1.1",
+    "zone.js": "0.8.16"
+  },
+  "devDependencies": {
+    "codelyzer": "3.1.2",
+    "nativescript-dev-sass": "1.3.0",
+    "nativescript-dev-typescript": "0.5.0",
+    "node-sass": "4.5.3",
+    "tslint": "5.6.0",
+    "typescript": "2.4.2"
+  },
+  "scripts": {
+    "preinstall": "node tools/preinstall.js",
+    "postinstall": "node tools/postinstall.js"
+  }
 }

@@ -20,7 +20,7 @@ export class LogoutComponent implements OnInit {
     private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private router: Router) {
-        Config.token = "";
+        Config.token = undefined;
         Config.user = undefined;
         router.navigate(["/home"]);
     }
