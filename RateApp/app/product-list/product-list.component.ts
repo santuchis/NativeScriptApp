@@ -11,8 +11,7 @@ import { Product } from "../shared/model/product";
 })
 export class ProductListComponent implements OnInit{
 
-    public isRemoveIconVisible: boolean = false;
-    
+    @Input() isRemoveIconVisible: boolean;
     @Input() productList : Product[];
     
     constructor(private productService: ProductService) {}

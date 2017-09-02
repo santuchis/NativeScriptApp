@@ -12,6 +12,14 @@ import { Product } from "../model/product";
 export class ProductService {
 	constructor(private http: Http) {};
 	private productList : Product[] = [];
+	private productList2 : Product[] = [
+		new Product("Apple iPhone 7"),
+		new Product("Apple iPhone 7 Plus"),
+		new Product("Apple iPhone 6"),
+		new Product("Apple iPhone 6 Plus"),
+		new Product("Samsung Galaxy 8"),
+		new Product("Samsung Galaxy 8 Edge"),
+	];
 
 	getUserProducts() : Product[]{
 		for (var index = 0; index < 5; index++) {
@@ -19,6 +27,10 @@ export class ProductService {
 			this.productList.push(product);
 		}
 		return this.productList;
+	}
+
+	getProductsByName(name: string) : Product[] {
+		return this.productList2.filter(prod => prod.name.toLowerCase().indexOf(name.toLowerCase()) >= 0);
 	}
 
 	getProductByName(productName : string) : Product[]{
