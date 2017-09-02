@@ -17,5 +17,14 @@ export class ProductListComponent implements OnInit{
     
     constructor(private productService: ProductService) {}
 
+
 	ngOnInit(): void {}
+
+    public onItemTap(args) {
+        console.log("ItemTapped: " + args.index);
+    }
+
+    public remove(index: number) {
+        console.log('remove ' + index);
+    }
 }
