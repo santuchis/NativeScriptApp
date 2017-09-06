@@ -7,18 +7,17 @@ import { UserService } from "../shared/services/user.service";
 import { ProductService } from "../shared/services/product.service";
 import { SearchBar } from "ui/search-bar";
 
-
 @Component({
-	selector: 'search-page',
+    selector: 'search-page',
     moduleId: module.id,
     templateUrl: 'search-page.component.html',
     providers: [UserService, ProductService]
 })
 export class SearchPageComponent implements OnInit {
 
-    public productListToChild : Product[] = [new Product("aaaa")];
+    private productListToChild : Product[];
 
-    input : string;
+    private input : string;
 
 	constructor(private router: Router,private userService: UserService, private productService: ProductService){};
      
@@ -36,11 +35,11 @@ export class SearchPageComponent implements OnInit {
     ngOnInit(): void {
         
         this._sideDrawerTransition = new SlideInOnTopTransition();
-   
+        
         if(!this.userService.getUserStatus()){
-            this.productListToChild = this.productService.getUserProducts();
+           this.productListToChild = this.productService.getUserProducts();
         }
-
+        
         // workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
 		setTimeout(()=> {
 			this.onDrawerRefresh();
@@ -74,10 +73,12 @@ export class SearchPageComponent implements OnInit {
     }
 
     getList(): Array<Product> {
-        if(this.isSearching()) {
-            return this.productService.getProductsByName(this.input);
-        } else {
-            return this.productListToChild;
-        }
+        return this.isSearching() ? this.productService.getProductsByName(this.input) : this.productListToChild;
+    }
+
+    onSubmit(args) : void {
+        let searchBar = <SearchBar>args.object;
+        this.productListToChild = this.productService.getProductByName(searchBar.text);
+        searchBar.text="";
     }
 }

@@ -10,7 +10,8 @@
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
         ios.position="left">
     </ActionItem>
-    <SearchBar  color="blue" textFieldBackgroundColor="white" hint="Search a product" [text]="searchPhrase" (textChange)="onTextChanged($event)"></SearchBar>
+    <SearchBar  color="blue" textFieldBackgroundColor="white" hint="Search a product"
+     [text]="searchPhrase" (textChange)="onTextChanged($event)" (submit)="onSubmit($event)"></SearchBar>
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">

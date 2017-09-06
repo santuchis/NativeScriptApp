@@ -11,7 +11,7 @@ import { Product } from "../model/product";
 @Injectable()
 export class ProductService {
 	constructor(private http: Http) {};
-	private productList : Product[] = [];
+
 	private productList2 : Product[] = [
 		new Product("Apple iPhone 7"),
 		new Product("Apple iPhone 7 Plus"),
@@ -22,11 +22,12 @@ export class ProductService {
 	];
 
 	getUserProducts() : Product[]{
+		let productList : Product[] = [];
 		for (var index = 0; index < 5; index++) {
 			var product : Product = new Product("Producto "+index);
-			this.productList.push(product);
+			productList.push(product);
 		}
-		return this.productList;
+		return productList;
 	}
 
 	getProductsByName(name: string) : Product[] {
@@ -34,10 +35,11 @@ export class ProductService {
 	}
 
 	getProductByName(productName : string) : Product[]{
+		let productList : Product[] = [];		
 		for (var index = 0; index < 5; index++) {
 			var product : Product = new Product(productName+" "+index);
-			this.productList.push(product);
+			productList.push(product);
 		}
-		return this.productList;
+		return productList;
 	}
 }
