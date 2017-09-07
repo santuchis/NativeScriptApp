@@ -1,26 +1,26 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
+
 import { Product } from "../shared/model/product";
-import { UserService } from "../shared/services/user.service";
 import { ProductService } from "../shared/services/product.service";
-import { SearchBar } from "ui/search-bar";
 
 @Component({
-    selector: 'search-page',
+    selector: "Product",
     moduleId: module.id,
-    templateUrl: 'search-page.component.html',
-    providers: [UserService, ProductService]
+    styleUrls: ["./product.component.css"],    
+    templateUrl: "./product.component.html",
+    providers: [ProductService]
 })
-export class SearchPageComponent implements OnInit {
+export class ProductComponent implements OnInit {
 
-    private productListToChild : Product[];
+    private product : Product;
+    private expandDescription : boolean = true;
 
-    private input : string;
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService){};
 
-	constructor(private router: RouterExtensions, private userService: UserService, private productService: ProductService){};
-     
      /* ***********************************************************
     * Use the @ViewChild decorator to get a reference to the drawer component.
     * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
@@ -33,13 +33,11 @@ export class SearchPageComponent implements OnInit {
     * Use the sideDrawerTransition property to change the open/close animation of the drawer.
     *************************************************************/
     ngOnInit(): void {
-        
+        const id = this.route.snapshot.params["id"];
+        this.product = this.productService.getProductById(id);
+
         this._sideDrawerTransition = new SlideInOnTopTransition();
-        
-        if(!this.userService.getUserStatus()){
-           this.productListToChild = this.productService.getUserProducts();
-        }
-        
+
         // workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
 		setTimeout(()=> {
 			this.onDrawerRefresh();
@@ -63,28 +61,18 @@ export class SearchPageComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-    onTextChanged(args) {
-        let searchBar = <SearchBar>args.object;
-        this.input = searchBar.text;
-    }
-
-    isSearching() : boolean {
-        return this.input !== undefined && this.input.length > 0;
-    }
-
-    getList(): Array<Product> {
-        return this.isSearching() ? this.productService.getProductsByName(this.input) : this.productListToChild;
-    }
-
-    onSubmit(args) : void {
-        let searchBar = <SearchBar>args.object;
-        this.productListToChild = this.productService.getProductsByName(searchBar.text);
-        searchBar.text="";
-    }
-
-    goToProduct(id) : void {
-        this.router.navigate(["/product", id], {
-            transition: {name: "slide"}
+    onTap() : void{
+        this.router.navigate(["/search-page"], {
+            transition: {name: "fade"}
         });
     }
+
+    toggleDescription() {
+        this.expandDescription = !this.expandDescription;
+    }
+    
+    getDescription() : string {
+        return this.expandDescription ? this.product.description : this.product.description.slice(0, 400) + "...";
+    }
+
 }

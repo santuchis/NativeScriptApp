@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
-import { Router } from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({
     selector: "Home",
@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
 })
 export class HomeComponent implements OnInit {
 
-constructor(private router: Router){};
+    constructor(private router: RouterExtensions){};
 
      /* ***********************************************************
     * Use the @ViewChild decorator to get a reference to the drawer component.
@@ -51,7 +51,9 @@ constructor(private router: Router){};
     }
 
     onTap() : void{
-        this.router.navigate(["/search-page"]);
+        this.router.navigate(["/search-page"], {
+            transition: {name: "slideTop"}
+        });
 	}
 
 }

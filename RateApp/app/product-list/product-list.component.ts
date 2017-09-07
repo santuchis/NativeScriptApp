@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectionStrategy,Input } from '@angular/core';
+import { Component, OnInit,ChangeDetectionStrategy, Input, Output, EventEmitter} from '@angular/core';
 import { ProductService } from "../shared/services/product.service";
 import { Product } from "../shared/model/product";
 
@@ -13,6 +13,8 @@ export class ProductListComponent implements OnInit{
 
     @Input() isRemoveIconVisible: boolean;
     @Input() productList : Product[];
+
+    @Output() itemTap = new EventEmitter();
     
     constructor(private productService: ProductService) {}
 
@@ -20,10 +22,12 @@ export class ProductListComponent implements OnInit{
 	ngOnInit(): void {}
 
     public onItemTap(args) {
-        console.log("ItemTapped: " + args.index);
+        console.log("ItemTapped:" + args.index);
+        this.itemTap.emit(this.productList[args.index].id);
     }
 
     public remove(index: number) {
         console.log('remove ' + index);
+        this.productList.splice(index, 1);
     }
 }

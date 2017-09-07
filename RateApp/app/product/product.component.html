@@ -1,0 +1,33 @@
+<ActionBar class="action-bar">
+    <NavigationButton icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <Label class="action-bar-title" [text]="product.name"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="product.name"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout class="content" tkMainContent>
+        <!-- This double element, is a workaround for issue https://github.com/NativeScript/NativeScript/issues/3916 -->
+        <Label [text]="product.brand"></Label>
+        <Label [text]="product.name"></Label>
+        <TextView *ngIf="expandDescription" editable="false" [text]="getDescription()"></TextView>
+        <TextView *ngIf="!expandDescription" editable="false" [text]="getDescription()"></TextView>
+        <Label [text]="expandDescription ? 'Show less':'Show more'" (tap)="toggleDescription()"></Label>
+    </StackLayout>
+
+</RadSideDrawer>

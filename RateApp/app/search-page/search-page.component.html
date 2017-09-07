@@ -26,7 +26,7 @@
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
     <StackLayout tkMainContent>
-        <product-list [productList]='getList()' [isRemoveIconVisible]="!isSearching()"></product-list>
+        <product-list [productList]='getList()' [isRemoveIconVisible]="!isSearching()" (itemTap)="goToProduct($event)"></product-list>
     </StackLayout>
 
 </RadSideDrawer>
