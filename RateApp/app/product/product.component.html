@@ -23,59 +23,62 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     -->
     <StackLayout tkMainContent>
         <ScrollView>
-            <StackLayout class="content" backgroundColor="white">
-                <AbsoluteLayout orientation="horizontal" class="images">
-                    <ng-template ngFor let-i="index" let-photo [ngForOf]="product.images">
-                        <Image #dragImage left="0" top="0" class="main-photo" [src]="photo" stretch="aspectFit" width="100%" height="100%" (pan)="onPan($event)"></Image>
-                    </ng-template>
-                </AbsoluteLayout>
-                <GridLayout rows="auto, auto" columns="*, auto, auto, auto, auto" class="header">
-                    <Label row="0" col="0" [text]="product.name" class="name" textWrap="true"></Label>
-                    <Label row="0" col="1" rowSpan="2" [text]="'\uf087'" class="fa"></Label>
-                    <Label row="0" col="2" rowSpan="2" [text]="' 0 '"></Label>
-                    <Label row="0" col="3" rowSpan="2" [text]="'\uf088'" class="fa"></Label>
-                    <Label row="0" col="4" rowSpan="2" [text]="' 0 '"></Label>
-                    <Label row="1" col="0" [text]="product.brand" class="brand"></Label>
-                </GridLayout>
-                <StackLayout class="banner">
-                    <Label textWrap="true" [text]="'Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense'"></Label>
-                </StackLayout>
-                <Label class="line"></Label>
-                <GridLayout rows="auto, auto, auto" columns="auto,*,auto" class="comments">
-                    <GridLayout row="0" col="0" colSpan="3" rows="auto" columns="*, auto" class="section-header">
-                        <Label row="0" col="0" [text]="'Comentarios'" class="title"></Label>
-                        <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+            <StackLayout>
+                <StackLayout class="cover">
+                    <AbsoluteLayout orientation="horizontal" class="images">
+                        <ng-template ngFor let-i="index" let-photo [ngForOf]="product.images">
+                            <Image #dragImage left="0" top="0" class="main-photo" [src]="photo" stretch="aspectFit" width="100%" height="100%" (pan)="onPan($event)"></Image>
+                        </ng-template>
+                    </AbsoluteLayout>
+                    <GridLayout rows="auto, auto" columns="*, auto, auto, auto, auto" class="title">
+                        <Label row="0" col="0" [text]="product.name" class="name" textWrap="true"></Label>
+                        <Label row="0" col="1" rowSpan="2" [text]="'\uf087'" class="fa"></Label>
+                        <Label row="0" col="2" rowSpan="2" [text]="' 900 '"></Label>
+                        <Label row="0" col="3" rowSpan="2" [text]="'\uf088'" class="fa"></Label>
+                        <Label row="0" col="4" rowSpan="2" [text]="' 900 '"></Label>
+                        <Label row="1" col="0" [text]="product.brand" class="brand"></Label>
                     </GridLayout>
-                    <Label row="1" col="0" rowSpan="2" [text]="'2.5'" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
-                    <StackLayout row="1" col="1" orientation="horizontal" style="margin:0px 15px;">
-                        <Label [text]="'\uf005'" class="fa"></Label>
-                        <Label [text]="'\uf005'" class="fa"></Label>
-                        <Label [text]="'\uf123'" class="fa"></Label>
-                        <Label [text]="'\uf006'" class="fa"></Label>
-                        <Label [text]="'\uf006'" class="fa"></Label>
+                    <StackLayout class="banner">
+                        <Label textWrap="true" [text]="'Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense'"></Label>
                     </StackLayout>
-                    <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center"></Label>
-                    <Label row="2" col="1" [text]="'99 comentarios'" style="font-size:14;margin:0px 15px;"></Label>
-                    <Label row="2" col="2" [text]="'Comentar'" style="font-size:14;"></Label>
-                </GridLayout>
-                <Label class="line"></Label>
-                <StackLayout class="description">
-                    <GridLayout rows="auto" columns="*, auto" class="section-header">
-                        <Label row="0" col="0" [text]="'Description'" class="title"></Label>
-                        <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
-                    </GridLayout>
-                    <Label textWrap="true" [text]="getShortDescription()"></Label>
                 </StackLayout>
-                <Label class="line"></Label>
-                <StackLayout class="features">
-                    <GridLayout rows="auto" columns="*, auto" class="section-header">
-                        <Label row="0" col="0" [text]="'Características'" class="title"></Label>
-                        <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                <StackLayout class="content">
+                    <GridLayout rows="auto, auto, auto" columns="auto,*,auto" class="section comments">
+                        <GridLayout row="0" col="0" colSpan="3" rows="auto" columns="*, auto" class="section-header">
+                            <Label row="0" col="0" [text]="'Comentarios'" class="section-title"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                        </GridLayout>
+                        <Label row="1" col="0" rowSpan="2" [text]="'2.5'" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
+                        <StackLayout row="1" col="1" orientation="horizontal" style="margin:0px 15px;">
+                            <Label [text]="'\uf005'" class="fa star-icon"></Label>
+                            <Label [text]="'\uf005'" class="fa star-icon"></Label>
+                            <Label [text]="'\uf123'" class="fa star-icon"></Label>
+                            <Label [text]="'\uf006'" class="fa star-icon"></Label>
+                            <Label [text]="'\uf006'" class="fa star-icon"></Label>
+                        </StackLayout>
+                        <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center"></Label>
+                        <Label row="2" col="1" [text]="'99 comentarios'" style="font-size:14;margin:0px 15px;"></Label>
+                        <Label row="2" col="2" [text]="'Comentar'" style="font-size:14;"></Label>
                     </GridLayout>
-                    <Label [text]="'Pantalla: 1200x800'"></Label>
-                    <Label [text]="'Tamaño: 20cm x 15cm x 2cm'"></Label>
-                    <Label [text]="'Procesador: A9'"></Label>
-                    <Label [text]="''"></Label>
+                    <Label class="line"></Label>
+                    <StackLayout class="section description">
+                        <GridLayout rows="auto" columns="*, auto" class="section-header">
+                            <Label row="0" col="0" [text]="'Description'" class="section-title"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                        </GridLayout>
+                        <Label textWrap="true" [text]="getShortDescription()"></Label>
+                    </StackLayout>
+                    <Label class="line"></Label>
+                    <StackLayout class="section features">
+                        <GridLayout rows="auto" columns="*, auto" class="section-header">
+                            <Label row="0" col="0" [text]="'Características'" class="section-title"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                        </GridLayout>
+                        <Label [text]="'Pantalla: 1200x800'"></Label>
+                        <Label [text]="'Tamaño: 20cm x 15cm x 2cm'"></Label>
+                        <Label [text]="'Procesador: A9'"></Label>
+                        <Label [text]="''"></Label>
+                    </StackLayout>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

@@ -15,7 +15,7 @@ import animationModule = require("ui/animation");
 @Component({
     selector: "Product",
     moduleId: module.id,
-    styleUrls: ["./product.component.css"],    
+    styleUrls: ["./product.component.scss"],    
     templateUrl: "./product.component.html",
     providers: [ProductService]
 })
