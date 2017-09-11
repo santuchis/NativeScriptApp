@@ -2,10 +2,13 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
+import { Page } from "ui/page";
+
 import { Product } from "../shared/model/product";
 import { UserService } from "../shared/services/user.service";
 import { ProductService } from "../shared/services/product.service";
 import { SearchBar } from "ui/search-bar";
+import { Device } from "../shared/device";
 
 @Component({
     selector: 'search-page',
@@ -19,7 +22,7 @@ export class SearchPageComponent implements OnInit {
 
     private input : string;
 
-	constructor(private router: RouterExtensions, private userService: UserService, private productService: ProductService){};
+	constructor(private router: RouterExtensions, private userService: UserService, private productService: ProductService, private page: Page){};
      
      /* ***********************************************************
     * Use the @ViewChild decorator to get a reference to the drawer component.
@@ -83,6 +86,10 @@ export class SearchPageComponent implements OnInit {
     }
 
     goToProduct(id) : void {
+        Device.height = this.page.getMeasuredHeight();
+        Device.width = this.page.getMeasuredWidth();
+        Device.actualHeight = this.page.getActualSize().height;
+        Device.actualWidth = this.page.getActualSize().width;
         this.router.navigate(["/product", id], {
             transition: {name: "slide"}
         });
