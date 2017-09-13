@@ -45,8 +45,8 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                 <StackLayout class="content">
                     <GridLayout rows="auto, auto, auto" columns="auto,*,auto" class="section comments">
                         <GridLayout row="0" col="0" colSpan="3" rows="auto" columns="*, auto" class="section-header">
-                            <Label row="0" col="0" [text]="'Comentarios'" class="section-title"></Label>
-                            <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                            <Label row="0" col="0" [text]="'Comentarios'" class="section-title" (tap)="goToComments()"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa" (tap)="goToComments()"></Label>
                         </GridLayout>
                         <Label row="1" col="0" rowSpan="2" [text]="'2.5'" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
                         <StackLayout row="1" col="1" orientation="horizontal" style="margin:0px 15px;">

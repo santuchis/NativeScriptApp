@@ -11,7 +11,8 @@ const routes: Routes = [
     { path: "settings", loadChildren: "./settings/settings.module#SettingsModule" },
     { path: "logout", loadChildren: "./logout/logout.module#LogoutModule" },
     { path: "search-page", loadChildren: "./search-page/search-page.module#SearchPageModule" },
-    { path: "product/:id", loadChildren: "./product/product.module#ProductModule" }
+    { path: "product/:id", loadChildren: "./product/product.module#ProductModule" },
+    { path: "comments/:id", loadChildren: "./comments/comments.module#CommentsModule" }
 ];
 
 @NgModule({

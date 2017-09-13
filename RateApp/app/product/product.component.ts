@@ -77,12 +77,6 @@ export class ProductComponent implements OnInit {
         this.drawerComponent.sideDrawer.showDrawer();
     }
 
-    onTap() : void{
-        this.router.navigate(["/search-page"], {
-            transition: {name: "fade"}
-        });
-    }
-
     getShortDescription() : string {
         return this.product.description.slice(0, 400) + "...";
     }
@@ -129,6 +123,12 @@ export class ProductComponent implements OnInit {
             }
             this.move(this.currentPhotoIndex, 500);
         }
+    }
+
+    goToComments() : void {
+        this.router.navigate(["/comments", this.product.id], {
+            transition: {name: "slide"}
+        });
     }
 
 }
