@@ -1,23 +1,27 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
+import { Color } from "color";
+import { View } from "ui/core/view";
 
-import { action } from "ui/dialogs";
+import { User } from "../shared/model/user";
+import { UserService } from "../shared/services/user.service";
 
 @Component({
-    selector: "Comments",
+    selector: "AddComment",
     moduleId: module.id,
-    templateUrl: "./comments.component.html",
-    styleUrls: ["./comments.component.scss"],
+    templateUrl: "./add-comment.component.html",
+    styleUrls: ["./add-comment.component.css"],
+    providers: [UserService],
 })
-export class CommentsComponent implements OnInit {
+export class AddCommentComponent implements OnInit {
 
     // Component Variables
-    private comments : string[] = ["", "", ""];
-    private stars : string[] = ["Todas", "1 Estrella", "2 Estrellas", "3 Estrellas", "4 Estrellas", "5 Estrellas"];
-    private picked: string = "Todas";
+    private starSelected : number = 0;
+    private comment : string;
     private productId : string;
 
     // Drawer Variables
@@ -34,31 +38,22 @@ export class CommentsComponent implements OnInit {
 			this.onDrawerRefresh();
         }, 100);
         // End Side Drawer code
-
-        this.productId = this.route.snapshot.params["id"];
-        console.log("Comments Page - ID: " + this.productId);
-    }
-
-    goToAddComment(): void {
-        this.router.navigate(["/add-comment", this.productId], {
-            transition: {name: "slide"}
-        });
-    }
-
-    showStarsOptions() : void {
-        let options = {
-            title: "Filtro por estrellas",
-            message: "Selecciona una option",
-            cancelButtonText: "Cancelar",
-            actions: this.stars
-        };
         
-        action(options).then((result) => {
-            if(result !== options.cancelButtonText && this.picked !== result) {
-                this.picked = result;
-                console.log(result);
-            }
-        });
+        this.productId = this.route.snapshot.params["id"];
+        console.log("Add Comment Page - ID: " + this.productId);
+	}
+
+    selectStar(value : number) : void {
+        this.starSelected = value;
+        console.log("selected:" + this.starSelected);
+    }
+
+    saveComment() : void {
+        console.log("saving comment: " + this.comment);
+    }
+
+    goBack() {
+        this.router.backToPreviousPage();
     }
 
 

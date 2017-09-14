@@ -56,9 +56,9 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                             <Label [text]="'\uf006'" class="fa star-icon"></Label>
                             <Label [text]="'\uf006'" class="fa star-icon"></Label>
                         </StackLayout>
-                        <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center"></Label>
+                        <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center" (tap)="goToAddComment()"></Label>
                         <Label row="2" col="1" [text]="'99 comentarios'" style="font-size:14;margin:0px 15px;"></Label>
-                        <Label row="2" col="2" [text]="'Comentar'" style="font-size:14;"></Label>
+                        <Label row="2" col="2" [text]="'Comentar'" style="font-size:14;" (tap)="goToAddComment()"></Label>
                     </GridLayout>
                     <Label class="line"></Label>
                     <StackLayout class="section description">

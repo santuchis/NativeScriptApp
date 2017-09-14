@@ -125,6 +125,12 @@ export class ProductComponent implements OnInit {
         }
     }
 
+    goToAddComment() : void {
+        this.router.navigate(["/add-comment", this.product.id], {
+            transition: {name: "slide"}
+        });
+    }
+
     goToComments() : void {
         this.router.navigate(["/comments", this.product.id], {
             transition: {name: "slide"}

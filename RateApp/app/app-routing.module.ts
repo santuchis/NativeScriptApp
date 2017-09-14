@@ -12,7 +12,8 @@ const routes: Routes = [
     { path: "logout", loadChildren: "./logout/logout.module#LogoutModule" },
     { path: "search-page", loadChildren: "./search-page/search-page.module#SearchPageModule" },
     { path: "product/:id", loadChildren: "./product/product.module#ProductModule" },
-    { path: "comments/:id", loadChildren: "./comments/comments.module#CommentsModule" }
+    { path: "comments/:id", loadChildren: "./comments/comments.module#CommentsModule" },
+    { path: "add-comment/:id", loadChildren: "./add-comment/add-comment.module#AddCommentModule" }
 ];
 
 @NgModule({
