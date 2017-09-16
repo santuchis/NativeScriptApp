@@ -10,7 +10,7 @@ import { action } from "ui/dialogs";
     selector: "Comments",
     moduleId: module.id,
     templateUrl: "./comments.component.html",
-    styleUrls: ["./comments.component.scss"],
+    styleUrls: ["./comments.component.css"],
 })
 export class CommentsComponent implements OnInit {
 

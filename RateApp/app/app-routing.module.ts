@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { Routes } from "@angular/router";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
+import {ResultPageComponent } from "./result-page/result-page.component"
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -13,7 +14,9 @@ const routes: Routes = [
     { path: "search-page", loadChildren: "./search-page/search-page.module#SearchPageModule" },
     { path: "product/:id", loadChildren: "./product/product.module#ProductModule" },
     { path: "comments/:id", loadChildren: "./comments/comments.module#CommentsModule" },
-    { path: "add-comment/:id", loadChildren: "./add-comment/add-comment.module#AddCommentModule" }
+    { path: "add-comment/:id", loadChildren: "./add-comment/add-comment.module#AddCommentModule" },
+    { path: "result-page/:productName", loadChildren: "./result-page/result-page.module#ResultPageModule"  }
+
 ];
 
 @NgModule({

@@ -6,8 +6,6 @@ import { SearchPageRoutingModule } from "./search-page-routing.module";
 import { SearchPageComponent } from "./search-page.component";
 import { ProductListComponent} from "../product-list/product-list.component";
 
-
-
 @NgModule({
     imports: [
         NativeScriptModule,
@@ -17,7 +15,6 @@ import { ProductListComponent} from "../product-list/product-list.component";
     declarations: [
         SearchPageComponent,
         ProductListComponent
-        
     ],
     schemas: [
         NO_ERRORS_SCHEMA

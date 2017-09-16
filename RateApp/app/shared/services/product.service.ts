@@ -30,7 +30,7 @@ export class ProductService {
 
 	getUserProducts() : Product[]{
 		let productList : Product[] = [];
-		for (var index = 3; index < 8; index++) {
+		for (var index = 3; index < 10; index++) {
 			productList.push(this.productList2[index]);
 		}
 		return productList;

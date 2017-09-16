@@ -3,7 +3,7 @@ import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-teler
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "ui/page";
-
+import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Product } from "../shared/model/product";
 import { UserService } from "../shared/services/user.service";
 import { ProductService } from "../shared/services/product.service";
@@ -22,7 +22,9 @@ export class SearchPageComponent implements OnInit {
 
     private input : string;
 
-	constructor(private router: RouterExtensions, private userService: UserService, private productService: ProductService, private page: Page){};
+   
+    constructor(private router: RouterExtensions,private userService: UserService, private productService: ProductService
+    , private route: ActivatedRoute,private page: Page){};
      
      /* ***********************************************************
     * Use the @ViewChild decorator to get a reference to the drawer component.
@@ -42,7 +44,7 @@ export class SearchPageComponent implements OnInit {
         if(!this.userService.getUserStatus()){
            this.productListToChild = this.productService.getUserProducts();
         }
-        
+   
         // workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
 		setTimeout(()=> {
 			this.onDrawerRefresh();
@@ -81,8 +83,8 @@ export class SearchPageComponent implements OnInit {
 
     onSubmit(args) : void {
         let searchBar = <SearchBar>args.object;
-        this.productListToChild = this.productService.getProductsByName(searchBar.text);
-        searchBar.text="";
+        this.router.navigate(["/result-page",searchBar.text]);
+
     }
 
     goToProduct(id) : void {

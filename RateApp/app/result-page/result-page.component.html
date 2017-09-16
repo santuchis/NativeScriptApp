@@ -1,0 +1,46 @@
+
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Inicio'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout tkMainContent>
+        <ScrollView>
+            <StackLayout >
+                <GridLayout style=" border-bottom-width: 3px; border-bottom-color: skyblue;" *ngFor="let product of productList; let even = even; let odd = odd" [ngClass]="{ odd: odd, even: even }" columns="*,3*" rows="*,*,*,*" width="100%" height="200" class="list-group" (tap)="goToProduct(product.id)">
+                    <Image class="center" src="~/images/samsung.jpg" col="0" row="0" rowSpan="3" style.horizontalAlignment="center"></Image>
+                    <Label [text]="product.name" style="font-style:italic ;font-weight: bold; font-size: 16px;" col="1" row="1" style.horizontalAlignment="center" style.verticalAlignment="top"></Label>
+                    <Label [text]="product.brand" col="1" row="2" style.horizontalAlignment="center" style.verticalAlignment="top" ></Label>
+                    <StackLayout  col="1" row="3" orientation="horizontal" style.horizontalAlignment="center" style.verticalAlignment="top">
+                        <Label [text]="'\uf005'" class="fa star-icon"></Label>
+                        <Label [text]="'\uf005'" class="fa star-icon"></Label>
+                        <Label [text]="'\uf123'" class="fa star-icon"></Label>
+                        <Label [text]="'\uf006'" class="fa star-icon"></Label>
+                        <Label [text]="' (100)'" class="fa"></Label>
+                    </StackLayout>
+               </GridLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</RadSideDrawer>
+
+
