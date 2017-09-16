@@ -17,42 +17,31 @@ import { UserService } from "../shared/services/user.service";
 })
 export class LoginComponent implements OnInit {
 
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+	// Component Variables
     @ViewChild("container") container: ElementRef;
 	@ViewChild("name") name: ElementRef;
 	@ViewChild("username") username: ElementRef;
 	@ViewChild("email") email: ElementRef;
 	@ViewChild("password") password: ElementRef;
 
-    private _sideDrawerTransition: DrawerTransitionBase;
-    private user: User = new User("", "","", "", [""]);
+	private user: User = new User("", "","", "", [""]);
 	isLoggingIn:boolean = true;
 
-    constructor(private router: Router, private userService: UserService) {
-		//this.user = new User("", "","", "", [""]);
-    }
+	// Drawer Variables
+    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+    private _sideDrawerTransition: DrawerTransitionBase;
+
+    constructor(private router: Router, private userService: UserService) {}
 
     ngOnInit(): void {
-		this._sideDrawerTransition = new SlideInOnTopTransition();
-		
-		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+		// Side Drawer code
+        this._sideDrawerTransition = new SlideInOnTopTransition();
 		setTimeout(()=> {
+            // setTimeout is a workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
 			this.onDrawerRefresh();
-		}, 100);
+        }, 100);
+        // End Side Drawer code
 	}
-	
-	onDrawerRefresh(): void {
-		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-		this.drawerComponent.sideDrawer.closeDrawer();
-	}
-
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
-    }
 
     toggleDisplay() {
 		this.isLoggingIn = !this.isLoggingIn;
@@ -95,5 +84,24 @@ export class LoginComponent implements OnInit {
 		} else {
 			this.signUp();
 		}
-  	}
+	}
+	  
+
+	/****************
+     * Side Drawer methods
+     ***************/
+    get sideDrawerTransition(): DrawerTransitionBase {
+        return this._sideDrawerTransition;
+    }
+
+    onDrawerButtonTap(): void {
+        this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    /**
+     * workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+     */
+	onDrawerRefresh(): void {
+		this.drawerComponent.sideDrawer.closeDrawer();
+	}
 }

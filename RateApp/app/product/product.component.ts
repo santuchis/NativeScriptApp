@@ -21,60 +21,36 @@ import animationModule = require("ui/animation");
 })
 export class ProductComponent implements OnInit {
 
+    // Component Variables
     @ViewChildren("dragImage") dragImages: QueryList<ElementRef>;
-
     private product : Product;
-    
     private prevDeltaX: number;
     private prevDeltaY: number;
     private currentPhotoIndex: number;
 
-    constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, private page: Page){};
-
-    /* ***********************************************************
-    * Use the @ViewChild decorator to get a reference to the drawer component.
-    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
-    *************************************************************/
+    // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
-
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    /* ***********************************************************
-    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
-    *************************************************************/
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, private page: Page){};
+
     ngOnInit(): void {
+        // Side Drawer code
+        this._sideDrawerTransition = new SlideInOnTopTransition();
+		setTimeout(()=> {
+            // setTimeout is a workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+			this.onDrawerRefresh();
+        }, 100);
+        // End Side Drawer code
+
         this.currentPhotoIndex = 0;
         const id = this.route.snapshot.params["id"];
         this.product = this.productService.getProductById(id);
-
-        this._sideDrawerTransition = new SlideInOnTopTransition();
-
-        // workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-		setTimeout(()=> {
-			this.onDrawerRefresh();
-        }, 100);
     }
 
     ngAfterViewInit(): void {
         let i = 0;
         this.dragImages.forEach(el => el.nativeElement.translateX = Device.actualWidth * (i++))
-    }
-
-    onDrawerRefresh(): void {
-		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-		this.drawerComponent.sideDrawer.closeDrawer();
-	}
-
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    /* ***********************************************************
-    * According to guidelines, if you have a drawer on your page, you should always
-    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-    *************************************************************/
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
     }
 
     getShortDescription() : string {
@@ -136,5 +112,23 @@ export class ProductComponent implements OnInit {
             transition: {name: "slide"}
         });
     }
+
+    /****************
+     * Side Drawer methods
+     ***************/
+    get sideDrawerTransition(): DrawerTransitionBase {
+        return this._sideDrawerTransition;
+    }
+
+    onDrawerButtonTap(): void {
+        this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    /**
+     * workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+     */
+	onDrawerRefresh(): void {
+		this.drawerComponent.sideDrawer.closeDrawer();
+	}
 
 }

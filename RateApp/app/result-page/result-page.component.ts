@@ -19,19 +19,25 @@ import { Page } from "ui/page";
 })
 export class ResultPageComponent implements OnInit {
 
+	// Component Variables
 	private input : string;
 	@Input() productList : Product[] = [];
+
+	// Drawer Variables
+    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
+    private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private router: RouterExtensions,private userService: UserService, private productService: ProductService
 		, private route: ActivatedRoute,private page: Page){};
 
-	@ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
-		
-	private _sideDrawerTransition: DrawerTransitionBase;
-
 	ngOnInit() {
-
-		this._sideDrawerTransition = new SlideInOnTopTransition();
+		// Side Drawer code
+        this._sideDrawerTransition = new SlideInOnTopTransition();
+		setTimeout(()=> {
+            // setTimeout is a workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+			this.onDrawerRefresh();
+        }, 100);
+        // End Side Drawer code
 
 		this.route.params.subscribe(
 			(params : Params) => {
@@ -40,30 +46,8 @@ export class ResultPageComponent implements OnInit {
 		);
 
 		this.productList = this.productService.getUserProducts();
-     
-        // workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-		setTimeout(()=> {
-			this.onDrawerRefresh();
-		}, 100);
 
 	 }
-
-	 onDrawerRefresh(): void {
-		// workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-		this.drawerComponent.sideDrawer.closeDrawer();
-	}
-
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    /* ***********************************************************
-    * According to guidelines, if you have a drawer on your page, you should always
-    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
-    *************************************************************/
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
-	}
 	
 	goToProduct(id) : void {
         Device.height = this.page.getMeasuredHeight();
@@ -73,5 +57,24 @@ export class ResultPageComponent implements OnInit {
         this.router.navigate(["/product", id], {
             transition: {name: "slide"}
         });
+	}
+	
+
+	/****************
+     * Side Drawer methods
+     ***************/
+    get sideDrawerTransition(): DrawerTransitionBase {
+        return this._sideDrawerTransition;
     }
+
+    onDrawerButtonTap(): void {
+        this.drawerComponent.sideDrawer.showDrawer();
+    }
+
+    /**
+     * workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
+     */
+	onDrawerRefresh(): void {
+		this.drawerComponent.sideDrawer.closeDrawer();
+	}
 }
