@@ -48,13 +48,9 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                             <Label row="0" col="0" [text]="'Comentarios'" class="section-title" (tap)="goToComments()"></Label>
                             <Label row="0" col="1" [text]="'\uf105'" class="fa" (tap)="goToComments()"></Label>
                         </GridLayout>
-                        <Label row="1" col="0" rowSpan="2" [text]="'2.5'" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
-                        <StackLayout row="1" col="1" orientation="horizontal" style="margin:0px 15px;">
-                            <Label [text]="'\uf005'" class="fa star-icon"></Label>
-                            <Label [text]="'\uf005'" class="fa star-icon"></Label>
-                            <Label [text]="'\uf123'" class="fa star-icon"></Label>
-                            <Label [text]="'\uf006'" class="fa star-icon"></Label>
-                            <Label [text]="'\uf006'" class="fa star-icon"></Label>
+                        <Label row="1" col="0" rowSpan="2" [text]="rateValue" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
+                        <StackLayout row="1" col="1" style="margin:0px 15px;">
+                            <rv-stars [value]="rateValue" style="font-size:30;color: goldenrod;"></rv-stars>
                         </StackLayout>
                         <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center" (tap)="goToAddComment()"></Label>
                         <Label row="2" col="1" [text]="'99 comentarios'" style="font-size:14;margin:0px 15px;"></Label>

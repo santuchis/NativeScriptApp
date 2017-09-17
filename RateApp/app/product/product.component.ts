@@ -28,6 +28,8 @@ export class ProductComponent implements OnInit {
     private prevDeltaY: number;
     private currentPhotoIndex: number;
 
+    private rateValue :number = 2.5;
+
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;

@@ -4,6 +4,7 @@ import { NativeScriptUISideDrawerModule } from "nativescript-telerik-ui/sidedraw
 
 import { MyDrawerComponent } from "./my-drawer/my-drawer.component";
 import { UserService } from "../shared/services/user.service";
+import { StarsComponent } from "../components/stars/stars.component";
 
 @NgModule({
     imports: [
@@ -11,10 +12,12 @@ import { UserService } from "../shared/services/user.service";
         NativeScriptUISideDrawerModule
     ],
     declarations: [
-        MyDrawerComponent
+        MyDrawerComponent,
+        StarsComponent
     ],
     exports: [
         MyDrawerComponent,
+        StarsComponent,
         NativeScriptUISideDrawerModule
     ],
     providers: [
