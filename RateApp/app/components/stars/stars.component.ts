@@ -13,9 +13,7 @@ export class StarsComponent implements OnInit{
     private fullStar : string = "\uf005";
 
     @Input() value: number;
-    @Input() style: string;
-
-    @Output() output = new EventEmitter();
+    @Output() starTapped = new EventEmitter();
     
     constructor() {}
 
@@ -35,5 +33,9 @@ export class StarsComponent implements OnInit{
             return this.halfStar;
         }
         return this.emptyStar;
+    }
+
+    onTap(starPosition : number) : void {
+        this.starTapped.emit(starPosition);
     }
 }

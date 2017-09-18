@@ -40,12 +40,10 @@ export class AddCommentComponent implements OnInit {
         // End Side Drawer code
         
         this.productId = this.route.snapshot.params["id"];
-        console.log("Add Comment Page - ID: " + this.productId);
 	}
 
     selectStar(value : number) : void {
         this.starSelected = value;
-        console.log("selected:" + this.starSelected);
     }
 
     saveComment() : void {

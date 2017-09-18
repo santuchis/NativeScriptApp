@@ -1,7 +1,7 @@
 <StackLayout orientation="horizontal">
-    <Label [text]="getIcon(1)" class="fa"></Label>
-    <Label [text]="getIcon(2)" class="fa"></Label>
-    <Label [text]="getIcon(3)" class="fa"></Label>
-    <Label [text]="getIcon(4)" class="fa"></Label>
-    <Label [text]="getIcon(5)" class="fa"></Label>
+    <Label [text]="getIcon(1)" (tap)="onTap(1)" class="fa"></Label>
+    <Label [text]="getIcon(2)" (tap)="onTap(2)" class="fa"></Label>
+    <Label [text]="getIcon(3)" (tap)="onTap(3)" class="fa"></Label>
+    <Label [text]="getIcon(4)" (tap)="onTap(4)" class="fa"></Label>
+    <Label [text]="getIcon(5)" (tap)="onTap(5)" class="fa"></Label>
 </StackLayout>

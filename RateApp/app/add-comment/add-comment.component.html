@@ -44,11 +44,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         -->
         <StackLayout class="content-header">
             <StackLayout orientation="horizontal" class="stars">
-                <Label [text]="starSelected >= 1 ? '\uf005' : '\uf006'" class="fa star-icon" (tap)="selectStar(1)"></Label>
-                <Label [text]="starSelected >= 2 ? '\uf005' : '\uf006'" class="fa star-icon" (tap)="selectStar(2)"></Label>
-                <Label [text]="starSelected >= 3 ? '\uf005' : '\uf006'" class="fa star-icon" (tap)="selectStar(3)"></Label>
-                <Label [text]="starSelected >= 4 ? '\uf005' : '\uf006'" class="fa star-icon" (tap)="selectStar(4)"></Label>
-                <Label [text]="starSelected >= 5 ? '\uf005' : '\uf006'" class="fa star-icon" (tap)="selectStar(5)"></Label>
+                <rv-stars [value]="starSelected" (starTapped)="selectStar($event)" style="font-size: 40;color: goldenrod;"></rv-stars>
             </StackLayout>
         </StackLayout>
         <StackLayout>

@@ -26,13 +26,9 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     -->
     <StackLayout class="page page-content" tkMainContent>
         <GridLayout rows="auto, auto" columns="auto, auto, *, auto" class="content-header">
-            <Label row="0" col="0" rowSpan="2" [text]="'2.5'" class="rate"></Label>
-            <StackLayout row="0" col="1" orientation="horizontal" class="stars">
-                <Label [text]="'\uf005'" class="fa star-icon"></Label>
-                <Label [text]="'\uf005'" class="fa star-icon"></Label>
-                <Label [text]="'\uf123'" class="fa star-icon"></Label>
-                <Label [text]="'\uf006'" class="fa star-icon"></Label>
-                <Label [text]="'\uf006'" class="fa star-icon"></Label>
+            <Label row="0" col="0" rowSpan="2" [text]="2.5" class="rate"></Label>
+            <StackLayout row="0" col="1" class="stars">
+                <rv-stars [value]="2.5" style="font-size: 30;color: goldenrod;"></rv-stars>
             </StackLayout>
             <Label row="0" col="2" rowSpan="2" [text]="picked" (tap)="showStarsOptions()" class="stars-select"></Label>
             <Label row="0" col="3" rowSpan="2" class="fa stars-select-icon" [text]="'\uf107'"></Label>
@@ -44,12 +40,8 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     <Label *ngIf="i > 0" class="line"></Label>
                     <StackLayout class="comment">
                         <GridLayout rows="auto, auto" columns="*, auto" class="comment-header">
-                            <StackLayout row="0" col="0" orientation="horizontal">
-                                <Label [text]="'\uf005'" class="fa star-icon"></Label>
-                                <Label [text]="'\uf005'" class="fa star-icon"></Label>
-                                <Label [text]="'\uf006'" class="fa star-icon"></Label>
-                                <Label [text]="'\uf006'" class="fa star-icon"></Label>
-                                <Label [text]="'\uf006'" class="fa star-icon"></Label>
+                            <StackLayout row="0" col="0">
+                                <rv-stars [value]="3" style="font-size: 15;color: goldenrod;"></rv-stars>
                             </StackLayout>
                             <Label row="0" col="1" rowSpan="2" [text]="'Hace 1 día'" class="comment-date"></Label>
                             <Label row="1" col="0" [text]="'Guillermo'" class="comment-title"></Label>
