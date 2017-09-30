@@ -48,10 +48,10 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                         </GridLayout>
                         <Label textWrap="true" [text]="'Pellentesque lorem sem, scelerisque vel rhoncus sed, imperdiet ac odio. Curabitur gravida dui in consectetur tincidunt. Nullam non interdum ipsum, a ornare arcu. Pellentesque venenatis consectetur metus. Sed id purus id libero placerat ultrices et at est. Suspendisse aliquet euismod libero lacinia feugiat. Nunc vulputate tincidunt neque ac cursus.'"></Label>
                         <StackLayout orientation="horizontal" class="like-buttons">
-                            <Label [text]="'\uf087'" class="fa"></Label>
-                            <Label [text]="' 900 '" style="padding-right: 30px;"></Label>
-                            <Label [text]="'\uf088'" class="fa"></Label>
-                            <Label [text]="' 900 '"></Label>
+                            <Label [text]="'\uf087'" class="fa" (tap)="like()"></Label>
+                            <Label [text]="' 900 '" (tap)="like()" style="padding-right: 30px;"></Label>
+                            <Label [text]="'\uf088'" class="fa" (tap)="dislike()"></Label>
+                            <Label [text]="' 900 '" (tap)="dislike()"></Label>
                         </StackLayout>
                     </StackLayout>
                 </ng-template>

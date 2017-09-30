@@ -5,10 +5,12 @@ import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angul
 import { RouterExtensions } from "nativescript-angular/router";
 import { PanGestureEventData } from "ui/gestures";
 import { Page } from "ui/page";
+import { confirm } from "ui/dialogs";
 
 import { Product } from "../shared/model/product";
 import { ProductService } from "../shared/services/product.service";
 import { Device } from "../shared/device";
+import { Config } from "../shared/config";
 
 import animationModule = require("ui/animation");
 
@@ -103,10 +105,46 @@ export class ProductComponent implements OnInit {
         }
     }
 
-    goToAddComment() : void {
-        this.router.navigate(["/add-comment", this.product.id], {
-            transition: {name: "slide"}
+    showLoginDialog(): void {
+        let options = {
+            title: "Inicia sesión.",
+            message: "Quieres ir al formulario de inicio de sesión?",
+            okButtonText: "Si",
+            cancelButtonText: "No"
+        }
+        confirm(options).then((result: boolean) => {
+            if(result) {
+                this.router.navigate(["/login"], {
+                    transition: {name: "fade"}
+                });
+            }
         });
+    }
+
+    goToAddComment() : void {
+        if(Config.token === undefined) {
+            this.showLoginDialog();
+        } else {
+            this.router.navigate(["/add-comment", this.product.id], {
+                transition: {name: "slide"}
+            });
+        }
+    }
+
+    like(): void {
+        if(Config.token === undefined) {
+            this.showLoginDialog();
+        } else {
+            // TODO save like
+        }
+    }
+
+    dislike(): void {
+        if(Config.token === undefined) {
+            this.showLoginDialog();
+        } else {
+            // TODO save dislike
+        }
     }
 
     goToComments() : void {
