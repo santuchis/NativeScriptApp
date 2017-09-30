@@ -1,5 +1,9 @@
 <ActionBar class="action-bar">
     <NavigationButton icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem *ngIf="!canGoBack" icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+
     <Label class="action-bar-title" [text]="product.name"></Label>
 </ActionBar>
 

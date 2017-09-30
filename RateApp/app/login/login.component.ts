@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -29,12 +30,17 @@ export class LoginComponent implements OnInit {
 	private user: User = new User("", "","", "", [""]);
 	isLoggingIn:boolean = true;
 	waiting:boolean = false;
+	redirectToPage:string;
+	redirectToValue:string;
 
 	// Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: RouterExtensions, private userService: UserService) {}
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private userService: UserService) {
+		this.redirectToPage = this.route.snapshot.params["page"];
+		this.redirectToValue = this.route.snapshot.params["value"];
+	}
 
     ngOnInit(): void {
 		// Side Drawer code
@@ -60,7 +66,11 @@ export class LoginComponent implements OnInit {
 			.subscribe(
 				() => {
 					this.waiting = false;
-					this.router.navigate(["/home"], { clearHistory: true });
+					if(this.redirectToPage === undefined) {
+						this.router.navigate(["/home"], { clearHistory: true });
+					} else {
+						this.router.navigate(["/" + this.redirectToPage, this.redirectToValue], { clearHistory: true });
+					}
 				},
 				(error) => {
 					this.waiting = false;

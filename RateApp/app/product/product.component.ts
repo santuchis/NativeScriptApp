@@ -24,6 +24,8 @@ import animationModule = require("ui/animation");
 export class ProductComponent implements OnInit {
 
     // Component Variables
+    private canGoBack:boolean = false;
+
     @ViewChildren("dragImage") dragImages: QueryList<ElementRef>;
     private product : Product;
     private prevDeltaX: number;
@@ -50,6 +52,8 @@ export class ProductComponent implements OnInit {
         this.currentPhotoIndex = 0;
         const id = this.route.snapshot.params["id"];
         this.product = this.productService.getProductById(id);
+
+         this.canGoBack = this.router.locationStrategy.canGoBack();
     }
 
     ngAfterViewInit(): void {
@@ -114,7 +118,7 @@ export class ProductComponent implements OnInit {
         }
         confirm(options).then((result: boolean) => {
             if(result) {
-                this.router.navigate(["/login"], {
+                this.router.navigate(["/login", "product", this.product.id], {
                     transition: {name: "fade"}
                 });
             }

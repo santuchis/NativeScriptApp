@@ -76,7 +76,7 @@ export class CommentsComponent implements OnInit {
         }
         confirm(options).then((result: boolean) => {
             if(result) {
-                this.router.navigate(["/login"], {
+                this.router.navigate(["/login", "product", this.productId], {
                     transition: {name: "fade"}
                 });
             }
