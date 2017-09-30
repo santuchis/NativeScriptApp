@@ -22,6 +22,20 @@
 .fa {
    font-family: "FontAwesome";
 }
+.fa-spin{
+    animation-name:rotate;
+    animation-duration:1.5;
+    animation-iteration-count:infinite;
+    animation-timing-function:linear
+}
+@keyframes rotate {
+    from {
+        transform:rotate(0deg)
+    }
+    to {
+        transform:rotate(360deg)
+    }
+}
 // Common page class
 .page-content {
     .page-placeholder {
