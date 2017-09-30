@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
-import { Router } from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";
 
 import { Config } from "../shared/config";
 
@@ -16,14 +16,17 @@ export class LogoutComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: Router) {
-        Config.token = undefined;
-        Config.user = undefined;
-        router.navigate(["/home"]);
-    }
+    constructor(private router: RouterExtensions) {}
 
     ngOnInit(): void {
+        // Side Drawer code
         this._sideDrawerTransition = new SlideInOnTopTransition();
+        // End Side Drawer code
+        
+        Config.token = undefined;
+        Config.user = undefined;
+        console.log("LOGOUT");
+        this.router.navigate(["/home"], { clearHistory: true });
     }
 
     /****************

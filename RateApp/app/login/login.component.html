@@ -43,6 +43,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         -->
         <TextField 
             #name #nameModel="ngModel" [(ngModel)]="user.name" 
+            isEnabled="{{ !waiting }}"
             [visibility]="isLoggingIn ? 'collapse' : 'visible'"
             hint="Name" required minlength="4">
         </TextField>
@@ -57,6 +58,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
         <TextField 
             #username #usernameModel="ngModel" [(ngModel)]="user.username"
+            isEnabled="{{ !waiting }}"
             [visibility]="isLoggingIn ? 'collapse' : 'visible'" hint="User Name"
             required minlength="4" autocapitalizationType="none">
         </TextField>
@@ -71,6 +73,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
 
         <TextField 
             #email #emailModel="ngModel" [(ngModel)]="user.email" 
+            isEnabled="{{ !waiting }}"
             hint="Email Address" keyboardType="email" autocorrect="false"
             autocapitalizationType="none" required email>
         </TextField>
@@ -84,6 +87,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         
         <TextField
             #password #pswModel="ngModel" [(ngModel)]="user.password"
+            isEnabled="{{ !waiting }}"
             hint="Passsword" secure="true" required minlength="6">
         </TextField>
         <Label
@@ -97,12 +101,14 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         
         <Button
             [text]="isLoggingIn ? 'Sign In' : 'Sign Up'" class="submit-button" (tap)="submit()"
-            isEnabled="{{ emailModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && usernameModel.valid)) }}"
-            [ngClass]="{'disabled':!(emailModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && usernameModel.valid)))}"
+            isEnabled="{{ !waiting && (emailModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && usernameModel.valid))) }}"
+            [ngClass]="{'disabled':!(!waiting && (emailModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && usernameModel.valid))))}"
             >
         </Button>
         <Button 
+            isEnabled="{{ !waiting }}"
             [text]="isLoggingIn ? 'Sign Up' : 'Back to Login'" (tap)="toggleDisplay()">
         </Button>
+        <Label *ngIf="waiting" [text]="'\uf110'" class="fa fa-spin" style="text-align:center;"></Label>
     </StackLayout>
 </RadSideDrawer>

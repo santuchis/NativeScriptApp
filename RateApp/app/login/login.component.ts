@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
-import { Router } from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";
 import { Color } from "color";
 import { View } from "ui/core/view";
 
 import { User } from "../shared/model/user";
 import { UserService } from "../shared/services/user.service";
+
+import { Config } from "../shared/config";
 
 @Component({
     selector: "Login",
@@ -26,12 +28,13 @@ export class LoginComponent implements OnInit {
 
 	private user: User = new User("", "","", "", [""]);
 	isLoggingIn:boolean = true;
+	waiting:boolean = false;
 
 	// Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: Router, private userService: UserService) {}
+    constructor(private router: RouterExtensions, private userService: UserService) {}
 
     ngOnInit(): void {
 		// Side Drawer code
@@ -55,8 +58,12 @@ export class LoginComponent implements OnInit {
 	login() {
 		this.userService.login(this.user)
 			.subscribe(
-				() => this.router.navigate(["/home"]),
+				() => {
+					this.waiting = false;
+					this.router.navigate(["/home"], { clearHistory: true });
+				},
 				(error) => {
+					this.waiting = false;
 					alert("Unfortunately we could not find your account.");
 					console.dir(error);
 				}
@@ -67,10 +74,14 @@ export class LoginComponent implements OnInit {
     	this.userService.register(this.user)
 			.subscribe(
 				() => {
+					this.waiting = false;
 					alert("Your account was successfully created.");
 					this.toggleDisplay();
 				},
-				() => alert("Unfortunately we were unable to create your account.")
+				() => {
+					this.waiting = false;
+					alert("Unfortunately we were unable to create your account.");
+				}
 			);
 	}
 
@@ -79,6 +90,7 @@ export class LoginComponent implements OnInit {
 			alert("Enter a valid email address.");
 			return;
 		}
+		this.waiting = true;
 		if (this.isLoggingIn) {
 			this.login();
 		} else {
