@@ -6,7 +6,6 @@ import { Product } from "../shared/model/product";
 	selector: 'product-list',
 	moduleId: module.id,
     templateUrl: "./product-list.component.html",
-    changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [ProductService],
 })
 export class ProductListComponent implements OnInit{

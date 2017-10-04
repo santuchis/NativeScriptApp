@@ -19,9 +19,12 @@ import { Device } from "../shared/device";
 export class SearchPageComponent implements OnInit {
 
     private productListToChild : Product[];
+    private suggestedproducts : Array<Product> = [];
 
     private input : string;
+    private lastSearched : string = "";
 
+    private isLoading : boolean = false;
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
@@ -47,14 +50,31 @@ export class SearchPageComponent implements OnInit {
     onTextChanged(args) {
         let searchBar = <SearchBar>args.object;
         this.input = searchBar.text;
+        if(this.input !== undefined && this.input.length > 0 && this.input.trim() !== this.lastSearched.trim()) {
+            this.lastSearched = this.input;
+            this.isLoading = true;
+            this.productService.getProductsByName(this.input)
+                .subscribe(products => {
+                    this.suggestedproducts = [];
+                    products.forEach((p) => {
+                        this.suggestedproducts.push(p);
+                    });
+                    this.isLoading = false;
+                });
+        }
     }
 
     isSearching() : boolean {
         return this.input !== undefined && this.input.length > 0;
     }
 
-    getList(): Array<Product> {
-        return this.isSearching() ? this.productService.getProductsByName(this.input) : this.productListToChild;
+    getList() {
+        if(this.isSearching()) {
+            return this.suggestedproducts;
+        } else {
+            this.suggestedproducts = [];
+            return this.productListToChild;
+        }
     }
 
     onSubmit(args) : void {

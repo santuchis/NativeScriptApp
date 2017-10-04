@@ -7,6 +7,7 @@ import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
 
 import { Product } from "../model/product";
+import { Config } from "../config";
 
 @Injectable()
 export class ProductService {
@@ -36,11 +37,28 @@ export class ProductService {
 		return productList;
 	}
 
-	getProductsByName(name: string) : Product[] {
-		return this.productList2.filter(prod => prod.name.toLowerCase().indexOf(name.toLowerCase()) >= 0);
+	getProductsByName(name: string) {
+		let headers = new Headers();
+		return this.http.get(Config.apiUrl + "product/byName/" + encodeURIComponent(name), {
+		  headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+		  let products = [];
+		  data.forEach((p) => {
+			products.push(new Product(p.id, p.name, p.brand, p.description, this.images));
+		  });
+		  return products;
+		})
+		.catch(this.handleErrors);
 	}
 
 	getProductById(id : string) : Product {
 		return this.productList2.find(p => p.id === id);
+	}
+
+	handleErrors(error: Response) {
+		console.log(JSON.stringify(error.json()));
+		return Observable.throw(error);
 	}
 }
