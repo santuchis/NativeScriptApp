@@ -54,11 +54,12 @@ export class SearchPageComponent implements OnInit {
             this.lastSearched = this.input;
             this.isLoading = true;
             this.productService.getProductsByName(this.input)
-                .subscribe(products => {
+                .subscribe(result => {
                     this.suggestedproducts = [];
-                    products.forEach((p) => {
+                    result["products"].forEach((p) => {
                         this.suggestedproducts.push(p);
                     });
+                    console.log("COUNT FROM RESPONSE="+result["count"]);
                     this.isLoading = false;
                 });
         }

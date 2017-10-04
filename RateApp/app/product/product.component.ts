@@ -32,7 +32,7 @@ export class ProductComponent implements OnInit {
     private prevDeltaY: number;
     private currentPhotoIndex: number;
 
-    private rateValue :number = 2.5;
+    private isLoading : boolean = true;
 
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -51,7 +51,12 @@ export class ProductComponent implements OnInit {
 
         this.currentPhotoIndex = 0;
         const id = this.route.snapshot.params["id"];
-        this.product = this.productService.getProductById(id);
+        this.isLoading = true;
+        this.productService.getProductById(id).subscribe(result => {
+            this.product = result["product"];
+            console.log("LIKE FROM RESPONSE.="+result["likes"]);
+            this.isLoading = false;
+        });;
 
          this.canGoBack = this.router.locationStrategy.canGoBack();
     }
@@ -62,7 +67,7 @@ export class ProductComponent implements OnInit {
     }
 
     getShortDescription() : string {
-        return this.product.description.slice(0, 400) + "...";
+        return this.product.description.length > 400 ? this.product.description.slice(0, 400) + "..." : this.product.description;
     }
 
     move(index: number, milliseconds: number) {
