@@ -17,7 +17,7 @@ import animationModule = require("ui/animation");
 @Component({
     selector: "Product",
     moduleId: module.id,
-    styleUrls: ["./product.component.css"],    
+    styleUrls: ["./product-common.component.css", "./product.component.css"],
     templateUrl: "./product.component.html",
     providers: [ProductService]
 })
@@ -57,7 +57,6 @@ export class ProductComponent implements OnInit {
         this.productService.getProductById(id).subscribe(result => {
             this.product = result["product"];
             this.likeStatus = result["likes"];
-            console.log("LIKE FROM RESPONSE.=" + this.likeStatus);
             this.isLoading = false;
         });;
 
