@@ -41,7 +41,7 @@ export class UserService {
 		headers.append("Authorization", "Basic " + base64.encode(utf8.encode("my-trusted-client:secret")));
 		
 		let searchParams = new URLSearchParams();
-		searchParams.append('username', user.email);
+		searchParams.append('username', user.username);
 		searchParams.append('password', user.password);
 		searchParams.append('grant_type', "password");
 		

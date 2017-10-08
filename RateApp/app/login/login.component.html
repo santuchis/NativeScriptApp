@@ -59,7 +59,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <TextField 
             #username #usernameModel="ngModel" [(ngModel)]="user.username"
             isEnabled="{{ !waiting }}"
-            [visibility]="isLoggingIn ? 'collapse' : 'visible'" hint="User Name"
+            hint="User Name"
             required minlength="4" autocapitalizationType="none">
         </TextField>
         <Label
@@ -74,7 +74,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <TextField 
             #email #emailModel="ngModel" [(ngModel)]="user.email" 
             isEnabled="{{ !waiting }}"
-            hint="Email Address" keyboardType="email" autocorrect="false"
+            [visibility]="isLoggingIn ? 'collapse' : 'visible'" hint="Email Address" keyboardType="email" autocorrect="false"
             autocapitalizationType="none" required email>
         </TextField>
         <Label 
@@ -101,8 +101,8 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         
         <Button
             [text]="isLoggingIn ? 'Sign In' : 'Sign Up'" class="submit-button" (tap)="submit()"
-            isEnabled="{{ !waiting && (emailModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && usernameModel.valid))) }}"
-            [ngClass]="{'disabled':!(!waiting && (emailModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && usernameModel.valid))))}"
+            isEnabled="{{ !waiting && (usernameModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && emailModel.valid))) }}"
+            [ngClass]="{'disabled':!(!waiting && (usernameModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && emailModel.valid))))}"
             >
         </Button>
         <Button 
