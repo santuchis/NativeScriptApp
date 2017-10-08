@@ -60,6 +60,9 @@ export class ProductService {
 
 	getProductById(id : string) {
 		let headers = new Headers();
+		if(Config.token !== undefined) {
+			headers.append("Authorization", "Bearer " + Config.token);
+		}
 		return this.http.get(Config.apiUrl + "product/" + id, {
 		  headers: headers
 		})
@@ -73,6 +76,57 @@ export class ProductService {
 		})
 		.catch(this.handleErrors);
 		//return this.productList2.find(p => p.id === id);
+	}
+
+	likeProduct(id: string) {
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(Config.apiUrl + 'product/like/' + id, {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			result["success"] = data.success;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
+	dislikeProduct(id: string) {
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(Config.apiUrl + 'product/dislike/' + id, {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			result["success"] = data.success;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
+	unlikeProduct(id: string) {
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(Config.apiUrl + 'product/unlike/' + id, {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			result["success"] = data.success;
+			return result;
+		})
+		.catch(this.handleErrors);
 	}
 
 	handleErrors(error: Response) {

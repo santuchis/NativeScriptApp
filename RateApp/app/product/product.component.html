@@ -42,9 +42,9 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     </AbsoluteLayout>
                     <GridLayout rows="auto, auto" columns="*, auto, auto, auto, auto" class="title">
                         <Label row="0" col="0" [text]="product.name" class="name" textWrap="true"></Label>
-                        <Label row="0" col="1" rowSpan="2" [text]="'\uf087'" class="fa" (tap)="like()"></Label>
+                        <Label row="0" col="1" rowSpan="2" [ngClass]="{'active':likeStatus > 0 }" [text]="'\uf087'" class="fa" (tap)="like()"></Label>
                         <Label row="0" col="2" rowSpan="2" [text]="' '+product.likesCount+' '" (tap)="like()"></Label>
-                        <Label row="0" col="3" rowSpan="2" [text]="'\uf088'" class="fa" (tap)="dislike()"></Label>
+                        <Label row="0" col="3" rowSpan="2" [ngClass]="{'active':likeStatus < 0 }" [text]="'\uf088'" class="fa" (tap)="dislike()"></Label>
                         <Label row="0" col="4" rowSpan="2" [text]="' '+product.dislikesCount+' '" (tap)="dislike()"></Label>
                         <Label row="1" col="0" [text]="product.brand" class="brand"></Label>
                     </GridLayout>

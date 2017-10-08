@@ -27,12 +27,14 @@ export class ProductComponent implements OnInit {
     private canGoBack:boolean = false;
 
     @ViewChildren("dragImage") dragImages: QueryList<ElementRef>;
-    private product : Product;
     private prevDeltaX: number;
     private prevDeltaY: number;
     private currentPhotoIndex: number;
+    private product : Product;
+    private likeStatus : number;
 
     private isLoading : boolean = true;
+    private savingLike : boolean = false;
 
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -54,7 +56,8 @@ export class ProductComponent implements OnInit {
         this.isLoading = true;
         this.productService.getProductById(id).subscribe(result => {
             this.product = result["product"];
-            console.log("LIKE FROM RESPONSE.="+result["likes"]);
+            this.likeStatus = result["likes"];
+            console.log("LIKE FROM RESPONSE.=" + this.likeStatus);
             this.isLoading = false;
         });;
 
@@ -141,18 +144,64 @@ export class ProductComponent implements OnInit {
     }
 
     like(): void {
+        if(this.savingLike) { return; }
         if(Config.token === undefined) {
             this.showLoginDialog();
         } else {
-            // TODO save like
+            this.savingLike = true;
+            if(this.likeStatus == 1) {
+                this.productService.unlikeProduct(this.product.id).subscribe(result => {
+                    if(result.success) {
+                        this.product.likesCount--;
+                        this.likeStatus = 0;
+                        this.savingLike = false;
+                    } else {
+                        alert("Unlike was not saved, try again.");
+                    }
+                });
+            } else {
+                this.productService.likeProduct(this.product.id).subscribe(result => {
+                    if(result.success) {
+                        this.product.likesCount++;
+                        if(this.likeStatus < 0) { this.product.dislikesCount--; }
+                        this.likeStatus = 1;
+                        this.savingLike = false;
+                    } else {
+                        alert("Like was not saved, try again.");
+                    }
+                });
+            }
         }
     }
 
     dislike(): void {
+        if(this.savingLike) { return; }
         if(Config.token === undefined) {
             this.showLoginDialog();
         } else {
-            // TODO save dislike
+            this.savingLike = true;
+            if(this.likeStatus == -1) {
+                this.productService.unlikeProduct(this.product.id).subscribe(result => {
+                    if(result.success) {
+                        this.product.dislikesCount--;
+                        this.likeStatus = 0;
+                        this.savingLike = false;
+                    } else {
+                        alert("Unlike was not saved, try again.");
+                    }
+                });
+            } else {
+                this.productService.dislikeProduct(this.product.id).subscribe(result => {
+                    if(result.success) {
+                        this.product.dislikesCount++;
+                        if(this.likeStatus > 0) { this.product.likesCount-- ;}
+                        this.likeStatus = -1;
+                        this.savingLike = false;
+                    } else {
+                        alert("Dislike was not saved, try again.");
+                    }
+                });
+            }
         }
     }
 
