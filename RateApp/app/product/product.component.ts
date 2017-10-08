@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef, AfterViewInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
@@ -58,14 +58,20 @@ export class ProductComponent implements OnInit {
             this.product = result["product"];
             this.likeStatus = result["likes"];
             this.isLoading = false;
-        });;
+            setTimeout(()=>{
+                this.initImagesPositions();
+            }, 0);
+        });
 
          this.canGoBack = this.router.locationStrategy.canGoBack();
+         
     }
 
-    ngAfterViewInit(): void {
+    initImagesPositions(): void {
+        console.log('isloading='+this.isLoading);
         let i = 0;
         this.dragImages.forEach(el => el.nativeElement.translateX = Device.actualWidth * (i++))
+        console.log('isloading='+this.isLoading);
     }
 
     getShortDescription() : string {
