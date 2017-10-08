@@ -54,6 +54,18 @@ Label.line {
     margin: 15px;
 }
 
-.active{
-    color:blue
+.like-btn {
+    color: black;
+}
+
+.like-btn.active{
+    color:#0000ff;
+}
+
+.like-btn.in-progress {
+    color: #778899;
+}
+
+.like-btn.thumb.active.in-progress {
+    color: #add8e6;
 }
