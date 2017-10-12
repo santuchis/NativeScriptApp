@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { PlatformLocation } from '@angular/common';
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -40,7 +41,8 @@ export class ProductComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, private page: Page){};
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, 
+        private page: Page, private location : PlatformLocation){};
 
     ngOnInit(): void {
         // Side Drawer code
@@ -50,7 +52,7 @@ export class ProductComponent implements OnInit {
 			this.onDrawerRefresh();
         }, 100);
         // End Side Drawer code
-
+        
         this.currentPhotoIndex = 0;
         const id = this.route.snapshot.params["id"];
         this.isLoading = true;
@@ -63,8 +65,15 @@ export class ProductComponent implements OnInit {
             }, 0);
         });
 
-         this.canGoBack = this.router.locationStrategy.canGoBack();
-         
+        this.canGoBack = this.router.locationStrategy.canGoBack();
+
+        this.location.onPopState(() => {
+            this.productService.getProductById(id).subscribe(result => {
+                let p  = result["product"];
+                this.product.rate = p.rate;
+                this.product.commentsCount = p.commentsCount;
+            });
+        });
     }
 
     initImagesPositions(): void {

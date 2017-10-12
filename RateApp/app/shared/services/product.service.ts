@@ -1,5 +1,3 @@
-import * as base64 from "base-64";
-import * as utf8 from "utf8";
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response, URLSearchParams, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs/Rx";
