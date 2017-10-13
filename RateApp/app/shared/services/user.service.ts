@@ -21,7 +21,7 @@ export class UserService {
     	headers.append("Content-Type", "application/json");
 
     	return this.http.post(
-      		Config.apiUrl + "users",
+      		Config.apiUrl + "user/register",
       		JSON.stringify({
 				name: usr.name,
 				username: usr.username,
@@ -32,7 +32,6 @@ export class UserService {
       		{ headers: headers }
     	)
     	.catch(this.handleErrors);
-		
   	}
 
   	login(user: User) {
@@ -62,9 +61,9 @@ export class UserService {
   	}
 	
 	handleErrors(error: Response) {
-    	console.log(JSON.stringify(error.json()));
-    	return Observable.throw(error);
-	  }
+    	console.log("handleErrors : "+JSON.stringify(error.json()));
+    	return Observable.throw(error.json());
+	}
 	  
 	  getUserStatus() : boolean {
 		  return this.isLogged;

@@ -49,17 +49,25 @@ export class ResultPageComponent implements OnInit {
 
 	 }
 	
-	goToProduct(id) : void {
+	goToProduct(product : Product) : void {
         Device.height = this.page.getMeasuredHeight();
         Device.width = this.page.getMeasuredWidth();
         Device.actualHeight = this.page.getActualSize().height;
         Device.actualWidth = this.page.getActualSize().width;
-        this.router.navigate(["/product", id], {
+        this.router.navigate(["/product", product.id], {
             transition: {name: "slide"}
         });
+        this.productService.saveSearchedProduct(product.id,product.name)
+        .subscribe(
+            () => {
+               console.log("Exito en salvar producto");
+            },
+            () => {
+                console.log("Error en salvar producto");
+            }
+        );
 	}
-	
-
+    
 	/****************
      * Side Drawer methods
      ***************/

@@ -22,11 +22,19 @@ export class ProductListComponent implements OnInit{
 
     public onItemTap(args) {
         console.log("ItemTapped:" + args.index);
-        this.itemTap.emit(this.productList[args.index].id);
+        this.itemTap.emit(this.productList[args.index]);
     }
 
-    public remove(index: number) {
+    public remove(index: number, productId : string) {
         console.log('remove ' + index);
         this.productList.splice(index, 1);
+        this.productService.deleteSearchedProduct(productId).subscribe(
+             () => {
+                console.log("Exito en borrar producto");
+             },
+             () => {
+                 console.log("Error en borrar producto");
+             }
+        );
     }
 }

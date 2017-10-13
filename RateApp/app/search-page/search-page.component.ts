@@ -18,7 +18,7 @@ import { Device } from "../shared/device";
 })
 export class SearchPageComponent implements OnInit {
 
-    private productListToChild : Product[];
+    private productListToChild : Product[] = [];
     private suggestedproducts : Array<Product> = [];
 
     private input : string;
@@ -43,8 +43,14 @@ export class SearchPageComponent implements OnInit {
         // End Side Drawer code
         
         if(!this.userService.getUserStatus()){
-           this.productListToChild = this.productService.getUserProducts();
-        }
+            this.productService.getSearchedProducts()
+                .subscribe(result => {
+                    result["products"].forEach((p) => {
+                        this.productListToChild.push(p);
+                    });
+                    this.isLoading = false;
+                });
+            }
     }
 
     onTextChanged(args) {
@@ -73,6 +79,7 @@ export class SearchPageComponent implements OnInit {
         if(this.isSearching()) {
             return this.suggestedproducts;
         } else {
+            //TODO no tiene el nuevo valor guardado, al momento de terminar la busqueda
             this.suggestedproducts = [];
             return this.productListToChild;
         }
@@ -84,14 +91,24 @@ export class SearchPageComponent implements OnInit {
 
     }
 
-    goToProduct(id) : void {
+    goToProduct(product : Product) : void {
         Device.height = this.page.getMeasuredHeight();
         Device.width = this.page.getMeasuredWidth();
         Device.actualHeight = this.page.getActualSize().height;
         Device.actualWidth = this.page.getActualSize().width;
-        this.router.navigate(["/product", id], {
+        this.router.navigate(["/product", product.id], {
             transition: {name: "slide"}
         });
+        console.log("Por llamar");
+        this.productService.saveSearchedProduct(product.id,product.name)
+        .subscribe(
+            () => {
+               console.log("Exito en salvar producto");
+            },
+            () => {
+                console.log("Error en salvar producto");
+            }
+        );
     }
 
 

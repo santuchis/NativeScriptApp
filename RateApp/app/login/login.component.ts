@@ -88,9 +88,10 @@ export class LoginComponent implements OnInit {
 					alert("Your account was successfully created.");
 					this.toggleDisplay();
 				},
-				() => {
+				(err) => {
+					let message= err.status==400 ? "Email or Username already taken." : "Unfortunately we could not register your account"
 					this.waiting = false;
-					alert("Unfortunately we were unable to create your account.");
+					alert(message);
 				}
 			);
 	}

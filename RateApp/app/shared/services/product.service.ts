@@ -129,6 +129,56 @@ export class ProductService {
 		.catch(this.handleErrors);
 	}
 
+
+	getLastSearchedProducts(){
+
+	}
+
+	saveSearchedProduct(id : string , productName : string){
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+    	return this.http.post(
+      		Config.apiUrl + "user/search-product",
+      		JSON.stringify({
+				id: id,
+				name: productName,
+      		}),
+      		{ headers: headers }
+    	)
+    	.catch(this.handleErrors);
+	}
+
+	getSearchedProducts(){
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+    	return this.http.get(Config.apiUrl + 'user/search-product', {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			let products = [];
+			data.forEach((p) => {
+			  products.push(new Product(p.productId, p.productName,null,null,null,null,null,null,null,null,null));
+			});
+			result["products"] = products;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
+	deleteSearchedProduct(productId: string){
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+		return this.http.delete(
+			Config.apiUrl + 'user/delete-product/'+productId, { headers: headers }
+	  )
+	  .catch(this.handleErrors);
+	}
+
 	handleErrors(error: Response) {
 		console.log(JSON.stringify(error.json()));
 		return Observable.throw(error);
