@@ -58,7 +58,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                             <Label row="0" col="0" [text]="'Comentarios'" class="section-title" (tap)="goToComments()"></Label>
                             <Label row="0" col="1" [text]="'\uf105'" class="fa" (tap)="goToComments()"></Label>
                         </GridLayout>
-                        <Label row="1" col="0" rowSpan="2" [text]="product.rate" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
+                        <Label row="1" col="0" rowSpan="2" text="{{product.rate | number : '1.1-1'}}" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
                         <StackLayout row="1" col="1" style="margin:0px 15px;">
                             <rv-stars [value]="product.rate" style="font-size:30;color: goldenrod;"></rv-stars>
                         </StackLayout>

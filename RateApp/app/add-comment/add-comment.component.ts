@@ -8,14 +8,15 @@ import { Color } from "color";
 import { View } from "ui/core/view";
 
 import { User } from "../shared/model/user";
-import { UserService } from "../shared/services/user.service";
+import { Comment } from "../shared/model/comment";
+import { CommentService } from "../shared/services/comment.service";
 
 @Component({
     selector: "AddComment",
     moduleId: module.id,
     templateUrl: "./add-comment.component.html",
     styleUrls: ["./add-comment.component.css"],
-    providers: [UserService],
+    providers: [CommentService],
 })
 export class AddCommentComponent implements OnInit {
 
@@ -28,7 +29,7 @@ export class AddCommentComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: RouterExtensions, private route: ActivatedRoute) {}
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private commentService: CommentService) {}
 
     ngOnInit(): void {
         // Side Drawer code
@@ -47,7 +48,21 @@ export class AddCommentComponent implements OnInit {
     }
 
     saveComment() : void {
-        console.log("saving comment: " + this.comment);
+        let comment: Comment;
+        this.commentService.saveComment(this.productId, this.comment, this.starSelected)
+            .subscribe(
+                (result) => {
+					if(result.success) {
+                        this.router.backToPreviousPage();
+                    } else {
+                        alert('Error while saving comment, please try again');
+                    }
+				},
+				(error) => {
+					alert('Unexpected error, please try again');
+					console.dir(error);
+				}
+            );
     }
 
     goBack() {
