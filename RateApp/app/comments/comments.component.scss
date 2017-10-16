@@ -69,3 +69,24 @@ Label.line {
     height: 4px;
     margin: 25px 0px;
 }
+
+.like-btn {
+    font-size: 20px;
+    margin: 10px 20px;
+}
+
+.like-btn {
+    color: black;
+}
+
+.like-btn.active{
+    color:#0000ff;
+}
+
+.like-btn.in-progress {
+    color: #778899;
+}
+
+.like-btn.thumb.active.in-progress {
+    color: #add8e6;
+}

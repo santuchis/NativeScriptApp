@@ -45,14 +45,14 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                                     <rv-stars [value]="comment.stars" style="font-size: 15;color: goldenrod;"></rv-stars>
                                 </StackLayout>
                                 <Label row="0" col="1" rowSpan="2" [text]="getDate(comment.date)" class="comment-date"></Label>
-                                <Label row="1" col="0" [text]="comment.createdBy.name" class="comment-title"></Label>
+                                <Label row="1" col="0" [text]="comment.createBy.name" class="comment-title"></Label>
                             </GridLayout>
                             <Label textWrap="true" [text]="comment.text"></Label>
                             <StackLayout orientation="horizontal" class="like-buttons">
-                                <Label [text]="'\uf087'" class="fa" (tap)="like()"></Label>
-                                <Label [text]="' '+comment.likesCount+' '" (tap)="like()" style="padding-right: 30px;"></Label>
-                                <Label [text]="'\uf088'" class="fa" (tap)="dislike()"></Label>
-                                <Label [text]="' '+comment.dislikesCount+' '" (tap)="dislike()"></Label>
+                                <Label textWrap="true" [text]="comment.userLike > 0 ? '\uf164':'\uf087'" [ngClass]="{'active':comment.userLike > 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="like(comment)"></Label>
+                                <Label textWrap="true" [text]="' '+comment.likesCount+' '" (tap)="like(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count" style="padding-right: 30px;"></Label>
+                                <Label textWrap="true" [text]="comment.userLike < 0 ? '\uf165' : '\uf088'" [ngClass]="{'active':comment.userLike < 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="dislike(comment)"></Label>
+                                <Label textWrap="true" [text]="' '+comment.dislikesCount+' '" (tap)="dislike(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count"></Label>
                             </StackLayout>
                         </StackLayout>
                     </ng-template>

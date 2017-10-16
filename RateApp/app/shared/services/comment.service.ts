@@ -52,6 +52,9 @@ export class CommentService {
     getComments(productId: string, page: number) {
         let headers = new Headers();
         headers.append("Content-Type", "application/json");
+        if(Config.token !== undefined) {
+			headers.append("Authorization", "Bearer " + Config.token);
+		}
 
         let searchParams = new URLSearchParams();
         searchParams.append('page', ""+page);
@@ -69,9 +72,7 @@ export class CommentService {
             result["success"] = data.success;
             if(data.success) {
                 data.comments.content.forEach((c) => {
-                    let user = new User(c.createBy.name, c.createBy.username, null, null, null);
-                    let comment = new Comment(c.id, c.date, c.text, c.stars, c.likesCount, c.dislikesCount, user, null);
-                    comments.push(comment);
+                    comments.push(c);
                 });
                 result["comments"] = comments;
                 result["last"] = data.comments.last;
@@ -80,6 +81,57 @@ export class CommentService {
         })
         .catch(this.handleErrors);
     }
+
+    likeComment(id: string) {
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(Config.apiUrl + 'comment/like/' + id, {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			result["success"] = data.success;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
+	dislikeComment(id: string) {
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(Config.apiUrl + 'comment/dislike/' + id, {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			result["success"] = data.success;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
+	unlikeComment(id: string) {
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(Config.apiUrl + 'comment/unlike/' + id, {
+			headers: headers
+		})
+		.map(res => res.json())
+		.map(data => {
+			let result = {};
+			result["success"] = data.success;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
       
 	handleErrors(error: Response) {
     	console.log(JSON.stringify(error.json()));

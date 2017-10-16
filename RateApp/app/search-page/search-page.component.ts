@@ -42,7 +42,7 @@ export class SearchPageComponent implements OnInit {
         }, 100);
         // End Side Drawer code
         
-        if(!this.userService.getUserStatus()){
+        if(this.userService.getUserStatus()){
             this.productService.getSearchedProducts()
                 .subscribe(result => {
                     result["products"].forEach((p) => {
@@ -100,15 +100,17 @@ export class SearchPageComponent implements OnInit {
             transition: {name: "slide"}
         });
         console.log("Por llamar");
-        this.productService.saveSearchedProduct(product.id,product.name)
-        .subscribe(
-            () => {
-               console.log("Exito en salvar producto");
-            },
-            () => {
-                console.log("Error en salvar producto");
-            }
-        );
+        if(this.userService.getUserStatus()) {
+            this.productService.saveSearchedProduct(product.id,product.name)
+                .subscribe(
+                    () => {
+                        console.log("Exito en salvar producto");
+                    },
+                    () => {
+                        console.log("Error en salvar producto");
+                    }
+                );
+        }
     }
 
 

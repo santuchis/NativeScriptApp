@@ -20,7 +20,7 @@ import { CommentService } from "../shared/services/comment.service";
 export class CommentsComponent implements OnInit {
 
     // Component Variables
-    private comments : Comment[];
+    private comments: any[];
     private stars : string[] = ["Todas", "1 Estrella", "2 Estrellas", "3 Estrellas", "4 Estrellas", "5 Estrellas"];
     private picked: string = "Todas";
     private productId : string;
@@ -117,19 +117,65 @@ export class CommentsComponent implements OnInit {
         });
     }
 
-    like(): void {
+    like(comment: any): void {
+        if(comment.savingLike) { return; }
         if(Config.token === undefined) {
             this.showLoginDialog();
         } else {
-            // TODO save like
+            comment.savingLike = true;
+            if(comment.userLike == 1) {
+                this.commentService.unlikeComment(comment.id).subscribe(result => {
+                    if(result.success) {
+                        comment.likesCount--;
+                        comment.userLike = 0;
+                        comment.savingLike = false;
+                    } else {
+                        alert("Unlike was not saved, try again.");
+                    }
+                });
+            } else {
+                this.commentService.likeComment(comment.id).subscribe(result => {
+                    if(result.success) {
+                        comment.likesCount++;
+                        if(comment.userLike < 0) { comment.dislikesCount--; }
+                        comment.userLike = 1;
+                        comment.savingLike = false;
+                    } else {
+                        alert("Like was not saved, try again.");
+                    }
+                });
+            }
         }
     }
 
-    dislike(): void {
+    dislike(comment: any): void {
+        if(comment.savingLike) { return; }
         if(Config.token === undefined) {
             this.showLoginDialog();
         } else {
-            // TODO save dislike
+            comment.savingLike = true;
+            if(comment.userLike == -1) {
+                this.commentService.unlikeComment(comment.id).subscribe(result => {
+                    if(result.success) {
+                        comment.dislikesCount--;
+                        comment.userLike = 0;
+                        comment.savingLike = false;
+                    } else {
+                        alert("Unlike was not saved, try again.");
+                    }
+                });
+            } else {
+                this.commentService.dislikeComment(comment.id).subscribe(result => {
+                    if(result.success) {
+                        comment.dislikesCount++;
+                        if(comment.userLike > 0) { comment.likesCount--; }
+                        comment.userLike = -1;
+                        comment.savingLike = false;
+                    } else {
+                        alert("Like was not saved, try again.");
+                    }
+                });
+            }
         }
     }
 
