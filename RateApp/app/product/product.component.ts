@@ -72,6 +72,8 @@ export class ProductComponent implements OnInit {
                 let p  = result["product"];
                 this.product.rate = p.rate;
                 this.product.commentsCount = p.commentsCount;
+                this.product.likesCount = p.likesCount;
+                this.product.dislikesCount = p.dislikesCount;
             });
         });
     }
@@ -220,7 +222,7 @@ export class ProductComponent implements OnInit {
     }
 
     goToComments() : void {
-        this.router.navigate(["/comments", this.product.id], {
+        this.router.navigate(["/comments", this.product.id, this.product.rate+"", this.product.commentsCount+""], {
             transition: {name: "slide"}
         });
     }

@@ -28,7 +28,7 @@ export class CommentService {
       		{ headers: headers }
         )
         .map(response => response.json())
-        .do(data => {
+        .map(data => {
             let result = {};
             result["success"] = data.success;
             if(data.success) {
@@ -47,6 +47,38 @@ export class CommentService {
         })
     	.catch(this.handleErrors);
 		
+    }
+
+    getComments(productId: string, page: number) {
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        let searchParams = new URLSearchParams();
+        searchParams.append('page', ""+page);
+        
+        let requestOptions = new RequestOptions({headers: headers, params: searchParams});
+
+        return this.http.get(
+            Config.apiUrl + "comment/" + productId,
+            requestOptions
+        )
+        .map(response => response.json())
+        .map(data => {
+            let result = {};
+            let comments = [];
+            result["success"] = data.success;
+            if(data.success) {
+                data.comments.content.forEach((c) => {
+                    let user = new User(c.createBy.name, c.createBy.username, null, null, null);
+                    let comment = new Comment(c.id, c.date, c.text, c.stars, c.likesCount, c.dislikesCount, user, null);
+                    comments.push(comment);
+                });
+                result["comments"] = comments;
+                result["last"] = data.comments.last;
+            }
+            return result;
+        })
+        .catch(this.handleErrors);
     }
       
 	handleErrors(error: Response) {

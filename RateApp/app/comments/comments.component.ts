@@ -7,26 +7,34 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { action, confirm } from "ui/dialogs";
 
 import { Config } from "../shared/config";
+import { Comment } from "../shared/model/comment";
+import { CommentService } from "../shared/services/comment.service";
 
 @Component({
     selector: "Comments",
     moduleId: module.id,
     templateUrl: "./comments.component.html",
     styleUrls: ["./comments.component.css"],
+    providers: [CommentService]
 })
 export class CommentsComponent implements OnInit {
 
     // Component Variables
-    private comments : string[] = ["", "", ""];
+    private comments : Comment[];
     private stars : string[] = ["Todas", "1 Estrella", "2 Estrellas", "3 Estrellas", "4 Estrellas", "5 Estrellas"];
     private picked: string = "Todas";
     private productId : string;
+    private rate : number;
+    private commentsCount : number;
+    private isLoading : boolean = true;
+    private currentPage : number = 0;
+    private hasNext : boolean = false;
 
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: RouterExtensions, private route: ActivatedRoute) {}
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private commentService: CommentService) {}
 
     ngOnInit(): void {
         // Side Drawer code
@@ -38,7 +46,33 @@ export class CommentsComponent implements OnInit {
         // End Side Drawer code
 
         this.productId = this.route.snapshot.params["id"];
-        console.log("Comments Page - ID: " + this.productId);
+        this.rate = +this.route.snapshot.params["rate"];
+        this.commentsCount = +this.route.snapshot.params["commentsCount"];
+
+        this.commentService.getComments(this.productId, this.currentPage).subscribe(result => {
+            this.comments = result.comments;
+            this.hasNext = !result.last;
+            console.log("result.last="+result.last);
+            this.isLoading = false;
+        });
+
+    }
+
+    loadNextCommentsPage(): void {
+        this.currentPage++;
+        this.isLoading = true;
+        this.commentService.getComments(this.productId, this.currentPage).subscribe(result => {
+            this.comments = this.comments.concat(result.comments);
+            
+            this.hasNext = !result.last;
+            this.isLoading = false;
+        });
+    }
+
+    getDate(millis: number): string {
+        let date = new Date(millis);
+        
+        return date.toLocaleDateString();
     }
 
     goToAddComment(): void {
