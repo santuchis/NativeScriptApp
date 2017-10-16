@@ -26,11 +26,12 @@
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
     <StackLayout tkMainContent>
-        <ActivityIndicator 
+        <ActivityIndicator
             [busy]="isLoading" 
             [visibility]="isLoading ? 'visible' : 'collapse'" 
             horizontalAlignment="center" 
-            verticalAlignment="center">
+            verticalAlignment="center"
+            style="margin: 50px 0px;">
         </ActivityIndicator>
         <product-list [productList]='getList()' [isRemoveIconVisible]="!isSearching()" (itemTap)="goToProduct($event)"></product-list>
     </StackLayout>

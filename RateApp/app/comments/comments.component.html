@@ -49,7 +49,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                             </GridLayout>
                             <Label textWrap="true" [text]="comment.text"></Label>
                             <StackLayout orientation="horizontal" class="like-buttons">
-                                <Label textWrap="true" [text]="comment.userLike > 0 ? '\uf164':'\uf087'" [ngClass]="{'active':comment.userLike > 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="like(comment)"></Label>
+                                <Label textWrap="true" [text]="comment.userLike > 0 ? '\uf164':'\uf087'" [ngClass]="{'active':comment.userLike > 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="like(comment)" style="padding-left: 30px;"></Label>
                                 <Label textWrap="true" [text]="' '+comment.likesCount+' '" (tap)="like(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count" style="padding-right: 30px;"></Label>
                                 <Label textWrap="true" [text]="comment.userLike < 0 ? '\uf165' : '\uf088'" [ngClass]="{'active':comment.userLike < 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="dislike(comment)"></Label>
                                 <Label textWrap="true" [text]="' '+comment.dislikesCount+' '" (tap)="dislike(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count"></Label>
@@ -66,6 +66,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                 <Label text="Load more comments..."
                     [visibility]="!isLoading && hasNext ? 'visible' : 'collapse'"
                     (tap)="loadNextCommentsPage()"
+                    class="load-more-btn"
                     style="text-align:center;">
                 </Label>
             </StackLayout>

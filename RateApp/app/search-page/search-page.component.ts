@@ -9,6 +9,7 @@ import { UserService } from "../shared/services/user.service";
 import { ProductService } from "../shared/services/product.service";
 import { SearchBar } from "ui/search-bar";
 import { Device } from "../shared/device";
+import { Config } from "../shared/config";
 
 @Component({
     selector: 'search-page',
@@ -41,8 +42,9 @@ export class SearchPageComponent implements OnInit {
 			this.onDrawerRefresh();
         }, 100);
         // End Side Drawer code
-        
-        if(this.userService.getUserStatus()){
+
+        if(Config.token !== undefined){
+            console.log("START getUserStatus");
             this.productService.getSearchedProducts()
                 .subscribe(result => {
                     result["products"].forEach((p) => {
@@ -100,7 +102,7 @@ export class SearchPageComponent implements OnInit {
             transition: {name: "slide"}
         });
         console.log("Por llamar");
-        if(this.userService.getUserStatus()) {
+        if(Config.token !== null) {
             this.productService.saveSearchedProduct(product.id,product.name)
                 .subscribe(
                     () => {

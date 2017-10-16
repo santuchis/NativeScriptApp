@@ -65,12 +65,9 @@ export class LoginComponent implements OnInit {
 		this.userService.login(this.user)
 			.subscribe(
 				() => {
-					this.waiting = false;
-					if(this.redirectToPage === undefined) {
-						this.router.navigate(["/home"], { clearHistory: true });
-					} else {
-						this.router.navigate(["/" + this.redirectToPage, this.redirectToValue], { clearHistory: true });
-					}
+					setTimeout(() => {
+						this.getUserData();
+					});
 				},
 				(error) => {
 					this.waiting = false;
@@ -78,6 +75,24 @@ export class LoginComponent implements OnInit {
 					console.dir(error);
 				}
 			);
+	}
+
+	getUserData() {
+		this.userService.me().subscribe(
+			() => {
+				this.waiting = false;
+				if(this.redirectToPage === undefined) {
+					this.router.navigate(["/home"], { clearHistory: true });
+				} else {
+					this.router.navigate(["/" + this.redirectToPage, this.redirectToValue], { clearHistory: true });
+				}
+			},
+			(error) => {
+				this.waiting = false;
+				alert("Unfortunately we could not get your user info.");
+				console.dir(error);
+			}
+		);
 	}
 	
 	signUp() {

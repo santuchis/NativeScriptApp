@@ -54,11 +54,28 @@ export class UserService {
     	.map(response => response.json())
     	.do(data => {
 			  Config.token = data.access_token;
-			  Config.user = user;
 			  this.isLogged=true;
     	})
     	.catch(this.handleErrors);
-  	}
+	}
+
+	me() {
+		let headers = new Headers();
+    	headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+		return this.http.get(
+				Config.apiUrl + "user/me",
+				{ headers: headers}
+			)
+			.map(response => response.json())
+			.do(data => {
+				let user: User = new User(data.name, data.username, data.email, null, data.roles);
+				console.dir(user);
+				Config.user = user;
+			})
+			.catch(this.handleErrors);
+	}
 	
 	handleErrors(error: Response) {
     	console.log("handleErrors : "+JSON.stringify(error.json()));
