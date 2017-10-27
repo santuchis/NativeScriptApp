@@ -90,7 +90,6 @@ export class SearchPageComponent implements OnInit {
     onSubmit(args) : void {
         let searchBar = <SearchBar>args.object;
         this.router.navigate(["/result-page",searchBar.text]);
-
     }
 
     goToProduct(product : Product) : void {
@@ -106,7 +105,7 @@ export class SearchPageComponent implements OnInit {
             this.productService.saveSearchedProduct(product.id,product.name)
                 .subscribe(
                     () => {
-                        console.log("Exito en salvar producto");
+                       this.productListToChild.unshift(product);
                     },
                     () => {
                         console.log("Error en salvar producto");

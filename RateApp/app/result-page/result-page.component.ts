@@ -9,6 +9,7 @@ import { Product } from "../shared/model/product";
 import { Observable } from "rxjs/Rx";
 import { Device } from "../shared/device";
 import { Page } from "ui/page";
+import { SearchBar } from "ui/search-bar";
 
 @Component({
 	selector: 'result-page',
@@ -27,6 +28,10 @@ export class ResultPageComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
+    private isLoading : boolean = true;
+    private currentPage : number = 0;
+    private hasNext : boolean;
+
     constructor(private router: RouterExtensions,private userService: UserService, private productService: ProductService
 		, private route: ActivatedRoute,private page: Page){};
 
@@ -43,10 +48,21 @@ export class ResultPageComponent implements OnInit {
 			(params : Params) => {
 				this.input = params['productName'];
 			}
-		);
-
-		this.productList = this.productService.getUserProducts();
-
+        );
+        
+        this.productService.getProductResutlPage(this.input,this.currentPage).subscribe(
+            (result) => {
+                this.productList = [];
+                result["products"].forEach((p) => {
+                    this.productList.push(p);
+                });
+                this.hasNext = result.last;
+            },
+            () => {
+               
+            }
+        );
+        this.isLoading = false;
 	 }
 	
 	goToProduct(product : Product) : void {
@@ -84,5 +100,40 @@ export class ResultPageComponent implements OnInit {
      */
 	onDrawerRefresh(): void {
 		this.drawerComponent.sideDrawer.closeDrawer();
-	}
+    }
+    
+    onSubmit(args) : void {
+        this.isLoading = true;
+        let searchBar = <SearchBar>args.object;
+        this.productService.getProductResutlPage(searchBar.text,1).subscribe(
+            (result) => {
+                this.productList = [];
+                result["products"].forEach((p) => {
+                    this.productList.push(p);
+                });
+                this.hasNext = result.last;
+                this.isLoading = false;
+            },
+            () => {
+               
+            }
+        );
+    }
+
+    loadNextProductPage(): void {
+        this.isLoading = true;
+        this.currentPage++;
+        this.productService.getProductResutlPage(this.input,this.currentPage).subscribe(
+            (result) => {
+                result["products"].forEach((p) => {
+                    this.productList.push(p);
+                });
+                this.hasNext = result.last;
+                this.isLoading = false;
+            },
+            () => {
+               
+            }
+        );
+    }
 }

@@ -1,7 +1,17 @@
 
 <ActionBar class="action-bar">
-    <NavigationButton icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
-    <Label class="action-bar-title" [text]="input"></Label>
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <SearchBar  color="blue" textFieldBackgroundColor="white" hint="Search a product"
+     [text]="input" (textChange)="onTextChanged($event)" (submit)="onSubmit($event)"></SearchBar>
 </ActionBar>
 
 <RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
@@ -27,6 +37,18 @@
                         <Label [text]="' (100)'" class="fa"></Label>
                     </StackLayout>
                </GridLayout>
+               <ActivityIndicator 
+                    [busy]="isLoading" 
+                    [visibility]="isLoading ? 'visible' : 'collapse'" 
+                    horizontalAlignment="center" 
+                    verticalAlignment="center">
+               </ActivityIndicator>
+               <Label text="Load more Products..."
+                        [visibility]="hasNext ? 'collapse' : 'visible'" 
+                        (tap)="loadNextProductPage()"
+                        class="load-more-btn"
+                        style="text-align:center;">
+              </Label>
             </StackLayout>
         </ScrollView>
     </StackLayout>

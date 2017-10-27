@@ -177,6 +177,35 @@ export class ProductService {
 	  .catch(this.handleErrors);
 	}
 
+	getProductResutlPage(brand : string, page: number){
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+
+        let searchParams = new URLSearchParams();
+        searchParams.append('page', ""+page);
+        
+        let requestOptions = new RequestOptions({headers: headers, params: searchParams});
+
+    	return this.http.get(Config.apiUrl + 'product/result-page/'+brand, requestOptions)
+		.map(res => res.json())
+		.map(data => {
+	
+			let result = {};
+			let products : Array<Product> =  [];
+			data.products.content.forEach((p) => {
+			  products.push(new Product(p.id, p.name, p.brand, p.description, p.features, p.commentsCount, p.likesCount, p.dislikesCount, p.rate, p.createAt, p.images));
+			});
+			data.products.content.forEach((p) => {
+				console.log("nombre"+p.name)
+			});
+			result["last"] = data.products.last
+			result["products"] = products;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
 	handleErrors(error: Response) {
 		console.log(JSON.stringify(error.json()));
 		return Observable.throw(error);
