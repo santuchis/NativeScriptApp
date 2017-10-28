@@ -44,7 +44,7 @@
                     verticalAlignment="center">
                </ActivityIndicator>
                <Label text="Load more Products..."
-                        [visibility]="hasNext ? 'collapse' : 'visible'" 
+                        [visibility]="hasNext ? 'visible' : 'collapse'" 
                         (tap)="loadNextProductPage()"
                         class="load-more-btn"
                         style="text-align:center;">

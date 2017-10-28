@@ -50,21 +50,36 @@ export class CommentsComponent implements OnInit {
         this.commentsCount = +this.route.snapshot.params["commentsCount"];
 
         this.commentService.getComments(this.productId, this.currentPage).subscribe(result => {
-            this.comments = result.comments;
-            this.hasNext = !result.last;
-            console.log("result.last="+result.last);
+            if(result.success) {
+                this.comments = this.mergeProductAndLikes(result.comments.content, result.comments.likes);
+                this.hasNext = !result.comments.last;
+            } else {
+                console.log('failed while loading comments');
+            }
             this.isLoading = false;
         });
 
+    }
+
+    mergeProductAndLikes(products: any, likes: any) : any {
+        let i = 0;
+        for(i = 0; i < products.length; i++) {
+            products[i].userLike = likes[i];
+        }
+        return products;
     }
 
     loadNextCommentsPage(): void {
         this.currentPage++;
         this.isLoading = true;
         this.commentService.getComments(this.productId, this.currentPage).subscribe(result => {
-            this.comments = this.comments.concat(result.comments);
+            if(result.success) {
+                this.comments = this.comments.concat(this.mergeProductAndLikes(result.comments.content, result.comments.likes));
+                this.hasNext = !result.comments.last;
+            } else {
+                console.log('failed while loading comments');
+            }
             
-            this.hasNext = !result.last;
             this.isLoading = false;
         });
     }

@@ -66,19 +66,6 @@ export class CommentService {
             requestOptions
         )
         .map(response => response.json())
-        .map(data => {
-            let result = {};
-            let comments = [];
-            result["success"] = data.success;
-            if(data.success) {
-                data.comments.content.forEach((c) => {
-                    comments.push(c);
-                });
-                result["comments"] = comments;
-                result["last"] = data.comments.last;
-            }
-            return result;
-        })
         .catch(this.handleErrors);
     }
 

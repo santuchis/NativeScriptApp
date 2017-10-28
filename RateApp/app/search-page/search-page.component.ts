@@ -61,13 +61,12 @@ export class SearchPageComponent implements OnInit {
         if(this.input !== undefined && this.input.length > 0 && this.input.trim() !== this.lastSearched.trim()) {
             this.lastSearched = this.input;
             this.isLoading = true;
-            this.productService.getProductsByName(this.input)
+            this.productService.getProductsByTags(this.input, 0)
                 .subscribe(result => {
                     this.suggestedproducts = [];
                     result["products"].forEach((p) => {
                         this.suggestedproducts.push(p);
                     });
-                    console.log("COUNT FROM RESPONSE="+result["count"]);
                     this.isLoading = false;
                 });
         }

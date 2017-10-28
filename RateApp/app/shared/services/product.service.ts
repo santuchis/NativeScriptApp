@@ -56,6 +56,32 @@ export class ProductService {
 		.catch(this.handleErrors);
 	}
 
+	getProductsByTags(query: string, page: number) {
+		let headers = new Headers();
+		let searchParams = new URLSearchParams();
+		searchParams.append('page', ""+page);
+		let requestOptions = new RequestOptions({headers: headers, params: searchParams});
+		
+		return this.http.get(
+			Config.apiUrl + "product/byTags/" + encodeURIComponent(query),
+			requestOptions
+		)
+		.map(res => res.json())
+		.catch(this.handleErrors);
+		/*
+		.map(data => {
+		  let result = {};
+		  let products = [];
+		  data.products.forEach((p) => {
+			products.push(new Product(p.id, p.name, p.brand, p.description, p.features, p.commentsCount, p.likesCount, p.dislikesCount, p.rate, p.createAt, p.images));
+		  });
+		  result["count"] = data.count;
+		  result["products"] = products;
+		  return result;
+		})
+		*/
+	}
+
 	getProductById(id : string) {
 		let headers = new Headers();
 		if(Config.token !== undefined) {
