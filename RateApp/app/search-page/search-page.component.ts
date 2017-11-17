@@ -104,7 +104,12 @@ export class SearchPageComponent implements OnInit {
             this.productService.saveSearchedProduct(product.id,product.name)
                 .subscribe(
                     () => {
-                       this.productListToChild.unshift(product);
+                        var index = this.productListToChild.indexOf(product, 0);
+                        if (index > -1) {
+                            this.productListToChild.splice(index, 1);
+                        }
+                        this.productListToChild.unshift(product);
+                       
                     },
                     () => {
                         console.log("Error en salvar producto");
