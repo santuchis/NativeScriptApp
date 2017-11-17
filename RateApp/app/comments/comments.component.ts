@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { PlatformLocation } from '@angular/common';
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -9,13 +10,14 @@ import { action, confirm } from "ui/dialogs";
 import { Config } from "../shared/config";
 import { Comment } from "../shared/model/comment";
 import { CommentService } from "../shared/services/comment.service";
+import { ProductService } from "../shared/services/product.service";
 
 @Component({
     selector: "Comments",
     moduleId: module.id,
     templateUrl: "./comments.component.html",
     styleUrls: ["./comments.component.css"],
-    providers: [CommentService]
+    providers: [CommentService,ProductService]
 })
 export class CommentsComponent implements OnInit {
 
@@ -34,7 +36,7 @@ export class CommentsComponent implements OnInit {
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: RouterExtensions, private route: ActivatedRoute, private commentService: CommentService) {}
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private commentService: CommentService, private productService: ProductService, private location : PlatformLocation) {}
 
     ngOnInit(): void {
         // Side Drawer code
@@ -59,6 +61,29 @@ export class CommentsComponent implements OnInit {
             this.isLoading = false;
         });
 
+        this.location.onPopState(() => {
+            this.productService.getProductById(this.productId).subscribe(result => {
+                let p  = result["product"];
+                this.rate = p.rate;
+                this.commentsCount = p.commentsCount;
+            });
+
+            this.commentService.getComments(this.productId, 0).subscribe(result => {
+                if(result.success) {
+                    let tmp = this.mergeProductAndLikes(result.comments.content, result.comments.likes);
+                    for(let i = 0; i < this.comments.length; i++) {
+                        if(!this.commentExists(this.comments[i].id, tmp)) {
+                            tmp = tmp.concat(this.comments[i]);
+                        }
+                    }
+                    this.comments = tmp;
+                } else {
+                    console.log('failed while loading comments');
+                }
+                this.isLoading = false;
+            });
+        });
+
     }
 
     mergeProductAndLikes(products: any, likes: any) : any {
@@ -74,7 +99,12 @@ export class CommentsComponent implements OnInit {
         this.isLoading = true;
         this.commentService.getComments(this.productId, this.currentPage).subscribe(result => {
             if(result.success) {
-                this.comments = this.comments.concat(this.mergeProductAndLikes(result.comments.content, result.comments.likes));
+                let tmp = this.mergeProductAndLikes(result.comments.content, result.comments.likes);
+                for(let i = 0; i < tmp.length; i++) {
+                    if(!this.commentExists(tmp[i].id, this.comments)) {
+                        this.comments = this.comments.concat(tmp[i]);
+                    }
+                }
                 this.hasNext = !result.comments.last;
             } else {
                 console.log('failed while loading comments');
@@ -82,6 +112,15 @@ export class CommentsComponent implements OnInit {
             
             this.isLoading = false;
         });
+    }
+
+    commentExists(id: string, list: any[]): boolean {
+        for(let i = 0; i < list.length; i++) {
+            if(list[i].id == id) {
+                return true;
+            }
+        }
+        return false;
     }
 
     getDate(millis: number): string {
