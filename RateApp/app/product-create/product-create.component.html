@@ -1,0 +1,50 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" android.systemIcon="ic_menu_close_clear_cancel" (tap)="goBack()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem android:visibility="collapsed" (tap)="goBack()"
+        ios.position="left" ios.systemIcon="1">
+    </ActionItem>
+    <ActionItem ios.systemIcon="3" android.systemIcon="ic_menu_save" ios.position="right" (tap)="saveProduct()"></ActionItem>
+    <Label class="action-bar-title" text="Crear Producto"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Create'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout class="page page-content" tkMainContent>
+        <TextField hint="Nombre" [(ngModel)]="product.name" required minlength="4"></TextField>
+        <Label class="textfield-underline"></Label>
+        <TextField hint="Marca" [(ngModel)]="product.brand" required minlength="4"></TextField>
+        <Label class="textfield-underline"></Label>
+        <TextView hint="Descripción" [(ngModel)]="product.description" style="height: 25%;font-size:16;background-color:transparent;border-color: transparent;"></TextView>
+        <Label class="textfield-underline"></Label>
+        <TextView hint="Características" [(ngModel)]="product.features" style="height: 25%;font-size:16;background-color:transparent;border-color: transparent;margin-top:30px;"></TextView>
+        <Label class="textfield-underline"></Label>
+        <Button (tap)="onSelectMultipleTap()" text="Multiple"></Button>
+        <Button (tap)="onSelectSingleTap()" text="Single"></Button>
+        <Label class="textfield-underline"></Label>
+        <ng-template ngFor let-i="index" let-image [ngForOf]="items">
+            <Image class="main-photo" [src]="image.fileUri" stretch="aspectFit"></Image>
+        </ng-template>
+    </StackLayout>
+</RadSideDrawer>

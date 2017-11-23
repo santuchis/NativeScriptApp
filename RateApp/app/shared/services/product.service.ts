@@ -232,6 +232,39 @@ export class ProductService {
 		.catch(this.handleErrors);
 	}
 
+	saveProduct(product: Product) {
+		console.dir(product);
+		let headers = new Headers();
+		headers.append("Content-Type", "application/json");
+		headers.append("Authorization", "Bearer " + Config.token);
+    	return this.http.post(
+			Config.apiUrl + "product/save",
+			product.id.length > 0 ? 
+			JSON.stringify({
+			  id: product.id,
+			  name: product.name,
+			  brand: product.brand,
+			  description: product.description,
+			  features: product.features,
+			}) :
+			JSON.stringify({
+				name: product.name,
+				brand: product.brand,
+				description: product.description,
+				features: product.features,
+			  }),
+			{ headers: headers }
+		)
+		.map(response => response.json())
+		.map(data => {
+			let result = {};
+			result["success"] = true;
+			result["id"] = data.id;
+			return result;
+		})
+		.catch(this.handleErrors);
+	}
+
 	handleErrors(error: Response) {
 		console.log(JSON.stringify(error.json()));
 		return Observable.throw(error);

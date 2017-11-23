@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { Routes } from "@angular/router";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
-import {ResultPageComponent } from "./result-page/result-page.component"
+import { ResultPageComponent } from "./result-page/result-page.component"
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
     { path: "home", loadChildren: "./home/home.module#HomeModule" },
     { path: "login", loadChildren: "./login/login.module#LoginModule" },
     { path: "login/:page/:value", loadChildren: "./login/login.module#LoginModule" },
-    { path: "create", loadChildren: "./create/create.module#CreateModule" },
+    { path: "create", loadChildren: "./product-create/product-create.module#ProductCreateModule" },
     { path: "favorites", loadChildren: "./favorites/favorites.module#FavoritesModule" },
     { path: "settings", loadChildren: "./settings/settings.module#SettingsModule" },
     { path: "logout", loadChildren: "./logout/logout.module#LogoutModule" },
