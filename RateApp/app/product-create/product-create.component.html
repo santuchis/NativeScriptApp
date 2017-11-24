@@ -42,16 +42,17 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                 <Label class="textfield-underline"></Label>
                 <TextView hint="Características" [(ngModel)]="product.features" style="height: 200px;font-size:16;background-color:transparent;border-color: transparent;margin-top:30px;"></TextView>
                 <Label class="textfield-underline"></Label>
-                <Button (tap)="onSelectMultipleTap()" text="Multiple"></Button>
-                <Button (tap)="onSelectSingleTap()" text="Single"></Button>
+                <Button (tap)="onSelectMultipleTap()" text="Add Images"></Button>
                 <Label class="textfield-underline"></Label>
                 <WrapLayout>
                     <ng-template ngFor let-i="index" let-image [ngForOf]="images" let-odd="odd" let-even="even">
                         <AbsoluteLayout [id]="getImageName(image.fileUri) + 'layout'" class="image-container" [class.odd]="odd" [class.even]="even">
-                            <Image left="0" top="0" stretch="aspectFill" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading"></Image>
+                            <Image left="0" top="0" stretch="aspectFill" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading" [class.error]="image.error"></Image>
                             <Progress [visibility]="image.uploading ? 'visible' : 'collapsed'" class="progress" [id]="getImageName(image.fileUri) + 'progress'" class="progress"></Progress>
-                            <Label style="margin:85% 0% 0% 88%" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
-                            <Label style="margin:85% 0% 0% 88%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf05c'" class="fa fail"></Label>
+                            <Label style="margin:78% 0% 0% 0%" class="bottom-bar" text=""></Label>
+                            <Label style="margin:80% 0% 0% 84%" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
+                            <Label style="margin:80% 0% 0% 84%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload"></Label>
+                            <Label style="margin:80% 0% 0% 3%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" [text]="'\uf014'" class="fa remove" (tap)="removeImage(i)"></Label>
                         </AbsoluteLayout>
                     </ng-template>
                 </WrapLayout>

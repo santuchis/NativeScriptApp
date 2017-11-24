@@ -26,9 +26,7 @@ export class ProductCreateComponent implements OnInit {
 
     // Component Variables
     private product: Product = new Product('', '', '', '', '', 0, 0, 0, 0, 0, ['']);
-    public images = [
-        
-    ];
+    public images = [];
     private items = [];
 
     public newsession:Session;
@@ -134,12 +132,14 @@ export class ProductCreateComponent implements OnInit {
     imageUpload(){
         for(let i = 0; i < this.images.length; i++) {
             if(!this.images[i].uploading && !this.images[i].uploaded) {
-                var progress:Progress =<Progress> this.page.getViewById(this.images[i].fileName + "progress");
+                let fileName = this.images[i].fileName;
+                let fileUri = this.images[i].fileUri;
+                var progress:Progress =<Progress> this.page.getViewById(fileName + "progress");
                 progress.value = 0;
-                let task : Task = this.newsession.uploadFile(this.images[i].fileUri, this.getRequest(this.images[i].fileName));
+                let task : Task = this.newsession.uploadFile(fileUri, this.getRequest(fileName));
                 this.images[i].uploading = true;
                 task.on("progress", (e)=>{
-                    var progress:Progress =<Progress> this.page.getViewById(this.images[i].fileName + "progress");
+                    var progress:Progress =<Progress> this.page.getViewById(fileName + "progress");
                     progress.value = e.currentBytes;
                     progress.maxValue = e.totalBytes;
                 });
@@ -176,6 +176,10 @@ export class ProductCreateComponent implements OnInit {
         name = name.slice(name.lastIndexOf('/') + 1);
         name = name.slice(0, name.lastIndexOf('.'));
         return name;
+    }
+
+    removeImage(index: number) {
+        this.images.splice(index, 1);
     }
 
     getRequest(fileName: string) {
