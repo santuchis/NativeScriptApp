@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ChangeDetectorRef, NgZone } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
 
@@ -12,6 +12,8 @@ import { Config } from "../shared/config";
 
 import * as imagepicker from "nativescript-imagepicker";
 
+import {session, Session, Task} from "nativescript-background-http";
+import {Progress} from "ui/progress";
 
 @Component({
     selector: "ProductCreate",
@@ -24,7 +26,13 @@ export class ProductCreateComponent implements OnInit {
 
     // Component Variables
     private product: Product = new Product('', '', '', '', '', 0, 0, 0, 0, 0, ['']);
+    public images = [
+        
+    ];
     private items = [];
+
+    public newsession:Session;
+    public task:Task;
     
 
     // Drawer Variables
@@ -32,7 +40,9 @@ export class ProductCreateComponent implements OnInit {
     private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, 
-        private page: Page, private _changeDetectionRef: ChangeDetectorRef){};
+        private page: Page, private _changeDetectionRef: ChangeDetectorRef, private zone:NgZone){
+            this.newsession = session("image-upload");
+    };
 
     ngOnInit(): void {
         // Side Drawer code
@@ -104,21 +114,112 @@ export class ProductCreateComponent implements OnInit {
         context
         .authorize()
         .then(() => {
+            console.log("then 1.");
             _that.items = [];
             return context.present();
         })
         .then((selection) => {
-            console.log("Selection done:");
-            selection.forEach(function (selected) {
-                console.log("----------------");
-                console.log("uri: " + selected.uri);
-                console.log("fileUri: " + selected.fileUri);
-            });
+            console.log("then 2.");
             _that.items = selection;
+            selection.forEach(element => {
+                _that.addImageToList(element.fileUri, element.uri);
+            });
             _that._changeDetectionRef.detectChanges();
+            setTimeout(()=> { _that.imageUpload(); }, 100);
         }).catch(function (e) {
             console.log(e);
         });
+    }
+
+    imageUpload(){
+        for(let i = 0; i < this.images.length; i++) {
+            if(!this.images[i].uploading && !this.images[i].uploaded) {
+                var progress:Progress =<Progress> this.page.getViewById(this.images[i].fileName + "progress");
+                progress.value = 0;
+                let task : Task = this.newsession.uploadFile(this.images[i].fileUri, this.getRequest(this.images[i].fileName));
+                this.images[i].uploading = true;
+                task.on("progress", (e)=>{
+                    var progress:Progress =<Progress> this.page.getViewById(this.images[i].fileName + "progress");
+                    progress.value = e.currentBytes;
+                    progress.maxValue = e.totalBytes;
+                });
+                task.on("error", (e) => { this.logEvent(e); });
+                task.on("complete", (e) => { this.logEvent(e); });
+            }
+        }
+    }
+
+    addImageToList(fileUri: string, uri: string) {
+        let exists = false;
+        for(let i = 0; i < this.images.length; i++) {
+            if(this.images[i].fileUri === fileUri) {
+                console.log("Image already exists on list");
+                exists = true;
+                break;
+            }
+        }
+        if(!exists) {
+            let obj = {
+                fileUri: fileUri,
+                uri: uri,
+                fileName: this.getImageName(fileUri),
+                uploading: false,
+                uploaded: false,
+                error: false
+            };
+            this.images.push(obj);
+        }
+    }
+
+    getImageName(fileUri: string) {
+        let name = fileUri;
+        name = name.slice(name.lastIndexOf('/') + 1);
+        name = name.slice(0, name.lastIndexOf('.'));
+        return name;
+    }
+
+    getRequest(fileName: string) {
+        return {
+            url: "http://httpbin.org/post",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/octet-stream",
+                "File-Name": fileName
+            },
+            description: fileName
+        };
+    }
+
+    logEvent(e) {
+        let i;
+        for(i = 0; i < this.images.length; i++) {
+            console.log("comparing '" + e.object.description + "' with '" + this.images[i].fileName + "'");
+            if(e.object.description === this.images[i].fileName) {
+                console.log('if ok');
+                break;
+            }
+        }
+        console.log("index="+i);
+        switch (e.eventName) {
+            case "complete":
+                console.log("complete: " + e.object.description);
+                if(i < this.images.length) {
+                    this.images[i].uploading = false;
+                    this.images[i].uploaded = true;
+                }
+                break;
+            case "error":
+                console.log("error: " + e.object.description);
+                console.dir(e.object);
+                if(i < this.images.length) {
+                    this.images[i].uploading = false;
+                    this.images[i].error = true;
+                }
+                break;
+            default:
+                break;
+        }
+        this._changeDetectionRef.detectChanges();
     }
 
 }

@@ -32,19 +32,30 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     Use the tkMainContent directive to display the content of the page when you have an app drawer.
     -->
     <StackLayout class="page page-content" tkMainContent>
-        <TextField hint="Nombre" [(ngModel)]="product.name" required minlength="4"></TextField>
-        <Label class="textfield-underline"></Label>
-        <TextField hint="Marca" [(ngModel)]="product.brand" required minlength="4"></TextField>
-        <Label class="textfield-underline"></Label>
-        <TextView hint="Descripción" [(ngModel)]="product.description" style="height: 25%;font-size:16;background-color:transparent;border-color: transparent;"></TextView>
-        <Label class="textfield-underline"></Label>
-        <TextView hint="Características" [(ngModel)]="product.features" style="height: 25%;font-size:16;background-color:transparent;border-color: transparent;margin-top:30px;"></TextView>
-        <Label class="textfield-underline"></Label>
-        <Button (tap)="onSelectMultipleTap()" text="Multiple"></Button>
-        <Button (tap)="onSelectSingleTap()" text="Single"></Button>
-        <Label class="textfield-underline"></Label>
-        <ng-template ngFor let-i="index" let-image [ngForOf]="items">
-            <Image class="main-photo" [src]="image.fileUri" stretch="aspectFit"></Image>
-        </ng-template>
+        <ScrollView>
+            <StackLayout>
+                <TextField hint="Nombre" [(ngModel)]="product.name" required minlength="4"></TextField>
+                <Label class="textfield-underline"></Label>
+                <TextField hint="Marca" [(ngModel)]="product.brand" required minlength="4"></TextField>
+                <Label class="textfield-underline"></Label>
+                <TextView hint="Descripción" [(ngModel)]="product.description" style="height: 200px;font-size:16;background-color:transparent;border-color: transparent;"></TextView>
+                <Label class="textfield-underline"></Label>
+                <TextView hint="Características" [(ngModel)]="product.features" style="height: 200px;font-size:16;background-color:transparent;border-color: transparent;margin-top:30px;"></TextView>
+                <Label class="textfield-underline"></Label>
+                <Button (tap)="onSelectMultipleTap()" text="Multiple"></Button>
+                <Button (tap)="onSelectSingleTap()" text="Single"></Button>
+                <Label class="textfield-underline"></Label>
+                <WrapLayout>
+                    <ng-template ngFor let-i="index" let-image [ngForOf]="images" let-odd="odd" let-even="even">
+                        <AbsoluteLayout [id]="getImageName(image.fileUri) + 'layout'" class="image-container" [class.odd]="odd" [class.even]="even">
+                            <Image left="0" top="0" stretch="aspectFill" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading"></Image>
+                            <Progress [visibility]="image.uploading ? 'visible' : 'collapsed'" class="progress" [id]="getImageName(image.fileUri) + 'progress'" class="progress"></Progress>
+                            <Label style="margin:85% 0% 0% 88%" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
+                            <Label style="margin:85% 0% 0% 88%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf05c'" class="fa fail"></Label>
+                        </AbsoluteLayout>
+                    </ng-template>
+                </WrapLayout>
+            </StackLayout>
+        </ScrollView>
     </StackLayout>
 </RadSideDrawer>

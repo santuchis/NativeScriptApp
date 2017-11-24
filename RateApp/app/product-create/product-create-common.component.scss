@@ -6,3 +6,28 @@
     width: 98%;
     background-color: #bcbcbc;
 }
+Image.upload {
+    width: 100%;
+    height: 100%;
+}
+Image.upload.uploading {
+    opacity: 0.5;
+}
+AbsoluteLayout.even.image-container {
+    height: 300px;
+    width: 50%;
+    padding: 2px 2px 0px 0px;
+    background-color: white;
+}
+AbsoluteLayout.odd.image-container {
+    height: 300px;
+    width: 50%;
+    padding: 2px 0px 0px 2px;
+    background-color: white;
+}
+Label.success {
+    color: green;
+}
+Label.fail {
+    color: red;
+}
