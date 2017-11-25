@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
+import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
+import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Color } from "color";
 import { View } from "ui/core/view";
@@ -45,11 +45,7 @@ export class LoginComponent implements OnInit {
     ngOnInit(): void {
 		// Side Drawer code
         this._sideDrawerTransition = new SlideInOnTopTransition();
-		setTimeout(()=> {
-            // setTimeout is a workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-			this.onDrawerRefresh();
-        }, 100);
-        // End Side Drawer code
+		
 	}
 
     toggleDisplay() {
@@ -131,11 +127,4 @@ export class LoginComponent implements OnInit {
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }
-
-    /**
-     * workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-     */
-	onDrawerRefresh(): void {
-		this.drawerComponent.sideDrawer.closeDrawer();
-	}
 }

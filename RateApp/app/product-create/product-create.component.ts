@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, NgZone } from "@angular/core";
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
+import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
+import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -45,11 +45,6 @@ export class ProductCreateComponent implements OnInit {
     ngOnInit(): void {
         // Side Drawer code
         this._sideDrawerTransition = new SlideInOnTopTransition();
-		setTimeout(()=> {
-            // setTimeout is a workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-			this.onDrawerRefresh();
-        }, 100);
-        // End Side Drawer code
     }
 
     saveProduct() : void {
@@ -83,13 +78,6 @@ export class ProductCreateComponent implements OnInit {
 
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
-    }
-
-    /**
-     * workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-     */
-	onDrawerRefresh(): void {
-		this.drawerComponent.sideDrawer.closeDrawer();
     }
     
     onSelectMultipleTap() {

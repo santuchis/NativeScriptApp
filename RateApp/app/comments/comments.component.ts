@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PlatformLocation } from '@angular/common';
-import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-telerik-ui/sidedrawer";
-import { RadSideDrawerComponent } from "nativescript-telerik-ui/sidedrawer/angular";
+import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
+import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 import { RouterExtensions } from "nativescript-angular/router";
 
 import { action, confirm } from "ui/dialogs";
@@ -41,11 +41,6 @@ export class CommentsComponent implements OnInit {
     ngOnInit(): void {
         // Side Drawer code
         this._sideDrawerTransition = new SlideInOnTopTransition();
-		setTimeout(()=> {
-            // setTimeout is a workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-			this.onDrawerRefresh();
-        }, 100);
-        // End Side Drawer code
 
         this.productId = this.route.snapshot.params["id"];
         this.rate = +this.route.snapshot.params["rate"];
@@ -244,11 +239,4 @@ export class CommentsComponent implements OnInit {
     onDrawerButtonTap(): void {
         this.drawerComponent.sideDrawer.showDrawer();
     }
-
-    /**
-     * workaround for issue https://github.com/NativeScript/template-drawer-navigation-ng/issues/38
-     */
-	onDrawerRefresh(): void {
-		this.drawerComponent.sideDrawer.closeDrawer();
-	}
 }
