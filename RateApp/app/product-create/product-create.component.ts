@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef, NgZone } from "@angular/core";
+import { HttpClient, HttpRequest, HttpEventType, HttpResponse, HttpHeaders } from "@angular/common/http";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "ui/page";
+import { ImageSource, fromFile } from "image-source/image-source";
+import { Observable } from "rxjs/Rx";
 
 import { Product } from "../shared/model/product";
 import { ProductService } from "../shared/services/product.service";
@@ -12,8 +15,7 @@ import { Config } from "../shared/config";
 
 import * as imagepicker from "nativescript-imagepicker";
 
-import {session, Session, Task} from "nativescript-background-http";
-import {Progress} from "ui/progress";
+// import {Progress} from "ui/progress";
 
 @Component({
     selector: "ProductCreate",
@@ -27,19 +29,21 @@ export class ProductCreateComponent implements OnInit {
     // Component Variables
     private product: Product = new Product('', '', '', '', '', 0, 0, 0, 0, 0, ['']);
     public images = [];
+    public images2 = [{
+        uploading:true,
+        uploaded:false,
+        error:false,
+        fileName: 'IMG_0002',
+        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/96F8C779-2837-42B1-8700-B0904453A6DA/data/Media/DCIM/100APPLE/IMG_0002.JPG'
+    }];
     private items = [];
-
-    public newsession:Session;
-    public task:Task;
-    
 
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
     constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, 
-        private page: Page, private _changeDetectionRef: ChangeDetectorRef, private zone:NgZone){
-            this.newsession = session("image-upload");
+        private page: Page, private _changeDetectionRef: ChangeDetectorRef, private zone:NgZone, private http: HttpClient){
     };
 
     ngOnInit(): void {
@@ -117,22 +121,66 @@ export class ProductCreateComponent implements OnInit {
         });
     }
 
-    imageUpload(){
+    imageUpload() {
         for(let i = 0; i < this.images.length; i++) {
             if(!this.images[i].uploading && !this.images[i].uploaded) {
-                let fileName = this.images[i].fileName;
-                let fileUri = this.images[i].fileUri;
-                var progress:Progress =<Progress> this.page.getViewById(fileName + "progress");
-                progress.value = 0;
-                let task : Task = this.newsession.uploadFile(fileUri, this.getRequest(fileName));
-                this.images[i].uploading = true;
-                task.on("progress", (e)=>{
-                    var progress:Progress =<Progress> this.page.getViewById(fileName + "progress");
-                    progress.value = e.currentBytes;
-                    progress.maxValue = e.totalBytes;
-                });
-                task.on("error", (e) => { this.logEvent(e); });
-                task.on("complete", (e) => { this.logEvent(e); });
+                let fileName : string = this.images[i].fileName;
+                let fileUri : string = this.images[i].fileUri;
+                console.log(fileUri);
+
+                let imageSource: ImageSource = fromFile(fileUri.replace('file://', ''));
+                let fileExtension = this.getFileExtension(fileUri);
+
+                // var progress:Progress =<Progress> this.page.getViewById(fileName + "progress");
+                // progress.value = 0;
+
+                if(fileExtension === "png" || fileExtension === "jpeg" || fileExtension === "jpg") {
+                    // le puse imageSource.toBase64String(fileExtension); pero con 'jpg' devuelve null
+                    // la calidad no se reduce nunca, los valores son de 0 a 100
+                    let imageBase64 = imageSource.toBase64String(fileExtension, 20);
+                    if(imageBase64 === null && fileExtension === "jpg") {
+                        console.log("jpg returned null");
+                        imageBase64 = imageSource.toBase64String("jpeg", 20);
+                        console.log("quality 10 chars: " + imageSource.toBase64String("jpeg", 10).length);
+                        console.log("quality 20 chars: " + imageSource.toBase64String("jpeg", 20).length);
+                        console.log("quality 40 chars: " + imageSource.toBase64String("jpeg", 40).length);
+                        console.log("quality 80 chars: " + imageSource.toBase64String("jpeg", 80).length);
+                        console.log("quality 100 chars: " + imageSource.toBase64String("jpeg", 100).length);
+                        if(imageBase64 === null) {
+                            console.log("jpeg returned null");
+                            imageBase64 = imageSource.toBase64String("png", 20);
+                        }
+                    }
+                    console.log("chars:" + imageBase64.length);
+                    let headers = new HttpHeaders();
+                    headers.append("Content-Type", "application/json");
+                    const body = {
+                        upload_preset: "oolyrbp7",
+                        file: "data:image/png;base64,"+imageBase64
+                    };
+
+                    const req = new HttpRequest('POST',
+                        'https://api.cloudinary.com/v1_1/dxamsousk/image/upload',
+                        body,
+                        { reportProgress: false, headers: headers });
+                    this.images[i].uploading = true;
+
+                    this.http.request(req).subscribe(
+                        () => {
+                            console.log("Request started: " + fileName);
+                        },
+                        (error) => {
+                            console.log("ERROR: " + JSON.stringify(error));
+                            this.logEvent(fileName, "error");
+                        },
+                        () => {
+                            console.log("Uploaded");
+                            this.logEvent(fileName, "complete");
+                        }
+                    );
+                } else {
+                    console.log("File extension not supported");
+                }
             }
         }
     }
@@ -166,43 +214,29 @@ export class ProductCreateComponent implements OnInit {
         return name;
     }
 
+    getFileExtension(fileUri: string) {
+        return fileUri.slice(fileUri.lastIndexOf('.') + 1).toLowerCase();
+    }
+
     removeImage(index: number) {
         this.images.splice(index, 1);
     }
 
-    getRequest(fileName: string) {
-        return {
-            url: "http://httpbin.org/post",
-            method: "POST",
-            headers: {
-                "Content-Type": "application/octet-stream",
-                "File-Name": fileName
-            },
-            description: fileName
-        };
-    }
-
-    logEvent(e) {
+    logEvent(fileName, status) {
         let i;
         for(i = 0; i < this.images.length; i++) {
-            console.log("comparing '" + e.object.description + "' with '" + this.images[i].fileName + "'");
-            if(e.object.description === this.images[i].fileName) {
-                console.log('if ok');
+            if(fileName === this.images[i].fileName) {
                 break;
             }
         }
-        console.log("index="+i);
-        switch (e.eventName) {
+        switch (status) {
             case "complete":
-                console.log("complete: " + e.object.description);
                 if(i < this.images.length) {
                     this.images[i].uploading = false;
                     this.images[i].uploaded = true;
                 }
                 break;
             case "error":
-                console.log("error: " + e.object.description);
-                console.dir(e.object);
                 if(i < this.images.length) {
                     this.images[i].uploading = false;
                     this.images[i].error = true;

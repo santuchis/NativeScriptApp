@@ -48,11 +48,20 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     <ng-template ngFor let-i="index" let-image [ngForOf]="images" let-odd="odd" let-even="even">
                         <AbsoluteLayout [id]="getImageName(image.fileUri) + 'layout'" class="image-container" [class.odd]="odd" [class.even]="even">
                             <Image left="0" top="0" stretch="aspectFill" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading" [class.error]="image.error"></Image>
+                            <!--
                             <Progress [visibility]="image.uploading ? 'visible' : 'collapsed'" class="progress" [id]="getImageName(image.fileUri) + 'progress'" class="progress"></Progress>
-                            <Label style="margin:78% 0% 0% 0%" class="bottom-bar" text=""></Label>
+                            -->
+                            <Label style="margin:78% 0% 0% 0%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" class="bottom-bar" text=""></Label>
                             <Label style="margin:80% 0% 0% 84%" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
                             <Label style="margin:80% 0% 0% 84%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload"></Label>
                             <Label style="margin:80% 0% 0% 3%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" [text]="'\uf014'" class="fa remove" (tap)="removeImage(i)"></Label>
+                            <ActivityIndicator 
+                                style="margin:46% 0% 0% 46%"
+                                [busy]="image.uploading" 
+                                [visibility]="image.uploading ? 'visible' : 'collapse'" 
+                                horizontalAlignment="center" 
+                                verticalAlignment="center">
+                            </ActivityIndicator>
                         </AbsoluteLayout>
                     </ng-template>
                 </WrapLayout>
