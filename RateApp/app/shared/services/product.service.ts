@@ -233,26 +233,22 @@ export class ProductService {
 	}
 
 	saveProduct(product: Product) {
+		let tmpProd = {};
+		tmpProd["name"] = product.name;
+		tmpProd["brand"] = product.brand;
+		tmpProd["description"] = product.description;
+		tmpProd["features"] = product.features;
+		tmpProd["images"] = product.images;
+		if(product.id.length > 0) {
+			tmpProd["id"] = product.id;
+		}
 		console.dir(product);
 		let headers = new Headers();
 		headers.append("Content-Type", "application/json");
 		headers.append("Authorization", "Bearer " + Config.token);
     	return this.http.post(
-			Config.apiUrl + "product/save",
-			product.id.length > 0 ? 
-			JSON.stringify({
-			  id: product.id,
-			  name: product.name,
-			  brand: product.brand,
-			  description: product.description,
-			  features: product.features,
-			}) :
-			JSON.stringify({
-				name: product.name,
-				brand: product.brand,
-				description: product.description,
-				features: product.features,
-			  }),
+			Config.apiUrl + "product/save", 
+			JSON.stringify(tmpProd),
 			{ headers: headers }
 		)
 		.map(response => response.json())

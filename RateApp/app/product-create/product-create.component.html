@@ -53,7 +53,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                             -->
                             <Label style="margin:78% 0% 0% 0%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" class="bottom-bar" text=""></Label>
                             <Label style="margin:80% 0% 0% 84%" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
-                            <Label style="margin:80% 0% 0% 84%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload"></Label>
+                            <Label style="margin:80% 0% 0% 84%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload" (tap)="upload(i)"></Label>
                             <Label style="margin:80% 0% 0% 3%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" [text]="'\uf014'" class="fa remove" (tap)="removeImage(i)"></Label>
                             <ActivityIndicator 
                                 style="margin:46% 0% 0% 46%"
