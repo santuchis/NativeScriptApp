@@ -11,9 +11,16 @@ import { ProductService } from "../shared/services/product.service";
 import { Config } from "../shared/config";
 
 import * as imagepicker from "nativescript-imagepicker";
+import * as camera from "nativescript-camera";
 
 import {session, Session, Task} from "nativescript-background-http";
 import {Progress} from "ui/progress";
+import { ImageAsset } from "image-asset";
+import { ImageSource, fromAsset } from "image-source";
+import { Image } from "ui/image";
+import imageSourceModule = require("image-source");
+
+
 
 @Component({
     selector: "ProductCreate",
@@ -28,10 +35,11 @@ export class ProductCreateComponent implements OnInit {
     private product: Product = new Product('', '', '', '', '', 0, 0, 0, 0, 0, ['']);
     public images = [];
     private items = [];
-
+    public cameraImages: Array<any>;
+    
     public newsession:Session;
     public task:Task;
-    
+    public img ;  
 
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
@@ -39,7 +47,7 @@ export class ProductCreateComponent implements OnInit {
 
     constructor(private router: RouterExtensions, private route: ActivatedRoute, private productService: ProductService, 
         private page: Page, private _changeDetectionRef: ChangeDetectorRef, private zone:NgZone){
-            this.newsession = session("image-upload");
+            this.newsession = session("image-upload");            
     };
 
     ngOnInit(): void {
@@ -214,4 +222,14 @@ export class ProductCreateComponent implements OnInit {
         this._changeDetectionRef.detectChanges();
     }
 
+    takePicture(){
+        camera.requestPermissions();
+        var options = {width: 1280, keepAspectRatio: true, saveToGallery: true};
+        camera.takePicture(options).then((imageAsset) => {
+            console.log("Photo has been taken Ok!");
+        })
+        .catch((err) => {
+            console.log("Error -> " + err.message);
+        });
+    } 
 }
