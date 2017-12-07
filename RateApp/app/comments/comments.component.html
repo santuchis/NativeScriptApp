@@ -38,7 +38,6 @@ it shouldn't have any other siblings other than the <ActionBar> component.
             <StackLayout class="comments">
                 <StackLayout>
                     <ng-template ngFor let-i="index" let-comment [ngForOf]="comments">
-                        <Label *ngIf="i > 0" class="line"></Label>
                         <StackLayout class="comment">
                             <GridLayout rows="auto, auto" columns="*, auto" class="comment-header">
                                 <StackLayout row="0" col="0">
@@ -54,6 +53,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                                 <Label textWrap="true" [text]="comment.userLike < 0 ? '\uf165' : '\uf088'" [ngClass]="{'active':comment.userLike < 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="dislike(comment)"></Label>
                                 <Label textWrap="true" [text]="' '+comment.dislikesCount+' '" (tap)="dislike(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count"></Label>
                             </StackLayout>
+                            <Label class="line"></Label>
                         </StackLayout>
                     </ng-template>
                 </StackLayout>
