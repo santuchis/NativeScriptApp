@@ -22,20 +22,41 @@ export class AddCommentComponent implements OnInit {
 
     // Component Variables
     private starSelected : number = 0;
+    private commentId : string;
     private comment : string;
     private productId : string;
+    private isLoading : boolean;
+    private errorMsg : string;
 
     // Drawer Variables
     @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
     private _sideDrawerTransition: DrawerTransitionBase;
 
-    constructor(private router: RouterExtensions, private route: ActivatedRoute, private commentService: CommentService) {}
+    constructor(private router: RouterExtensions, private route: ActivatedRoute, private commentService: CommentService) {
+    }
 
     ngOnInit(): void {
         // Side Drawer code
         this._sideDrawerTransition = new SlideInOnTopTransition();
         
+        this.isLoading = true;
         this.productId = this.route.snapshot.params["id"];
+        this.commentService.getComment(this.productId).subscribe(result => {
+            if(result.success) {
+                if(result.exists) {
+                    this.commentId = result.comment.id;
+                    this.starSelected = result.comment.stars;
+                    this.comment = result.comment.text;
+                } else {
+                    this.starSelected = 0;
+                    this.comment = "";
+                }
+            } else {
+                this.errorMsg = "Error.";
+                console.log('failed to load comment');
+            }
+            this.isLoading = false;
+        });
 	}
 
     selectStar(value : number) : void {
@@ -44,7 +65,15 @@ export class AddCommentComponent implements OnInit {
 
     saveComment() : void {
         let comment: Comment;
-        this.commentService.saveComment(this.productId, this.comment, this.starSelected)
+        if(this.starSelected == 0) {
+            alert('Seleccione la cantidad de estrellas');
+            return;
+        }
+        if(this.comment.length < 1) {
+            alert('No ha ingresado ningun comentario');
+            return;
+        }
+        this.commentService.saveComment(this.productId, this.commentId, this.comment, this.starSelected)
             .subscribe(
                 (result) => {
 					if(result.success) {

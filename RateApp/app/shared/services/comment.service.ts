@@ -14,17 +14,20 @@ export class CommentService {
 
 	constructor(private http: Http) {}
 
-	saveComment(productId: string, commentText: string, stars: number) {
+	saveComment(productId: string, commentId: string, commentText: string, stars: number) {
 		let headers = new Headers();
         headers.append("Content-Type", "application/json");
 		headers.append("Authorization", "Bearer " + Config.token);
+		let comment = {};
+		comment['text'] = commentText;
+		comment['stars'] = stars;
+		if(commentId && commentId.length > 0) {
+			comment['id'] = commentId;
+		}
 
     	return this.http.post(
       		Config.apiUrl + "comment/save/" + productId,
-      		JSON.stringify({
-				text: commentText,
-				stars: stars
-      		}),
+      		JSON.stringify(comment),
       		{ headers: headers }
         )
         .map(response => response.json())
@@ -67,7 +70,24 @@ export class CommentService {
         )
         .map(response => response.json())
         .catch(this.handleErrors);
-    }
+	}
+	
+	getComment(productId: string) {
+		let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+        if(Config.token !== undefined) {
+			headers.append("Authorization", "Bearer " + Config.token);
+		}
+
+        let requestOptions = new RequestOptions({headers: headers});
+
+        return this.http.get(
+            Config.apiUrl + "comment/user/" + productId,
+            requestOptions
+        )
+        .map(response => response.json())
+        .catch(this.handleErrors);
+	}
 
     likeComment(id: string) {
 		let headers = new Headers();

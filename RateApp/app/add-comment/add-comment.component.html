@@ -42,13 +42,20 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <!--
             ng-pristine is not working, ng-dirty is always true
         -->
-        <StackLayout class="content-header">
+        <Label *ngIf="commentId && commentId.length > 0" text="Edit your comment" style="background-color: #dbdb66; padding: 5px"></Label>
+        <StackLayout class="content-header" *ngIf="!isLoading">
             <StackLayout orientation="horizontal" class="stars">
                 <rv-stars [value]="starSelected" (starTapped)="selectStar($event)" style="font-size: 40;color: #daa520;"></rv-stars>
             </StackLayout>
         </StackLayout>
-        <StackLayout>
+        <StackLayout *ngIf="!isLoading">
             <TextView hint="Enter some text" [(ngModel)]="comment" style="font-size:16;height:100%;background-color:transparent;border-color: transparent;"></TextView>
         </StackLayout>
+        <ActivityIndicator 
+            [busy]="isLoading" 
+            [visibility]="isLoading ? 'visible' : 'collapse'" 
+            horizontalAlignment="center" 
+            verticalAlignment="center">
+        </ActivityIndicator>
     </StackLayout>
 </RadSideDrawer>
