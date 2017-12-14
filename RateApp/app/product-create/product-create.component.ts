@@ -34,6 +34,10 @@ import imageSourceModule = require("image-source");
 export class ProductCreateComponent implements OnInit {
 
     // Component Variables
+    private editingDescription: boolean = false;
+    private editingFeatures: boolean = false;
+    private tmpDescription: string = "";
+    private tmpFeatures: string = "";
     private product: Product = new Product('', '', '', '', '', 0, 0, 0, 0, 0, ['']);
     public images = [];
     public imagesTesting = [{
@@ -41,7 +45,7 @@ export class ProductCreateComponent implements OnInit {
         uploaded:false,
         error:false,
         fileName: 'IMG_0002',
-        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/96F8C779-2837-42B1-8700-B0904453A6DA/data/Media/DCIM/100APPLE/IMG_0002.JPG'
+        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/DA30E910-68B2-4C30-8881-1E8FC489D1B2/data/Media/DCIM/100APPLE/IMG_0001.JPG',
     }];
     private items = [];
     public cameraImages: Array<any>;
@@ -60,7 +64,29 @@ export class ProductCreateComponent implements OnInit {
         this._sideDrawerTransition = new SlideInOnTopTransition();
     }
 
+    editDescription(): void {
+        if(!this.editingDescription) {
+            this.tmpDescription = this.product.description;
+            this.editingDescription = true;
+        }
+    }
+
+    editFeatures(): void {
+        if(!this.editingFeatures) {
+            this.tmpFeatures = this.product.features;
+            this.editingFeatures = true;
+        }
+    }
+
     saveProduct() : void {
+        if(this.editingDescription) {
+            this.editingDescription = false;
+            return;
+        }
+        if(this.editingFeatures) {
+            this.editingFeatures = false;
+            return;
+        }
         let imagesUploading = 0;
         let imagesError = 0;
         this.product.images = [];
@@ -98,6 +124,16 @@ export class ProductCreateComponent implements OnInit {
     }
 
     goBack() {
+        if(this.editingDescription) {
+            this.product.description = this.tmpDescription;
+            this.editingDescription = false;
+            return;
+        }
+        if(this.editingFeatures) {
+            this.product.features = this.tmpFeatures;
+            this.editingFeatures = false;
+            return;
+        }
         this.router.backToPreviousPage();
     }
 

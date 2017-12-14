@@ -33,31 +33,46 @@ it shouldn't have any other siblings other than the <ActionBar> component.
     -->
     <StackLayout class="page page-content" tkMainContent>
         <ScrollView>
-            <StackLayout>
-                <TextField hint="Nombre" [(ngModel)]="product.name" required minlength="4"></TextField>
-                <Label class="textfield-underline"></Label>
-                <TextField hint="Marca" [(ngModel)]="product.brand" required minlength="4"></TextField>
-                <Label class="textfield-underline"></Label>
-                <TextView hint="Descripción" [(ngModel)]="product.description" style="height: 200px;font-size:16;background-color:transparent;border-color: transparent;"></TextView>
-                <Label class="textfield-underline"></Label>
-                <TextView hint="Características" [(ngModel)]="product.features" style="height: 200px;font-size:16;background-color:transparent;border-color: transparent;margin-top:30px;"></TextView>
-                <Label class="textfield-underline"></Label>
-                <Button (tap)="onSelectMultipleTap()" text="Add Images"></Button>
-                <Button (tap)="takePicture()" text="Take a Picture To add"></Button>
-                <Label class="textfield-underline"></Label>
-                <WrapLayout>
+            <StackLayout style="margin-top: 20px;">
+
+                <TextField hint="Nombre" [(ngModel)]="product.name" required minlength="4" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></TextField>
+                <Label class="textfield-underline-ios" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <TextField hint="Marca" [(ngModel)]="product.brand" required minlength="4" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></TextField>
+                <Label class="textfield-underline-ios" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <Label text="Descripción" (tap)="editDescription()" [visibility]="editingFeatures ? 'collapse' : 'visible'" class="field-title"></Label>
+                <TextView hint="Ingrese alguna descripción" [(ngModel)]="product.description" style="height: 300px;font-size:16;background-color:transparent;border-color: transparent;" [visibility]="editingDescription ? 'visible' : 'collapse'"></TextView>
+                <Label textWrap="true" (tap)="editDescription()" [text]="product.description && product.description.length > 0 ? product.description : 'Ingrese alguna descripción'" class="text-view" [class.placeholder]="!product.description || product.description.length == 0" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                <Label class="textfield-underline" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <Label text="Características" (tap)="editFeatures()" [visibility]="editingDescription ? 'collapse' : 'visible'" class="field-title"></Label>
+                <TextView hint="Ingrese alguna característica" [(ngModel)]="product.features" style="height: 300px;font-size:16;background-color:transparent;border-color: transparent;" [visibility]="editingFeatures ? 'visible' : 'collapse'"></TextView>
+                <Label textWrap="true" (tap)="editFeatures()" [text]="product.features && product.features.length > 0 ? product.features : 'Ingrese alguna característica'" class="text-view" [class.placeholder]="!product.features || product.features.length == 0" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                <Label class="textfield-underline" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <GridLayout columns="*, auto, auto, *, auto, auto, *" rows="auto" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'">
+                    <Label col="1" row="0" (tap)="onSelectMultipleTap()" class="fa btn-pic" [text]="'\uf03e'"></Label>
+                    <Label col="2" row="0" (tap)="onSelectMultipleTap()" class="btn-pic" text=" Galería"></Label>
+                    <Label col="4" row="0" (tap)="takePicture()" class="fa btn-pic" [text]="'\uf030'"></Label>
+                    <Label col="5" row="0" (tap)="takePicture()" class="btn-pic" text=" Cámara"></Label>
+                </GridLayout>
+                <Label class="textfield-underline" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <WrapLayout [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'" class="images-container">
                     <ng-template ngFor let-i="index" let-image [ngForOf]="images" let-odd="odd" let-even="even">
                         <AbsoluteLayout [id]="getImageName(image.fileUri) + 'layout'" class="image-container" [class.odd]="odd" [class.even]="even">
                             <Image left="0" top="0" stretch="aspectFill" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading" [class.error]="image.error"></Image>
                             <!--
                             <Progress [visibility]="image.uploading ? 'visible' : 'collapsed'" class="progress" [id]="getImageName(image.fileUri) + 'progress'" class="progress"></Progress>
                             -->
-                            <Label style="margin:78% 0% 0% 0%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" class="bottom-bar" text=""></Label>
-                            <Label style="margin:80% 0% 0% 84%" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
-                            <Label style="margin:80% 0% 0% 84%" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload" (tap)="upload(i)"></Label>
-                            <Label style="margin:80% 0% 0% 3%" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" [text]="'\uf014'" class="fa remove" (tap)="removeImage(i)"></Label>
+                            <Label left="0" top="0" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" class="bottom-bar" text=""></Label>
+                            <Label left="0" top="0" style="text-align:right; padding-right: 10px;" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
+                            <Label left="0" top="0" style="text-align:right; padding-right: 10px;" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload" (tap)="upload(i)"></Label>
+                            <Label left="0" top="0" style="text-align:left; padding-left: 10px;" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" [text]="'\uf014'" class="fa remove" (tap)="removeImage(i)"></Label>
                             <ActivityIndicator 
-                                style="margin:46% 0% 0% 46%"
+                                left="0" top="0"
+                                style="height: 100%; width: 100%; vertical-align: middle; text-align:center;"
                                 [busy]="image.uploading" 
                                 [visibility]="image.uploading ? 'visible' : 'collapse'" 
                                 horizontalAlignment="center" 
