@@ -42,9 +42,11 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                     </AbsoluteLayout>
                     <GridLayout rows="auto, auto" columns="*, auto, auto, auto, auto" class="title">
                         <Label row="0" col="0" [text]="product.name" class="name" textWrap="true"></Label>
-                        <Label row="0" col="1" rowSpan="2" [ngClass]="{'active':likeStatus > 0, 'in-progress':savingLike}" [text]="likeStatus > 0 ? '\uf164':'\uf087'" class="fa like-btn thumb" (tap)="like()"></Label>
+                        <Label [visibility]="likeStatus > 0 ? 'visible' : 'collapsed'" row="0" col="1" rowSpan="2" [ngClass]="{'active':likeStatus > 0, 'in-progress':savingLike}" [text]="'\uf164'" class="fa like-btn thumb" (tap)="like()"></Label>
+                        <Label [visibility]="likeStatus > 0 ? 'collapsed' : 'visible'" row="0" col="1" rowSpan="2" [ngClass]="{'active':likeStatus > 0, 'in-progress':savingLike}" [text]="'\uf087'" class="fa like-btn thumb" (tap)="like()"></Label>
                         <Label row="0" col="2" rowSpan="2" [ngClass]="{'in-progress':savingLike}" [text]="' '+product.likesCount+' '" (tap)="like()" class="like-btn count"></Label>
-                        <Label row="0" col="3" rowSpan="2" [ngClass]="{'active':likeStatus < 0, 'in-progress':savingLike}" [text]="likeStatus < 0 ? '\uf165' : '\uf088'" class="fa like-btn thumb" (tap)="dislike()"></Label>
+                        <Label [visibility]="likeStatus < 0 ? 'visible' : 'collapsed'" row="0" col="3" rowSpan="2" [ngClass]="{'active':likeStatus < 0, 'in-progress':savingLike}" [text]="'\uf165'" class="fa like-btn thumb" (tap)="dislike()"></Label>
+                        <Label [visibility]="likeStatus < 0 ? 'collapsed' : 'visible'" row="0" col="3" rowSpan="2" [ngClass]="{'active':likeStatus < 0, 'in-progress':savingLike}" [text]="'\uf088'" class="fa like-btn thumb" (tap)="dislike()"></Label>
                         <Label row="0" col="4" rowSpan="2" [ngClass]="{'in-progress':savingLike}" [text]="' '+product.dislikesCount+' '" (tap)="dislike()" class="like-btn count"></Label>
                         <Label row="1" col="0" [text]="product.brand" class="brand"></Label>
                     </GridLayout>
