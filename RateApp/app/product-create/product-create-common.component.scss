@@ -18,10 +18,9 @@ Image.upload.uploading, Image.upload.error {
     width: 100%;
 }
 .image-container {
-    height: 322px;
     width: 50%;
     margin-bottom: 5px;
-    background-color: #ffffff;
+    background-color: #000000;
 }
 .even.image-container {
     padding-right: 2px;
@@ -30,7 +29,7 @@ Image.upload.uploading, Image.upload.error {
     padding-left: 2px;
 }
 Label.bottom-bar {
-    background-color: rgba(0, 0, 0, 0.507);
+    background-color: rgba(0, 0, 0, 0.700);
     height: 30;
     width: 100%;
 }
@@ -42,7 +41,7 @@ Label.remove, Label.reload {
     width: 100%;
 }
 Label.success {
-    color: #008000;
+    color: #00ff00;
     width: 100%;
 }
 Label.placeholder {

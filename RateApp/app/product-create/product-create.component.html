@@ -61,8 +61,13 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                 
                 <WrapLayout [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'" class="images-container">
                     <ng-template ngFor let-i="index" let-image [ngForOf]="images" let-odd="odd" let-even="even">
-                        <AbsoluteLayout [id]="getImageName(image.fileUri) + 'layout'" class="image-container" [class.odd]="odd" [class.even]="even">
-                            <Image left="0" top="0" stretch="aspectFill" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading" [class.error]="image.error"></Image>
+                        <AbsoluteLayout 
+                                [id]="getImageName(image.fileUri) + 'layout'" 
+                                class="image-container" 
+                                [class.odd]="odd" 
+                                [class.even]="even" 
+                                [height]="getImageHeight()">
+                            <Image left="0" top="0" [stretch]="getStretch(i)" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading" [class.error]="image.error"></Image>
                             <!--
                             <Progress [visibility]="image.uploading ? 'visible' : 'collapsed'" class="progress" [id]="getImageName(image.fileUri) + 'progress'" class="progress"></Progress>
                             -->

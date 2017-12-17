@@ -40,13 +40,48 @@ export class ProductCreateComponent implements OnInit {
     private tmpFeatures: string = "";
     private product: Product = new Product('', '', '', '', '', 0, 0, 0, 0, 0, ['']);
     public images = [];
-    public imagesTesting = [{
+    public imagesX = [
+    {
         uploading:true,
         uploaded:false,
         error:false,
-        fileName: 'IMG_0002',
+        fileName: 'IMG_0001',
         fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/DA30E910-68B2-4C30-8881-1E8FC489D1B2/data/Media/DCIM/100APPLE/IMG_0001.JPG',
-    }];
+        fileUrl: ''
+    },
+    {
+        uploading:false,
+        uploaded:false,
+        error:true,
+        fileName: 'IMG_0002',
+        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/DA30E910-68B2-4C30-8881-1E8FC489D1B2/data/Media/DCIM/100APPLE/IMG_0002.JPG',
+        fileUrl: ''
+    },
+    {
+        uploading:false,
+        uploaded:true,
+        error:false,
+        fileName: 'IMG_0003',
+        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/DA30E910-68B2-4C30-8881-1E8FC489D1B2/data/Media/DCIM/100APPLE/IMG_0003.JPG',
+        fileUrl: ''
+    },
+    {
+        uploading:false,
+        uploaded:true,
+        error:false,
+        fileName: 'IMG_0004',
+        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/DA30E910-68B2-4C30-8881-1E8FC489D1B2/data/Media/DCIM/100APPLE/IMG_0004.JPG',
+        fileUrl: ''
+    },
+    {
+        uploading:false,
+        uploaded:true,
+        error:false,
+        fileName: 'IMG_0005',
+        fileUri: 'file:///Users/guillermoaiquel/Library/Developer/CoreSimulator/Devices/DA30E910-68B2-4C30-8881-1E8FC489D1B2/data/Media/DCIM/100APPLE/IMG_0005.JPG',
+        fileUrl: ''
+    }
+    ];
     private items = [];
     public cameraImages: Array<any>;
     public img ;  
@@ -185,6 +220,19 @@ export class ProductCreateComponent implements OnInit {
         });
     }
 
+    getStretch(i: number) {
+        let imageSource: ImageSource = fromFile(this.images[i].fileUri.replace('file://', ''));
+        return imageSource.height > imageSource.width ? 'aspectFit' : 'aspectFill';
+    }
+
+    getImageWidth() {
+        return this.page.getActualSize().width / 2;
+    }
+
+    getImageHeight() {
+        return this.getImageWidth() / 4 * 3;
+    }
+
     upload(i: number) {
         let fileName : string = this.images[i].fileName;
         let fileUri : string = this.images[i].fileUri;
@@ -271,7 +319,8 @@ export class ProductCreateComponent implements OnInit {
             fileName: this.getImageName(fileUri),
             uploading: false,
             uploaded: false,
-            error: false
+            error: false,
+            fileUrl: ''
         };
         this.images.push(obj);
     }
