@@ -35,9 +35,9 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         <ScrollView>
             <StackLayout *ngIf="!isLoading">
                 <StackLayout class="cover">
-                    <AbsoluteLayout orientation="horizontal" class="images">
+                    <AbsoluteLayout orientation="horizontal" class="images" style="background-color:#cecece">
                         <ng-template ngFor let-i="index" let-photo [ngForOf]="product.images">
-                            <Image #dragImage left="0" top="0" class="main-photo" [src]="photo" stretch="aspectFit" width="100%" height="100%" (pan)="onPan($event)"></Image>
+                            <Image #dragImage left="0" top="0" class="main-photo" [src]="photo" stretch="aspectFit" width="100%" [height]="getImageHeight()" stretch="aspectFit" (pan)="onPan($event)"></Image>
                         </ng-template>
                     </AbsoluteLayout>
                     <GridLayout rows="auto, auto" columns="*, auto, auto, auto, auto" class="title">

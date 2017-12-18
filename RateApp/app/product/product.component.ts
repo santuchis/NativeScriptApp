@@ -73,11 +73,21 @@ export class ProductComponent implements OnInit {
         });
     }
 
+    getImageHeight() {
+        return Device.actualHeight * 0.4;
+    }
+
     initImagesPositions(): void {
-        console.log('isloading='+this.isLoading);
         let i = 0;
-        this.dragImages.forEach(el => el.nativeElement.translateX = Device.actualWidth * (i++))
-        console.log('isloading='+this.isLoading);
+        if(this.dragImages.length < this.product.images.length) {
+            console.log("IMAGES NOT LOADED");
+            setTimeout(()=>{
+                this.initImagesPositions();
+            }, 100);
+        } else {
+            console.log("IMAGES POSITION INIT");
+            this.dragImages.forEach(el => el.nativeElement.translateX = Device.actualWidth * (i++))
+        }
     }
 
     getShortDescription() : string {
