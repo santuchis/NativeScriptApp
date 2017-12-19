@@ -28,13 +28,13 @@
     <StackLayout tkMainContent>
         <ScrollView>
             <StackLayout >
-                <GridLayout style=" border-bottom-width: 3px; border-bottom-color: skyblue;" *ngFor="let product of productList; let even = even; let odd = odd" [ngClass]="{ odd: odd, even: even }" columns="*,3*" rows="*,*,*,*" width="100%" height="200" class="list-group" (tap)="goToProduct(product)">
+                <GridLayout style=" border-bottom-width: 3px; border-bottom-color: #87ceeb;" *ngFor="let product of productList; let even = even; let odd = odd" [ngClass]="{ odd: odd, even: even }" columns="*,3*" rows="*,*,*,*" width="100%" height="200" class="list-group" (tap)="goToProduct(product)">
                     <Image class="center" [src]="product.images[0]" col="0" row="0" rowSpan="4" style.horizontalAlignment="center"></Image>
-                    <Label [text]="product.name" style="color: lightslategray; font-style:italic ;font-weight: bold; font-size: 16px;" col="1" row="1" style.horizontalAlignment="center" style.verticalAlignment="top"></Label>
+                    <Label [text]="product.name" style="color: #778899; font-style:italic ;font-weight: bold; font-size: 16px;" col="1" row="1" style.horizontalAlignment="center" style.verticalAlignment="top"></Label>
                     <Label [text]="product.brand" col="1" row="2" style.horizontalAlignment="center" style.verticalAlignment="top" ></Label>
                     <StackLayout  col="1" row="3" orientation="horizontal" style.horizontalAlignment="center" style.verticalAlignment="top">
-                        <rv-stars [value]="2.5" style="font-size:16;color:goldenrod;"></rv-stars>
-                        <Label [text]="' (100)'" class="fa"></Label>
+                        <rv-stars [value]="product.rate" style="font-size:16;color:#daa520;"></rv-stars>
+                        <Label [text]="' ('+product.commentsCount+')'" class="fa"></Label>
                     </StackLayout>
                </GridLayout>
                <ActivityIndicator 
