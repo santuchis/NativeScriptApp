@@ -73,8 +73,12 @@ export class ProductComponent implements OnInit {
         });
     }
 
+    getImageWidth() {
+        return Device.actualWidth;
+    }
+
     getImageHeight() {
-        return Device.actualHeight * 0.4;
+        return Device.actualWidth * 6 / 9;
     }
 
     initImagesPositions(): void {
