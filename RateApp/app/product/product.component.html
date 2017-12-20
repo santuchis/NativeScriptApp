@@ -68,7 +68,7 @@ it shouldn't have any other siblings other than the <ActionBar> component.
                         </GridLayout>
                         <Label row="1" col="0" rowSpan="2" text="{{product.rate | number : '1.1-1'}}" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
                         <StackLayout row="1" col="1" style="margin:0px 15px;">
-                            <rv-stars [value]="product.rate" style="font-size:30;color: goldenrod;"></rv-stars>
+                            <rv-stars [value]="product.rate" style="font-size:30;color: #daa520;"></rv-stars>
                         </StackLayout>
                         <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center" (tap)="goToAddComment()"></Label>
                         <Label row="2" col="1" [text]="product.commentsCount+' comentarios'" style="font-size:14;margin:0px 15px;"></Label>

@@ -100,14 +100,14 @@ it shouldn't have any other siblings other than the <ActionBar> component.
         </Label>
         
         <Button
-            [text]="isLoggingIn ? 'Sign In' : 'Sign Up'" class="submit-button" (tap)="submit()"
+            [text]="isLoggingIn ? 'Ingresar' : 'Registrarse'" class="submit-button" (tap)="submit()"
             isEnabled="{{ !waiting && (usernameModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && emailModel.valid))) }}"
             [ngClass]="{'disabled':!(!waiting && (usernameModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && emailModel.valid))))}"
             >
         </Button>
         <Button 
             isEnabled="{{ !waiting }}"
-            [text]="isLoggingIn ? 'Sign Up' : 'Back to Login'" (tap)="toggleDisplay()">
+            [text]="isLoggingIn ? 'Registrarse' : 'Volver'" (tap)="toggleDisplay()">
         </Button>
         <Label *ngIf="waiting" [text]="'\uf110'" class="fa fa-spin" style="text-align:center;"></Label>
     </StackLayout>
