@@ -1,5 +1,5 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
-import { NativeScriptModule } from "nativescript-angular/nativescript.module";
+import { NativeScriptCommonModule } from "nativescript-angular/common";
 
 import { SharedModule } from "../shared/shared.module";
 import { ResultPageRoutingModule } from "./result-page-routing.module";
@@ -7,7 +7,7 @@ import { ResultPageComponent } from "./result-page.component";
 
 @NgModule({
     imports: [
-        NativeScriptModule,
+        NativeScriptCommonModule,
         SharedModule,
         ResultPageRoutingModule
     ],

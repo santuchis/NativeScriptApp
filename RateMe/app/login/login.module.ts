@@ -1,6 +1,6 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
-import { NativeScriptModule } from "nativescript-angular/nativescript.module";
+import { NativeScriptCommonModule } from "nativescript-angular/common";
 
 import { SharedModule } from "../shared/shared.module";
 import { LoginRoutingModule } from "./login-routing.module";
@@ -9,7 +9,7 @@ import { LoginComponent } from "./login.component";
 @NgModule({
     imports: [
         NativeScriptFormsModule,
-        NativeScriptModule,
+        NativeScriptCommonModule,
         LoginRoutingModule,
         SharedModule
     ],
