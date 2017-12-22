@@ -15,6 +15,7 @@ export class MyDrawerItemComponent implements OnInit {
     @Input() route: string;
     @Input() icon: string;
     @Input() isSelected: boolean;
+    @Input() visible: boolean = true;
 
     constructor(private routerExtensions: RouterExtensions) {
 

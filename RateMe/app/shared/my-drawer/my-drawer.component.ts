@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { Config } from "../config";
+import { User } from "../model/user";
 
 /* ***********************************************************
 * Keep data that is displayed in your app drawer in the MyDrawer component class.
@@ -31,5 +33,13 @@ export class MyDrawerComponent implements OnInit {
     *************************************************************/
     isPageSelected(pageTitle: string): boolean {
         return pageTitle === this.selectedPage;
+    }
+
+    isLoggedIn(): boolean {
+        return Config.token !== undefined;
+    }
+
+    getUser(): User {
+        return Config.user;
     }
 }
