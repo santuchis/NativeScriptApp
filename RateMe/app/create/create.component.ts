@@ -21,15 +21,14 @@ import imageSourceModule = require("image-source");
 
 // import {Progress} from "ui/progress";
 
-
 @Component({
-    selector: "ProductCreate",
+    selector: "Create",
     moduleId: module.id,
-    styleUrls: ["./product-create-common.component.css", "./product-create.component.css"],
-    templateUrl: "./product-create.component.html",
+    styleUrls: ["./create-common.component.css", "./create.component.css"],
+    templateUrl: "./create.component.html",
     providers: [ProductService]
 })
-export class ProductCreateComponent implements OnInit {
+export class CreateComponent implements OnInit {
 
     // Component Variables
     private editingDescription: boolean = false;
@@ -84,18 +83,9 @@ export class ProductCreateComponent implements OnInit {
     public cameraImages: Array<any>;
     public img ;  
 
-    // Drawer Variables
-    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
-    private _sideDrawerTransition: DrawerTransitionBase;
-
     constructor(private router: RouterExtensions, private productService: ProductService, 
         private page: Page, private _changeDetectionRef: ChangeDetectorRef, private http: Http){
     };
-
-    ngOnInit(): void {
-        // Side Drawer code
-        this._sideDrawerTransition = new SlideInOnTopTransition();
-    }
 
     editDescription(): void {
         if(!this.editingDescription) {
@@ -170,17 +160,6 @@ export class ProductCreateComponent implements OnInit {
         this.router.backToPreviousPage();
     }
 
-    /****************
-     * Side Drawer methods
-     ***************/
-    get sideDrawerTransition(): DrawerTransitionBase {
-        return this._sideDrawerTransition;
-    }
-
-    onDrawerButtonTap(): void {
-        this.drawerComponent.sideDrawer.showDrawer();
-    }
-    
     onSelectMultipleTap() {
         let context = imagepicker.create({
             mode: "multiple"
@@ -377,5 +356,31 @@ export class ProductCreateComponent implements OnInit {
     	console.log(JSON.stringify(error.json()));
     	return Observable.throw(error);
     }
+    
+    /* ***********************************************************
+    * Use the @ViewChild decorator to get a reference to the drawer component.
+    * It is used in the "onDrawerButtonTap" function below to manipulate the drawer.
+    *************************************************************/
+    @ViewChild("drawer") drawerComponent: RadSideDrawerComponent;
 
+    private _sideDrawerTransition: DrawerTransitionBase;
+
+    /* ***********************************************************
+    * Use the sideDrawerTransition property to change the open/close animation of the drawer.
+    *************************************************************/
+    ngOnInit(): void {
+        this._sideDrawerTransition = new SlideInOnTopTransition();
+    }
+
+    get sideDrawerTransition(): DrawerTransitionBase {
+        return this._sideDrawerTransition;
+    }
+
+    /* ***********************************************************
+    * According to guidelines, if you have a drawer on your page, you should always
+    * have a button that opens it. Use the showDrawer() function to open the app drawer section.
+    *************************************************************/
+    onDrawerButtonTap(): void {
+        this.drawerComponent.sideDrawer.showDrawer();
+    }
 }

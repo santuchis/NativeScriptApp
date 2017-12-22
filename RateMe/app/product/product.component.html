@@ -1,0 +1,101 @@
+<ActionBar class="action-bar">
+    <NavigationButton icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem *ngIf="!canGoBack" icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+
+    <Label class="action-bar-title" [text]="product?.name"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="product?.name"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout tkMainContent>
+        <ActivityIndicator 
+            [busy]="isLoading" 
+            [visibility]="isLoading ? 'visible' : 'collapse'" 
+            horizontalAlignment="center" 
+            verticalAlignment="center">
+        </ActivityIndicator>
+        <ScrollView>
+            <StackLayout *ngIf="!isLoading">
+                <StackLayout class="cover">
+                    <AbsoluteLayout orientation="horizontal" class="images" style="background-color:#ffffff">
+                        <ng-template ngFor let-i="index" let-photo [ngForOf]="product.images">
+                            <Image #dragImage 
+                                left="0" top="0" 
+                                class="main-photo" 
+                                [src]="photo" 
+                                stretch="aspectFill" 
+                                [width]="getImageWidth()" [height]="getImageHeight()"
+                                (pan)="onPan($event)"></Image>
+                        </ng-template>
+                    </AbsoluteLayout>
+                    <GridLayout rows="auto, auto" columns="*, auto, auto, auto, auto" class="title">
+                        <Label row="0" col="0" [text]="product.name" class="name" textWrap="true"></Label>
+                        <Label [visibility]="likeStatus > 0 ? 'visible' : 'collapsed'" row="0" col="1" rowSpan="2" [ngClass]="{'active':likeStatus > 0, 'in-progress':savingLike}" [text]="'\uf164'" class="fa like-btn thumb" (tap)="like()"></Label>
+                        <Label [visibility]="likeStatus > 0 ? 'collapsed' : 'visible'" row="0" col="1" rowSpan="2" [ngClass]="{'active':likeStatus > 0, 'in-progress':savingLike}" [text]="'\uf087'" class="fa like-btn thumb" (tap)="like()"></Label>
+                        <Label row="0" col="2" rowSpan="2" [ngClass]="{'in-progress':savingLike}" [text]="' '+product.likesCount+' '" (tap)="like()" class="like-btn count"></Label>
+                        <Label [visibility]="likeStatus < 0 ? 'visible' : 'collapsed'" row="0" col="3" rowSpan="2" [ngClass]="{'active':likeStatus < 0, 'in-progress':savingLike}" [text]="'\uf165'" class="fa like-btn thumb" (tap)="dislike()"></Label>
+                        <Label [visibility]="likeStatus < 0 ? 'collapsed' : 'visible'" row="0" col="3" rowSpan="2" [ngClass]="{'active':likeStatus < 0, 'in-progress':savingLike}" [text]="'\uf088'" class="fa like-btn thumb" (tap)="dislike()"></Label>
+                        <Label row="0" col="4" rowSpan="2" [ngClass]="{'in-progress':savingLike}" [text]="' '+product.dislikesCount+' '" (tap)="dislike()" class="like-btn count"></Label>
+                        <Label row="1" col="0" [text]="product.brand" class="brand"></Label>
+                    </GridLayout>
+                    <StackLayout class="banner">
+                        <Label textWrap="true" [text]="'Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense Adsense'"></Label>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout class="content">
+                    <GridLayout rows="auto, auto, auto" columns="auto,*,auto" class="section comments">
+                        <GridLayout row="0" col="0" colSpan="3" rows="auto" columns="*, auto" class="section-header">
+                            <Label row="0" col="0" [text]="'Comentarios'" class="section-title" (tap)="goToComments()"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa" (tap)="goToComments()"></Label>
+                        </GridLayout>
+                        <Label row="1" col="0" rowSpan="2" text="{{product.rate | number : '1.1-1'}}" style="font-size:30;text-align:center;vertical-align:center;margin:0px 15px;"></Label>
+                        <StackLayout row="1" col="1" style="margin:0px 15px;">
+                            <rv-stars [value]="product.rate" style="font-size:30;color: #daa520;"></rv-stars>
+                        </StackLayout>
+                        <Label row="1" col="2" [text]="'\uf067'" class="fa" style="text-align:center" (tap)="goToAddComment()"></Label>
+                        <Label row="2" col="1" [text]="product.commentsCount+' comentarios'" style="font-size:14;margin:0px 15px;"></Label>
+                        <Label row="2" col="2" [text]="'Comentar'" style="font-size:14;" (tap)="goToAddComment()"></Label>
+                    </GridLayout>
+                    <Label class="line"></Label>
+                    <StackLayout class="section description">
+                        <GridLayout rows="auto" columns="*, auto" class="section-header">
+                            <Label row="0" col="0" [text]="'Description'" class="section-title"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                        </GridLayout>
+                        <Label textWrap="true" [text]="getShortDescription()"></Label>
+                    </StackLayout>
+                    <Label class="line"></Label>
+                    <StackLayout class="section features">
+                        <GridLayout rows="auto" columns="*, auto" class="section-header">
+                            <Label row="0" col="0" [text]="'Características'" class="section-title"></Label>
+                            <Label row="0" col="1" [text]="'\uf105'" class="fa"></Label>
+                        </GridLayout>
+                        <Label textWrap="true" [text]="product.features"></Label>
+                    </StackLayout>
+                    <StackLayout class="section">
+                        <Label [text]="'Denunciar'" style="font-size: 12; text-align:center;margin-bottom:50px;"></Label>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+
+</RadSideDrawer>

@@ -1,0 +1,92 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" android.systemIcon="ic_menu_close_clear_cancel" (tap)="goBack()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem android:visibility="collapsed" (tap)="goBack()"
+        ios.position="left" ios.systemIcon="1">
+    </ActionItem>
+    <ActionItem ios.systemIcon="3" android.systemIcon="ic_menu_save" ios.position="right" (tap)="saveProduct()"></ActionItem>
+    <Label class="action-bar-title" text="Crear Producto"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Create'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <GridLayout class="page page-content" tkMainContent>
+        <ScrollView>
+            <StackLayout style="margin-top: 20px;">
+
+                <TextField hint="Nombre" [(ngModel)]="product.name" required minlength="4" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></TextField>
+                <Label class="textfield-underline-ios" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <TextField hint="Marca" [(ngModel)]="product.brand" required minlength="4" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></TextField>
+                <Label class="textfield-underline-ios" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <Label text="Descripción" (tap)="editDescription()" [visibility]="editingFeatures ? 'collapse' : 'visible'" class="field-title"></Label>
+                <TextView hint="Ingrese alguna descripción" [(ngModel)]="product.description" style="height: 300px;font-size:16;background-color:transparent;border-color: transparent;" [visibility]="editingDescription ? 'visible' : 'collapse'"></TextView>
+                <Label textWrap="true" (tap)="editDescription()" [text]="product.description && product.description.length > 0 ? product.description : 'Ingrese alguna descripción'" class="text-view" [class.placeholder]="!product.description || product.description.length == 0" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                <Label class="textfield-underline" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <Label text="Características" (tap)="editFeatures()" [visibility]="editingDescription ? 'collapse' : 'visible'" class="field-title"></Label>
+                <TextView hint="Ingrese alguna característica" [(ngModel)]="product.features" style="height: 300px;font-size:16;background-color:transparent;border-color: transparent;" [visibility]="editingFeatures ? 'visible' : 'collapse'"></TextView>
+                <Label textWrap="true" (tap)="editFeatures()" [text]="product.features && product.features.length > 0 ? product.features : 'Ingrese alguna característica'" class="text-view" [class.placeholder]="!product.features || product.features.length == 0" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                <Label class="textfield-underline" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <GridLayout columns="*, auto, auto, *, auto, auto, *" rows="auto" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'">
+                    <Label col="1" row="0" (tap)="onSelectMultipleTap()" class="fa btn-pic" [text]="'\uf03e'"></Label>
+                    <Label col="2" row="0" (tap)="onSelectMultipleTap()" class="btn-pic" text=" Galería"></Label>
+                    <Label col="4" row="0" (tap)="takePicture()" class="fa btn-pic" [text]="'\uf030'"></Label>
+                    <Label col="5" row="0" (tap)="takePicture()" class="btn-pic" text=" Cámara"></Label>
+                </GridLayout>
+                <Label class="textfield-underline" [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'"></Label>
+                
+                <WrapLayout [visibility]="editingDescription || editingFeatures ? 'collapse' : 'visible'" class="images-container">
+                    <ng-template ngFor let-i="index" let-image [ngForOf]="images" let-odd="odd" let-even="even">
+                        <AbsoluteLayout 
+                                [id]="getImageName(image.fileUri) + 'layout'" 
+                                class="image-container" 
+                                [class.odd]="odd" 
+                                [class.even]="even" 
+                                [height]="getImageHeight()">
+                            <Image left="0" top="0" [stretch]="getStretch(i)" class="upload" [src]="image.fileUri" [class.uploading]="image.uploading" [class.error]="image.error"></Image>
+                            <!--
+                            <Progress [visibility]="image.uploading ? 'visible' : 'collapsed'" class="progress" [id]="getImageName(image.fileUri) + 'progress'" class="progress"></Progress>
+                            -->
+                            <Label left="0" top="0" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" class="bottom-bar" text=""></Label>
+                            <Label left="0" top="0" style="text-align:right; padding-right: 10px;" [visibility]="image.uploaded ? 'visible' : 'collapsed'" [text]="'\uf05d'" class="fa success"></Label>
+                            <Label left="0" top="0" style="text-align:right; padding-right: 10px;" [visibility]="image.error ? 'visible' : 'collapsed'" [text]="'\uf021'" class="fa reload" (tap)="upload(i)"></Label>
+                            <Label left="0" top="0" style="text-align:left; padding-left: 10px;" [visibility]="image.uploaded || image.error ? 'visible' : 'collapsed'" [text]="'\uf014'" class="fa remove" (tap)="removeImage(i)"></Label>
+                            <ActivityIndicator 
+                                left="0" top="0"
+                                style="color: #ffffff;height: 100%; width: 100%; vertical-align: middle; text-align:center;"
+                                [busy]="image.uploading" 
+                                [visibility]="image.uploading ? 'visible' : 'collapse'" 
+                                horizontalAlignment="center" 
+                                verticalAlignment="center">
+                            </ActivityIndicator>
+                        </AbsoluteLayout>
+                    </ng-template>
+                </WrapLayout>
+            </StackLayout>
+        </ScrollView>
+    </GridLayout>
+</RadSideDrawer>

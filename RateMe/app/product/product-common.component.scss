@@ -1,0 +1,74 @@
+.fa {
+    font-size: 30;
+}
+
+Label.name {
+    font-size: 26;
+}
+
+Label.brand {
+    font-size: 18;
+}
+
+Label.line {
+    background-color: #f0f0f0;
+    height: 4px;
+    margin: 25px 0px 5px 0px;
+}
+.cover {
+    background-color: #f0f0f0;
+    color: black;
+}
+
+.content {
+    background-color: #ffffff;
+}
+
+.title {
+    margin: 15px 15px;
+}
+
+.section {
+    margin: 0px 15px;
+    color: #747474;
+}
+
+.section-header {
+    margin: 15px 0px;
+}
+
+.section-header .section-title {
+    color: #3F3F3F;
+    font-size: 22;
+}
+
+.section-header .fa {
+    color: #cdcdcd;
+}
+
+.star-icon {
+    color: #daa520;
+}
+
+.banner {
+    margin: 15px;
+}
+
+.like-btn {
+    color: #000000;
+}
+
+.like-btn.active{
+    color:#0000ff;
+}
+
+.like-btn.in-progress {
+    color: #778899;
+}
+
+.like-btn.thumb.active.in-progress {
+    color: #add8e6;
+}
+ActivityIndicator {
+    margin: 50px 0px;
+}

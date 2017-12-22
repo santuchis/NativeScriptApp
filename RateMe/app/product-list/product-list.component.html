@@ -1,0 +1,10 @@
+<StackLayout>
+    <ListView [items]="productList" (itemTap)="onItemTap($event)" class="list-group">
+        <ng-template let-product="item" let-i="index" let-odd="odd" let-even="even">
+            <GridLayout columns="*, auto" rows="auto, *" class="list-group-item">
+                <Label col="0" row="0" [text]="product.name" ></Label>
+                <Label *ngIf="isRemoveIconVisible" col="1" row="0" [text]="'\uf014'" class="fa" (tap)="remove(i,product.id)"></Label>
+            </GridLayout>
+        </ng-template>
+    </ListView>
+</StackLayout>

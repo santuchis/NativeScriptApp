@@ -1,0 +1,114 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Ingresar"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Ingresar'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout #container class="page page-content" [ngClass]="{'signin':isLoggingIn, 'signup':!isLoggingIn}" tkMainContent>
+        <!--
+        VALIDARION ERRORS: ngModel.errors
+        { "minlength" : {"requiredLength": 4, "actualLength": 3} }
+        { "required": true }
+        { "email": true }
+        -->
+        
+        <!--
+            ng-pristine is not working, ng-dirty is always true
+        -->
+        <TextField 
+            #name #nameModel="ngModel" [(ngModel)]="user.name" 
+            isEnabled="{{ !waiting }}"
+            [visibility]="isLoggingIn ? 'collapse' : 'visible'"
+            hint="Name" required minlength="4">
+        </TextField>
+        <Label
+            *ngIf="!isLoggingIn && nameModel?.errors?.required && !nameModel.valid && nameModel.touched"
+            class="validation" [text]="'This field is required'">
+        </Label>
+        <Label
+            *ngIf="!isLoggingIn && nameModel?.errors?.minlength && !nameModel.valid && nameModel.touched" 
+            class="validation" [text]="'Min name lenght is '+nameModel.errors.minlength.requiredLength+' characters'">
+        </Label>
+
+        <TextField 
+            #username #usernameModel="ngModel" [(ngModel)]="user.username"
+            isEnabled="{{ !waiting }}"
+            hint="User Name"
+            required minlength="4" autocapitalizationType="none">
+        </TextField>
+        <Label
+            *ngIf="!isLoggingIn && usernameModel?.errors?.required && !usernameModel.valid && usernameModel.touched"
+            class="validation" [text]="'This field is required'">
+        </Label>
+        <Label 
+            *ngIf="!isLoggingIn && usernameModel?.errors?.minlength && !usernameModel.valid && usernameModel.touched"
+            class="validation" [text]="'Min username lenght is '+usernameModel.errors.minlength.requiredLength+' characters'">
+        </Label>
+
+        <TextField 
+            #email #emailModel="ngModel" [(ngModel)]="user.email" 
+            isEnabled="{{ !waiting }}"
+            [visibility]="isLoggingIn ? 'collapse' : 'visible'" hint="Email Address" keyboardType="email" autocorrect="false"
+            autocapitalizationType="none" required email>
+        </TextField>
+        <Label 
+            *ngIf="!isLoggingIn && emailModel?.errors?.required && !emailModel.valid && emailModel.touched"
+            class="validation" [text]="'This field is required'"></Label>
+        <Label 
+            *ngIf="!isLoggingIn && emailModel?.errors?.email && !emailModel?.errors?.required && !emailModel.valid && emailModel.touched"
+            class="validation" text="Email is not a valid one">
+        </Label>
+        
+        <TextField
+            #password #pswModel="ngModel" [(ngModel)]="user.password"
+            isEnabled="{{ !waiting }}"
+            hint="Passsword" secure="true" required minlength="6">
+        </TextField>
+        <Label
+            *ngIf="!isLoggingIn && pswModel?.errors?.required && !pswModel.valid && pswModel.touched"
+            class="validation" [text]="'This field is required'">
+        </Label>
+        <Label
+            *ngIf="!isLoggingIn && pswModel?.errors?.minlength && !pswModel.valid && pswModel.touched"
+            class="validation" [text]="'Min password lenght is '+pswModel.errors.minlength.requiredLength+' characters'">
+        </Label>
+        
+        <Button
+            [text]="isLoggingIn ? 'Ingresar' : 'Registrarse'" class="submit-button" (tap)="submit()"
+            isEnabled="{{ !waiting && (usernameModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && emailModel.valid))) }}"
+            [ngClass]="{'disabled':!(!waiting && (usernameModel.valid && pswModel.valid && (isLoggingIn || (!isLoggingIn && nameModel.valid && emailModel.valid))))}"
+            >
+        </Button>
+        <Button 
+            isEnabled="{{ !waiting }}"
+            [text]="isLoggingIn ? 'Registrarse' : 'Volver'" (tap)="toggleDisplay()">
+        </Button>
+        <Label *ngIf="waiting" [text]="'\uf110'" class="fa fa-spin" style="text-align:center;"></Label>
+    </StackLayout>
+</RadSideDrawer>

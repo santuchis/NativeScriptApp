@@ -1,0 +1,57 @@
+
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the NavigationButton as a side-drawer button in iOS is not possible, because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <SearchBar  color="blue" textFieldBackgroundColor="white" hint="Search a product"
+     [text]="input" (textChange)="onTextChanged($event)" (submit)="onSubmit($event)"></SearchBar>
+</ActionBar>
+
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Inicio'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout tkMainContent>
+        <ScrollView>
+            <StackLayout >
+                <GridLayout style=" border-bottom-width: 3px; border-bottom-color: #87ceeb;" *ngFor="let product of productList; let even = even; let odd = odd" [ngClass]="{ odd: odd, even: even }" columns="*,3*" rows="*,*,*,*" width="100%" height="200" class="list-group" (tap)="goToProduct(product)">
+                    <Image class="center" [src]="product.images[0]" col="0" row="0" rowSpan="4" style.horizontalAlignment="center"></Image>
+                    <Label [text]="product.name" style="color: #778899; font-style:italic ;font-weight: bold; font-size: 16px;" col="1" row="1" style.horizontalAlignment="center" style.verticalAlignment="top"></Label>
+                    <Label [text]="product.brand" col="1" row="2" style.horizontalAlignment="center" style.verticalAlignment="top" ></Label>
+                    <StackLayout  col="1" row="3" orientation="horizontal" style.horizontalAlignment="center" style.verticalAlignment="top">
+                        <rv-stars [value]="product.rate" style="font-size:16;color:#daa520;"></rv-stars>
+                        <Label [text]="' ('+product.commentsCount+')'" class="fa"></Label>
+                    </StackLayout>
+               </GridLayout>
+               <ActivityIndicator 
+                    [busy]="isLoading" 
+                    [visibility]="isLoading ? 'visible' : 'collapse'" 
+                    horizontalAlignment="center" 
+                    verticalAlignment="center">
+               </ActivityIndicator>
+               <Label text="Load more Products..."
+                        [visibility]="hasNext ? 'visible' : 'collapse'" 
+                        (tap)="loadNextProductPage()"
+                        class="load-more-btn"
+                        style="text-align:center;">
+              </Label>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</RadSideDrawer>
+
+
