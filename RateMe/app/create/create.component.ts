@@ -1,23 +1,18 @@
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
-import { Http, Headers, Response } from "@angular/http";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
 import { RouterExtensions } from "nativescript-angular/router";
 import { Page } from "ui/page";
-import { ImageSource, fromFile, fromAsset } from "image-source/image-source";
 import { Observable } from "rxjs/Rx";
 
 import { Product } from "../shared/model/product";
 import { ProductService } from "../shared/services/product.service";
+import { ImageService } from "../shared/services/image.service";
 import { Config } from "../shared/config";
 
 import * as imagepicker from "nativescript-imagepicker";
 import * as camera from "nativescript-camera";
-
-import { ImageAsset } from "image-asset";
-import { Image } from "ui/image";
-import imageSourceModule = require("image-source");
 
 // import {Progress} from "ui/progress";
 
@@ -26,7 +21,7 @@ import imageSourceModule = require("image-source");
     moduleId: module.id,
     styleUrls: ["./create-common.component.css", "./create.component.css"],
     templateUrl: "./create.component.html",
-    providers: [ProductService]
+    providers: [ProductService, ImageService]
 })
 export class CreateComponent implements OnInit {
 
@@ -84,7 +79,7 @@ export class CreateComponent implements OnInit {
     public img ;  
 
     constructor(private router: RouterExtensions, private productService: ProductService, 
-        private page: Page, private _changeDetectionRef: ChangeDetectorRef, private http: Http){
+        private page: Page, private _changeDetectionRef: ChangeDetectorRef, private imageService: ImageService){
     };
 
     editDescription(): void {
@@ -180,12 +175,10 @@ export class CreateComponent implements OnInit {
         context
         .authorize()
         .then(() => {
-            console.log("then 1.");
             _that.items = [];
             return context.present();
         })
         .then((selection) => {
-            console.log("then 2.");
             _that.items = selection;
             selection.forEach(element => {
                 _that.addImageToList(element.fileUri, element.uri);
@@ -198,8 +191,7 @@ export class CreateComponent implements OnInit {
     }
 
     getStretch(i: number) {
-        let imageSource: ImageSource = fromFile(this.images[i].fileUri.replace('file://', ''));
-        return imageSource.height > imageSource.width ? 'aspectFit' : 'aspectFill';
+        return this.images[i].height > this.images[i].width ? 'aspectFit' : 'aspectFill';
     }
 
     getImageWidth() {
@@ -211,68 +203,23 @@ export class CreateComponent implements OnInit {
     }
 
     upload(i: number) {
-        let fileName : string = this.images[i].fileName;
-        let fileUri : string = this.images[i].fileUri;
-
-        let imageSource: ImageSource = fromFile(fileUri.replace('file://', ''));
-        let fileExtension = this.getFileExtension(fileUri);
-
-        // var progress:Progress =<Progress> this.page.getViewById(fileName + "progress");
-        // progress.value = 0;
-
-        if(fileExtension === "png" || fileExtension === "jpeg" || fileExtension === "jpg") {
-            // le puse imageSource.toBase64String(fileExtension); pero con 'jpg' devuelve null
-            // la calidad no se reduce nunca, los valores son de 0 a 100
-            let imageBase64 = imageSource.toBase64String(fileExtension, 20);
-            if(imageBase64 === null && fileExtension === "jpg") {
-                console.log("jpg returned null");
-                imageBase64 = imageSource.toBase64String("jpeg", 20);
-                console.log("quality 10 chars: " + imageSource.toBase64String("jpeg", 10).length);
-                console.log("quality 20 chars: " + imageSource.toBase64String("jpeg", 20).length);
-                console.log("quality 40 chars: " + imageSource.toBase64String("jpeg", 40).length);
-                console.log("quality 80 chars: " + imageSource.toBase64String("jpeg", 80).length);
-                console.log("quality 100 chars: " + imageSource.toBase64String("jpeg", 100).length);
-                if(imageBase64 === null) {
-                    console.log("jpeg returned null");
-                    imageBase64 = imageSource.toBase64String("png", 20);
-                }
+        let fileUri = this.images[i].fileUri;
+        this.images[i].uploading = true;
+        this.images[i].uploaded = false;
+        this.images[i].error = false;
+        
+        this.imageService.upload(this.images[i])
+        .subscribe(
+            (result) => {
+                console.log("Uploaded");
+                console.dir(this.images[i]);
+                this.logEvent(fileUri, "complete", result.secure_url);
+            },
+            (error) => {
+                console.log("ERROR: " + JSON.stringify(error));
+                this.logEvent(fileUri, "error", '');
             }
-            let headers = new Headers();
-            headers.append("Content-Type", "application/json");
-            const body = {
-                upload_preset: "oolyrbp7",
-                file: "data:image/png;base64,"+imageBase64
-            };
-
-            this.images[i].uploading = true;
-            this.images[i].uploaded = false;
-            this.images[i].error = false;
-
-            this.http.post(
-                'https://api.cloudinary.com/v1_1/dxamsousk/image/upload',
-                JSON.stringify(body),
-                { headers: headers }
-            )
-            .map(response => response.json())
-            .map(data => {
-                this.logEvent(fileName, "complete", data.secure_url);
-            })
-            .catch(this.handleErrors)
-            .subscribe(
-                () => {
-                    console.log("Request started: " + fileName);
-                },
-                (error) => {
-                    console.log("ERROR: " + JSON.stringify(error));
-                    this.logEvent(fileName, "error", '');
-                },
-                () => {
-                    console.log("Uploaded");
-                }
-            );
-        } else {
-            console.log("File extension not supported");
-        }
+        );
     }
 
     uploadImages() {
@@ -309,18 +256,14 @@ export class CreateComponent implements OnInit {
         return name;
     }
 
-    getFileExtension(fileUri: string) {
-        return fileUri.slice(fileUri.lastIndexOf('.') + 1).toLowerCase();
-    }
-
     removeImage(index: number) {
         this.images.splice(index, 1);
     }
 
-    logEvent(fileName, status, fileUrl) {
+    logEvent(fileUri, status, fileUrl) {
         let i;
         for(i = 0; i < this.images.length; i++) {
-            if(fileName === this.images[i].fileName) {
+            if(fileUri === this.images[i].fileUri) {
                 break;
             }
         }
