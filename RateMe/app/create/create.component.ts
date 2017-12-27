@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import * as application from "application";
+import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 
@@ -13,6 +14,7 @@ import { Config } from "../shared/config";
 
 import * as imagepicker from "nativescript-imagepicker";
 import * as camera from "nativescript-camera";
+import { GC } from "tns-core-modules/utils/utils";
 
 // import {Progress} from "ui/progress";
 
@@ -93,6 +95,17 @@ export class CreateComponent implements OnInit {
         if(!this.editingFeatures) {
             this.tmpFeatures = this.product.features;
             this.editingFeatures = true;
+        }
+    }
+
+    ngOnDestroy() {
+        this.garbageCollector();
+    }
+
+    garbageCollector() {
+        if(application.android) {
+            console.log("Garbage Collector called.");
+            GC();
         }
     }
 
@@ -184,6 +197,7 @@ export class CreateComponent implements OnInit {
                 _that.addImageToList(element.fileUri, element.uri);
             });
             _that._changeDetectionRef.detectChanges();
+            this.garbageCollector();
             setTimeout(()=> { _that.uploadImages(); }, 100);
         }).catch(function (e) {
             console.log(e);
@@ -207,7 +221,7 @@ export class CreateComponent implements OnInit {
         this.images[i].uploading = true;
         this.images[i].uploaded = false;
         this.images[i].error = false;
-        
+
         this.imageService.upload(this.images[i])
         .subscribe(
             (result) => {

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList, ElementRef } from "@angular/core";
+import * as application from "application";
+import { Component, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList, ElementRef } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PlatformLocation } from '@angular/common';
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
@@ -14,6 +15,7 @@ import { Device } from "../shared/device";
 import { Config } from "../shared/config";
 
 import animationModule = require("ui/animation");
+import { GC } from "tns-core-modules/utils/utils";
 
 @Component({
     selector: "Product",
@@ -71,6 +73,17 @@ export class ProductComponent implements OnInit {
                 this.product.dislikesCount = p.dislikesCount;
             });
         });
+    }
+
+    ngOnDestroy() {
+        this.garbageCollector();
+    }
+
+    garbageCollector() {
+        if(application.android) {
+            console.log("Garbage Collector called.");
+            GC();
+        }
     }
 
     getImageWidth() {

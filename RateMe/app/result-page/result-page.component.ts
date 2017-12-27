@@ -1,4 +1,5 @@
-import { Component, OnInit,Input, ViewChild } from "@angular/core";
+import * as application from "application";
+import { Component, OnInit, OnDestroy,Input, ViewChild } from "@angular/core";
 import { DrawerTransitionBase, SlideInOnTopTransition } from "nativescript-pro-ui/sidedrawer";
 import { RadSideDrawerComponent } from "nativescript-pro-ui/sidedrawer/angular";
 import { Router, ActivatedRoute, Params } from "@angular/router";
@@ -10,6 +11,7 @@ import { Observable } from "rxjs/Rx";
 import { Device } from "../shared/device";
 import { Page } from "ui/page";
 import { SearchBar } from "ui/search-bar";
+import { GC } from "tns-core-modules/utils/utils";
 
 @Component({
 	selector: 'result-page',
@@ -61,7 +63,18 @@ export class ResultPageComponent implements OnInit {
                 this.isLoading = false;
             }
         );
-	 }
+     }
+     
+     ngOnDestroy() {
+        this.garbageCollector();
+     }
+
+     garbageCollector() {
+        if(application.android) {
+            console.log("Garbage Collector called.");
+            GC();
+        }
+    }
 	
 	goToProduct(product : Product) : void {
         Device.height = this.page.getMeasuredHeight();

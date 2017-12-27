@@ -1,0 +1,75 @@
+<ActionBar class="action-bar">
+    <NavigationButton icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <ActionItem icon="res://navigation/menu" ios.systemIcon="4" android.systemIcon="ic_menu_add" (tap)="goToAddComment()"
+        ios.position="right">
+    </ActionItem>
+    <Label class="action-bar-title" text="Comentarios"></Label>
+</ActionBar>
+
+<!--
+RadSideDrawer is a UI component part of the Progress NativeScript UI set of components.
+Learn more about the RadSideDrawer UI component and how it can be customized in this documentation article:
+http://docs.telerik.com/devtools/nativescript-ui/Controls/Angular/SideDrawer/getting-started
+The RadSideDrawer component is designed to be used as a root element and
+it shouldn't have any other siblings other than the <ActionBar> component.
+-->
+<RadSideDrawer #drawer showOverNavigation="true" [drawerTransition]="sideDrawerTransition">
+    <!--
+    Use the tkDrawerContent directive to display the content of the app drawer on this page.
+    -->
+    <StackLayout tkDrawerContent>
+        <MyDrawer [selectedPage]="'Comentarios'"></MyDrawer>
+    </StackLayout>
+    
+    <!--
+    Use the tkMainContent directive to display the content of the page when you have an app drawer.
+    -->
+    <StackLayout class="page page-content" tkMainContent>
+        <GridLayout rows="auto, auto" columns="auto, auto, *, auto" class="content-header">
+            <Label row="0" col="0" rowSpan="2" text="{{rate | number : '1.1-1'}}" class="rate"></Label>
+            <StackLayout row="0" col="1" class="stars">
+                <rv-stars [value]="rate" style="font-size: 30;color: goldenrod;"></rv-stars>
+            </StackLayout>
+            <Label row="0" col="2" rowSpan="2" [text]="picked" (tap)="showStarsOptions()" class="stars-select"></Label>
+            <Label row="0" col="3" rowSpan="2" class="fa stars-select-icon" [text]="'\uf107'"></Label>
+            <Label row="1" col="1" [text]="commentsCount + ' Comentarios'" class="comments-count-label"></Label>
+        </GridLayout>
+        <ScrollView>
+            <StackLayout class="comments">
+                <StackLayout>
+                    <ng-template ngFor let-i="index" let-comment [ngForOf]="comments">
+                        <StackLayout class="comment">
+                            <GridLayout rows="auto, auto" columns="*, auto" class="comment-header">
+                                <StackLayout row="0" col="0">
+                                    <rv-stars [value]="comment.stars" style="font-size: 15;color: goldenrod;"></rv-stars>
+                                </StackLayout>
+                                <Label row="0" col="1" rowSpan="2" [text]="getDate(comment.date)" class="comment-date"></Label>
+                                <Label row="1" col="0" [text]="comment.createBy.name" class="comment-title"></Label>
+                            </GridLayout>
+                            <Label textWrap="true" [text]="comment.text"></Label>
+                            <StackLayout orientation="horizontal" class="like-buttons">
+                                <Label textWrap="true" [text]="comment.userLike > 0 ? '\uf164':'\uf087'" [ngClass]="{'active':comment.userLike > 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="like(comment)" style="padding-left: 30px;"></Label>
+                                <Label textWrap="true" [text]="' '+comment.likesCount+' '" (tap)="like(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count" style="padding-right: 30px;"></Label>
+                                <Label textWrap="true" [text]="comment.userLike < 0 ? '\uf165' : '\uf088'" [ngClass]="{'active':comment.userLike < 0, 'in-progress':comment.savingLike}" class="fa like-btn thumb" (tap)="dislike(comment)"></Label>
+                                <Label textWrap="true" [text]="' '+comment.dislikesCount+' '" (tap)="dislike(comment)" [ngClass]="{'in-progress':comment.savingLike}" class="like-btn count"></Label>
+                            </StackLayout>
+                            <Label class="line"></Label>
+                        </StackLayout>
+                    </ng-template>
+                </StackLayout>
+                <ActivityIndicator 
+                    [busy]="isLoading" 
+                    [visibility]="isLoading ? 'visible' : 'collapse'" 
+                    horizontalAlignment="center" 
+                    verticalAlignment="center">
+                </ActivityIndicator>
+                <Label text="Load more comments..."
+                    [visibility]="!isLoading && hasNext ? 'visible' : 'collapse'"
+                    (tap)="loadNextCommentsPage()"
+                    class="load-more-btn"
+                    style="text-align:center;">
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
+</RadSideDrawer>
